@@ -1,0 +1,221 @@
+<html>
+    <head>
+        <title>PDB COS</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+        <link rel="stylesheet" href="css">
+        <link rel="stylesheet" href="font-icon">
+    </head>
+    <style>
+        .container{
+            width: 100%;
+            height: 100%;
+        }
+        #rowBG{
+            height: 100%;
+        }
+        #leftPanel{
+            height: 100%;
+        }
+        #rightPanel{
+            height: 100%;
+        }
+        #middlePanel{
+            height: 100%;
+        }
+        #picProfile{
+            width: 140px;
+            height: 140px;
+        }
+        #rowHeadder{
+            margin-top: 3%;
+            margin-bottom: 3%;
+        }
+        #tableFile{
+            color: lightsteelblue;
+        }
+        #tableFile{
+            color: lightsteelblue;
+        }
+        #tableOnline{
+            color: lightsteelblue;
+        }
+        #userOnlineIMG{
+            width: 25px;
+            height: 25px;
+        }
+         * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form {
+        border: 1px solid #ccc;
+        padding: 3px;
+        position: relative;
+        width: 100%;
+       }
+      form input { 
+        border: 0;
+       padding: 10px;
+       width: 90%;
+       margin-right: .5%;
+       }
+      form button { 
+        width: 9%;
+       background: rgb(130, 224, 255);
+       border: none;
+       padding: 10px;
+       }
+      #messages {
+        height: 250px;
+        list-style-type: none;
+       margin: 0;
+       padding: 0;
+       overflow-y: overlay;
+       }
+       #messages>li:last-child,li:focus{
+        color: red;
+       }
+      #messages li { 
+        padding: 5px 10px;
+       }
+      #messages li:nth-child(odd) { 
+        background: #eee; 
+        }
+        .w3-modal-content{
+            top: 1%;
+        }
+        .menubar-chat>li{
+            list-style: none;
+            float: left;
+            padding: 7px 10px 20px 10px;
+            overflow: none;
+        }
+        li:hover{
+            cursor: pointer;
+        }
+        input[type=text]:focus{
+            border: 1pz solid #1a1a1a;
+        }
+        #frmMsg{
+            border: none;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="row" id="rowHeadder">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <div class="col-xs-5 col-md-3"><img src="/pic-default" alt="Profile" id="picProfile" class="img-circle" /></div>
+                    <div class="col-xs-6 col-md-9"><h1>Communication Office System</h1></div>
+                </div>
+            </div>
+            <div class="row" id="rowBG">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <div class="col-xs-6 col-md-2" id="leftPanel">
+                        <h2 class="page-header">Group</h2>
+                    </div>
+                    <div class="col-xs-6 col-md-8" id="middlePanel">
+                        <h1 class="page-header">File</h1>
+                        <table style="width:100%; text-align: center;" id="tableFile" class="table table-striped">
+                            <thead >
+                            <th style="text-align: center;">File Name</th>
+                            <th style="text-align: center;">From</th>
+                            <th style="text-align: center;">Date Time</th>
+                            </thead>
+                            </tbody>
+
+                            <tr>
+                                <td><a>test.doc</a></td>
+                                <td>noom</td>
+                                <td>30-02-2017 15:11</td>
+                            </tr>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-6 col-md-2" id="rightPanel">
+                        <h2 class="page-header">Online</h2>
+                        <table style="width:100%; text-align: center;" id="tableOnline" >
+                            </tbody>
+                            <tr>
+                                <td><img src="/pic-default" id="userOnlineIMG"/></td>
+                                <td><a href="#" class="w3-left" onclick="document.getElementById('id01').style.display = 'block'">guest</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="/pic-default" id="userOnlineIMG"/></td>
+                                <td><a href="#" class="w3-left" onclick="document.getElementById('id01').style.display = 'block'">guest</a></td>
+                            </tr>
+                            <tr>
+                                <td><img src="/pic-default" id="userOnlineIMG"/></td>
+                                <td><a href="#" class="w3-left" onclick="document.getElementById('id01').style.display = 'block'">guest</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h2 class="page-header">Offline</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--model chat-->
+        <div class="w3-container">
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content w3-animate-zoom w3-card-8">
+                    <header class="w3-container w3-Lightgray"> 
+                        <span onclick="document.getElementById('id01').style.display = 'none'" 
+                              class="w3-closebtn">&times;</span>
+                        <h2>chat header</h2>
+                    </header>
+                    <div class="w3-container" >
+                        <ul id="messages"></ul>
+                        <form action="" id="frmMsg">
+                            <ul class="menubar-chat">
+                                <li>
+                                    <a href="#">
+                                        file
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">picture</a>
+                                </li>
+                                <li>
+                                    <a href="#">email</a>
+                                </li>
+                                <li>
+                                    <a href="#">xxxx</a>
+                                </li>
+                            </ul>
+                            <input type="text" id="m" autocomplete="off" autofocus="true" placeholder="กรุณาเขียนข้อความ.." />
+                            <button type="submit">
+                            <img class="logo" src="/public/image/">
+                            </button>
+                        </form>
+                    </div>
+                    <footer class="w3-container w3-Lightgray" style="margin-top: 1%">
+                        <p class="w3-center">Modal Footer Yeah..!!!!</p>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script src="/js"></script>
+<script src="/socketJs"></script>
+
+<script type="text/javascript">
+    $("button").click(function () {
+        var msg = $("#m").val();
+        console.log("Test : "+msg);
+        $("#messages").animate({scrollTop:$("#messages")[0].scrollHeight},100);
+    });
+    // script socket.io
+    var socket = io();
+  $('form').submit(function(){
+    socket.emit('chat message', $('#m').val());
+    $('#m').val('');
+    return false;
+  });
+  socket.on('chat message', function(msg){
+    $('#messages').append($('<li autofocus>').text(msg));
+  });
+
+</script>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css">
+        <link rel="stylesheet" href="style">
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    </head>
+    <style type="text/css">
+    	#text-profile{
+    		font-size: 25pt;
+    	}
+    	#submit-form{
+			margin-left: -10%;
+    	}
+    	 /*Device Phone Desktop*/
+    	 @media screen and (min-width: 320px) {
+		    body {
+		        background-color: lightgreen;
+		    }
+		}
+            @media screen and (min-width:360px) and (min-width:480px) and (min-width:640px) and (min-width:720px) and (min-width:750px) and (min-width:1024px) and (min-width:1242px) and (min-width:1536px)  {
+                .container{
+                    width: 100%;
+                }
+            }
+            @media screen and (min-width:800px) and (min-width:1280px) and (min-width:1440) and (min-width:1600px) and (min-width:1680px){
+                .container{
+                    width: 100%;
+                }
+            }
+            @media screen and(min-width:1920px){
+                .container{
+                    width: 100%;
+                }
+            }
+            /* For desktop: */
+            .col-1 {width: 8.33%;}
+            .col-2 {width: 16.66%;}
+            .col-3 {width: 25%;}
+            .col-4 {width: 33.33%;}
+            .col-5 {width: 41.66%;}
+            .col-6 {width: 50%;}
+            .col-7 {width: 58.33%;}
+            .col-8 {width: 66.66%;}
+            .col-9 {width: 75%;}
+            .col-10 {width: 83.33%;}
+            .col-11 {width: 91.66%;}
+            .col-12 {width: 100%;}
+            @media only screen and (max-width: 768px) {
+                /* For mobile phones: */
+                [class*="col-"] {
+                    width: 100%;
+                }
+            }
+            /*Device Phone And Desktop*/
+    </style>
+    <body>
+    <div class="container">
+        <div class="row">
+            <!-- <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12"> -->
+              <form class="form-horizontal" role="form" action="/home" runat="server">
+                <div class="well well-sm">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-3 col-md-3 col-lg-3" id="img-up">
+                       		 <br>
+                            <img src="/pic-default" id="output" alt="your image" class="img-Thumbnail img-responsive" width="180" height="180" style="margin-left: 2.0cm "/>
+                            <br><br>
+                            <input type="file" style="margin-left: 2.0cm"
+                            accept="image/*" onchange="loadFile(event)"/>
+                        </div>
+                        <div class="col-sm-7 col-md-7 col-xs-7 col-lg-7 col-sm-offset-1 col-md-offset-1 col-xs-offset-1 col-lg-offset-1">
+                            <div class="row">
+                                <!-- <fieldset> -->
+                                    <legend id="text-profile" class="w3-animate-top">Setting Profile</legend>
+                                        <div class="form-group">
+                                            <div class="col-sm-4 col-md-4 col-xs-4 col-lg-4 col-sm-offset-1 col-md-offset-1 col-xs-offset-1 col-lg-offset-1">
+                                                <input type="text" placeholder="First Name" class="form-control active">
+                                            </div>
+                                            <div class="col-sm-4 col-md-4 col-xs-4 col-lg-4">
+                                                <input type="text" placeholder="Last Name" class="form-control active">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-4 col-md-4 col-xs-4 col-lg-4 col-sm-offset-1 col-md-offset-1 col-xs-offset-1 col-lg-offset-1">
+                                                <input type="text" placeholder="Number Phone" class="form-control active input_field" maxlength="10">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        	<div class="col-sm-8 col-lg-8 col-md-8 col-xs-8 col-sm-offset-1 col-md-offset-1 col-xs-offset-1 col-lg-offset-1">
+			    								<input type="email" name="email" id="email" class="form-control active" placeholder="Email Address">
+			    							</div>
+			    						</div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-sm-offset-2 col-sm-12 col-md-12 col-xs-12 col-lg-12">
+	                                            <div class="text-center">
+	                                                <button type="submit" class="w3-amber w3-btn w3-round-large w3-large w3-hover-green" id="submit-form">Submit
+	                                                </button>
+	                                            </div>
+                                            </div>
+                                        </div>
+                                <!-- </fieldset> -->
+                            </div>
+                            <!-- /.row inside -->
+                        </div>
+                    </div>
+                    <!-- end row outside -->
+                <!-- </div> -->
+                <!-- end well -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end container -->
+    </body>
+<script src="/js"></script>
+    <script type="text/javascript">
+		var loadFile = function(event) {
+    	var output = document.getElementById('output');
+	    output.src = URL.createObjectURL(event.target.files[0]);
+	  };
+    </script>
+</html>

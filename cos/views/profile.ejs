@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css">
+        <link rel="stylesheet" href="style">
+        <link rel="stylesheet" href="metroCss">
+        <link rel="stylesheet" href="metroIcon">
+        <link rel="stylesheet" href="loadingPic">
+        <script scripts="metroJs"></script>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <style type="text/css">
+    .loading_{
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 100000;
+        position: fixed;
+        padding-top: 20%;
+        text-align:center;
+    }
+        #text-profile{
+            font-size: 25pt;
+        }
+        #submit-form{
+            margin-left: -10%;
+        }
+            @media screen and (min-width:360px) and (min-width:480px) and (min-width:640px) and (min-width:720px) and (min-width:750px) and (min-width:1024px) and (min-width:1242px) and (min-width:1536px)  {
+                .container{
+                    width: 100%;
+                }
+            }
+            @media screen and (min-width:800px) and (min-width:1280px) and (min-width:1440) and (min-width:1600px) and (min-width:1680px){
+                .container{
+                    width: 100%;
+                }
+            }
+            @media screen and(min-width:1920px){
+                .container{
+                    width: 100%;
+                }
+            }
+            /* For desktop: */
+            .col-1 {width: 8.33%;}
+            .col-2 {width: 16.66%;}
+            .col-3 {width: 25%;}
+            .col-4 {width: 33.33%;}
+            .col-5 {width: 41.66%;}
+            .col-6 {width: 50%;}
+            .col-7 {width: 58.33%;}
+            .col-8 {width: 66.66%;}
+            .col-9 {width: 75%;}
+            .col-10 {width: 83.33%;}
+            .col-11 {width: 91.66%;}
+            .col-12 {width: 100%;}
+            @media only screen and (max-width: 768px) {
+                /* For mobile phones: */
+                [class*="col-"] {
+                    width: 100%;
+                }
+            }
+            .btnSend{
+                margin-top: 5%;
+                margin-left: 30%;
+            }
+            .headersys{
+                margin-top: 10%;
+                text-align: center;
+                border-bottom: 1px solid #ccc;
+            }
+            .pp {
+                text-indent: 50px;
+                text-align: center;
+                letter-spacing: 3px;
+            }
+            .img-de{
+                box-shadow: 0 0 20px  #999;
+            }
+            .head-line{
+                /*#59cde2*/
+                border-top:5px solid orange;
+            }
+            .btnSend:hover{
+                cursor: pointer;
+                color: #ffffff;
+                border:none;
+                background-color: #59cde2;
+                box-shadow: 0 0 50px #59cde2;
+            }
+    </style>
+    <body>
+    <div class="head-line"></div>
+    <div class="loading_">
+        <h4 style="padding:0;margin:0;color:grey;">Please wait..</h4>
+        <img src="/loadingPic" style="width:200px"/>
+    </div>
+    <div class="container">
+        <div class="row headersys">
+            <h1>
+                <span style="color:#59cde2;">Communication</span> 
+                <span style="color:#e3c800;">office system</span>
+                <i class="fa fa-bullhorn" aria-hidden="true"></i>
+            </h1>
+            <p class="pp">ระบบสื่อสารภายในองค์กร</p>
+        </div>
+        <div class="row">
+              <form class="form-horizontal" role="form" action="/editProfile" method="post" runat="server" enctype="multipart/form-data">
+                <div class="well-sm">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-3 col-md-3 col-lg-3" id="img-up">
+                             <br>
+                             <% if(user.local.picture != null){ %>
+                                    <img src="/userpic" id="output" alt="your image" class="img-de img-circle img-responsive" width="180" height="180" style="     margin-left: 2.0cm "/>
+                                     <input type="file" name="picture" style="margin-left: 2.0cm"
+                             onchange="loadFile(event)" accept=".png,.jpg" />
+                                <% }else{ %>
+                                    <img src="/pic-default" id="output" alt="your image" class="img-de img-circle img-responsive" width="180" height="180" style="margin-left: 2.0cm "/>
+                                     <input type="file" name="picture" style="margin-left: 2.0cm"
+                             onchange="loadFile(event)" accept=".png,.jpg" required="" />
+                                <%} %>
+                            <br><br>
+                           
+                        </div>
+                        <div class="col-sm-7 col-md-7 col-xs-7 col-lg-7 col-sm-offset-1 col-md-offset-1 col-xs-offset-1 col-lg-offset-1">
+                            <div class="row">
+                                <!-- <fieldset> -->
+                                    <h3 id="text-profile" class="w3-animate-top">
+                                    <i class="fa fa-wrench">&nbsp;&nbsp;Edit Profile</i></h3>
+                                    <input type="hidden" name="_id" value="<%= user._id %>">
+                                        <div class="input-control modern text iconic">
+                                            <input type="text" name="fname" required placeholder="First name" value="<%= user.local.fname %>">
+                                            <span class="label">You First Name</span>
+                                            <span class="informer">Please enter you first name</span>
+                                         </div>
+                                         <div class="input-control modern text iconic">
+                                            <input type="text" name="lname" required placeholder="Last Name" value="<%= user.local.lname %>">
+                                            <span class="label">You Last Name</span>
+                                            <span class="informer">Please enter you Last Name</span>
+                                         </div>
+                                         <div class="input-control modern text iconic">
+                                            <input type="email" name="email" required placeholder="Email" value="<%= user.local.email %>">
+                                            <span class="label">You Email</span>
+                                            <span class="informer">Please enter you email</span>
+                                         </div>
+                                         <div class="input-control modern text iconic">
+                                            <input type="tel" name="tel" required placeholder="086-123-4567" value="<%= user.local.tel %>">
+                                            <span class="label">Number phone</span>
+                                            <span class="informer">enter number phone</span>
+                                         </div>
+                                         <div class="input-control modern text iconic">
+                                            <input type="text" name="position" required placeholder="position" value="<%= user.local.position %>">
+                                            <span class="label">Position</span>
+                                            <span class="informer">Please enter Position</span>
+                                         </div>
+                                         <div>
+                                            <button type="submit" class="btnSend button text-shadow">
+                                            <i class="text-shadow loading-pulse fa fa-check" aria-hidden="true"></i>
+                                            Confirm..</button>
+                                         </div>
+                                <!-- </fieldset> -->
+                            </div>
+                            <!-- /.row inside -->
+                        </div>
+    <!-- end container -->
+    </body>
+    <script src="/js"></script>
+        <script>
+        $(document).ready(function() {
+            setTimeout(function(){
+                      $('.loading_').fadeOut(1000);
+                }, 1500);
+        });
+        var loadFile = function(event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+      };
+    </script>
+</html>

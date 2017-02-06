@@ -1,0 +1,110 @@
+<!-- views/index.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css">
+        <link rel="stylesheet" href="style">
+        <link rel="stylesheet" href="metroCss">
+        <link rel="stylesheet" href="metroIcon">
+        <link rel="stylesheet" href="loadingPic">
+        <link rel="stylesheet" href="font-cos">
+        <link rel="stylesheet" href="cos">
+        <link rel="stylesheet" href="bg">
+        <script scripts="metroJs"></script>
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> 
+    <style>
+    body{
+        background-image: url('/bg');
+        background-repeat: no-repeat;
+        width: auto;
+        }
+        .loading_{
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 100000;
+        position: fixed;
+        padding-top: 17%;
+        text-align:center;
+        }
+      .frm-block{
+        position: relative;
+        margin: 7% 0 0 0%;
+      }
+      #p1{
+        font-family: "Lucida Console", monospace;
+        color: #bab3b2;
+        letter-spacing: 3px;
+      }
+      #h-line{
+        border: none;
+        /*border-bottom: 1px solid #2eb7ed;*/
+      }
+      .fa{
+        margin-top: 10%;
+      }
+      .btnSend:hover{
+                cursor: pointer;
+                color: #ffffff;
+                border:none;
+                background-color: #59cde2;
+                box-shadow: 0 0 50px #59cde2;
+            }
+        .head-line{
+               /*#59cde2*/
+              border-top:5px solid orange;
+        }
+        .font-cos{
+            width: 30%;
+        }
+        .fa-lock{
+            color: #fff;
+        }
+        .cos-txt{
+            width: 25%;
+            margin-top: 10%;
+        }
+        .ft-cos{
+            margin-top: -13%;
+        }
+    </style>
+</head>
+<body>
+<div class="head-line"></div>
+<div class="loading_">
+        <h4 style="padding:0;margin:0;color:grey;">Please wait..</h4>
+        <img src="/loadingPic" style="width:200px"/>
+    </div>
+<div class="w3-container">
+    <div class="frm-block text-center w3-animate-zoom">
+        <div>
+            <img src="/cos" alt="font-cos" class="cos-txt">
+        </div>
+        <h2 class="ft-cos">
+            <span class="fa fa-lock"></span>
+            <img src="/font-cos" alt="font-cos" class="font-cos">
+        </h2>
+        <p id="p1">Login or Register with:</p>
+        <div id="h-line"></div>
+        <br>
+        <a href="/login" class="btn btn-default btnSend button text-shadow loading-pulse">
+            <span class="fa fa-user"></span> Local Login
+        </a>
+        <a href="/signup" class="btn btn-default btnSend button text-shadow loading-pulse">
+            <span class="fa fa-user"></span> Local Signup
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script src="/js"></script>
+<script>
+    $(document).ready(function() {
+            setTimeout(function(){
+                      $('.loading_').fadeOut(1000);
+                }, 1500);
+        });
+</script>

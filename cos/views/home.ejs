@@ -1,0 +1,486 @@
+<html>
+<head>
+    <title>PDB COS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="css">
+    <link rel="stylesheet" href="font-icon">
+    <link rel="stylesheet" href="metroCss">
+    <script scripts="metroJs"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    .container {
+        width: 100%;
+        height: 100%;
+    }
+
+    #rowBG {
+        height: 100%;
+    }
+
+    #leftPanel {
+        height: 100%;
+    }
+
+    #rightPanel {
+        height: 100%;
+    }
+
+    #middlePanel {
+        height: 100%;
+    }
+
+    #picProfile {
+        width: 140px;
+        height: 140px;
+    }
+
+    #rowHeadder {
+        margin-top: 3%;
+        margin-bottom: 3%;
+    }
+
+    #tableFile {
+        color: lightsteelblue;
+        margin-top: 200px;
+    }
+    #tableOnline {
+        color: lightsteelblue;
+        height: 70px;
+    }
+
+    #userOnlineIMG {
+        width: 25px;
+        height: auto;
+    }
+
+    .icon-online {
+        position: relative;
+        margin-top: -2%;
+        margin-left: 10%;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font: 13px Helvetica, Arial;
+    }
+
+    form {
+        border: 1px solid #ccc;
+        padding: 3px;
+        position: relative;
+        width: 100%;
+    }
+
+    form input {
+        border: 0;
+        padding: 10px;
+        width: 90%;
+        margin-right: .5%;
+    }
+
+    form button {
+        width: 9%;
+        background: rgb(130, 224, 255);
+        border: none;
+        padding: 10px;
+    }
+    a:hover{
+        color: #3333FF;
+    }
+
+    #messages {
+        height: 250px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow-y: overlay;
+    }
+
+    #messages > li:last-child, li:focus {
+        color: red;
+    }
+
+    #messages li {
+        padding: 5px 10px;
+    }
+
+    #messages li:nth-child(odd) {
+        background: #eee;
+    }
+
+    .w3-modal-content {
+        top: 1%;
+    }
+
+    .menubar-chat > li {
+        list-style: none;
+        float: left;
+        padding: 7px 10px 20px 10px;
+        overflow: none;
+    }
+
+    li:hover {
+        cursor: pointer;
+    }
+
+    input[type=text]:focus {
+        border: 1 pz solid #1a1a1a;
+    }
+
+    #frmMsg {
+        border: none;
+    }
+
+    /* For desktop: */
+    .col-1 {
+        width: 8.33%;
+    }
+
+    .col-2 {
+        width: 16.66%;
+    }
+
+    .col-3 {
+        width: 25%;
+    }
+
+    .col-4 {
+        width: 33.33%;
+    }
+
+    .col-5 {
+        width: 41.66%;
+    }
+
+    .col-6 {
+        width: 50%;
+    }
+
+    .col-7 {
+        width: 58.33%;
+    }
+
+    .col-8 {
+        width: 66.66%;
+    }
+
+    .col-9 {
+        width: 75%;
+    }
+
+    .col-10 {
+        width: 83.33%;
+    }
+
+    .col-11 {
+        width: 91.66%;
+    }
+
+    .col-12 {
+        width: auto%;
+    }
+
+    @media only screen and (max-width: 320px) {
+        /* For mobile i phone 5  */
+        .container {
+            width: auto;
+        }
+
+        [class*="col-"] {
+            width: auto;
+        }
+    }
+
+    @media only screen and (max-width: 360px) {
+        /* For mobile Galaxy s5 */
+        .container {
+            width: auto;
+        }
+
+        [class*="col-"] {
+            width: auto;
+        }
+    }
+
+    @media only screen and (max-width: 412px) {
+        /* For mobile nexus 5x and 6p */
+        .container {
+            width: auto;
+        }
+
+        [class*="col-"] {
+            width: auto;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        /* For IPad */
+        .container {
+            width: auto;
+            padding: 0;
+        }
+
+        [class*="col-"] {
+            width: auto;
+        }
+    }
+
+    @media only screen and (max-width: 800px) {
+        /* For mobile phones: */
+        .container {
+            width: auto;
+            padding: 0;
+        }
+
+        [class*="col-"] {
+            width: auto;
+        }
+    }
+
+    @media only screen and (max-width: 1024px) {
+        /* For IPad Pro */
+        .container {
+            width: auto;
+            margin-top: 0%;
+        }
+
+        [class*="col-"] {
+            width: auto;
+        }
+    }
+
+    /* end Device Phone And Desktop*/
+    .headersys {
+        margin-top: 5%;
+        text-align: center;
+        /*border-bottom: 1px solid #ccc;*/
+    }
+</style>
+<body>
+<div class="container">
+    <div class="row" id="rowHeadder">
+        <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+            <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                <div class="row">
+                    <div class="w3-center">
+                        <img src="/uploads/<%= user.local.picture %>" alt="picture" id="picProfile" class="img-circle"/>
+                    </div>
+                    <br><br>
+                    <div class="w3-animate-bottom w3-center">
+                        <input type="hidden" id="user_id" value="<%= user._id %>">
+                        <a href="/profileUpdate"><%= user.local.fname %></a><br>
+                        <a href="/logout">Log-out</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row headersys">
+                <h1>
+                    <span style="color:#59cde2;">Communication</span>
+                    <span style="color:#e3c800;">office system</span>
+                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                </h1>
+                <p class="pp">ระบบสื่อสารภายในองค์กร</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row" id="rowBG">
+        <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel">
+                <h2 class="page-header">Group</h2>
+                <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddfffff" class="table-responsive">
+                    <tr>
+                        <td>
+                            <a href="#" class="w3-left"
+                               onclick="document.getElementById('id01').style.display = 'block'">Group name</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" class="w3-left"
+                               onclick="document.getElementById('id01').style.display = 'block'">Group name</a></td>
+                    </tr>
+                </table>
+            </div>
+            <!-- detail file upload user -->
+            <div class="col-xs-8 col-md-8 col-sm-8 col-lg-8" id="middlePanel">
+                <h1 class="page-header topheader">File Upload</h1>
+                <table style="width:100%; text-align: center;" id="tableFile" class="table table-striped table-hover">
+                    <thead>
+                    <th style="text-align: center;">File Name</th>
+                    <th style="text-align: center;">From</th>
+                    <th style="text-align: center;">Date Time</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><a>core5</a></td>
+                        <td>noom</td>
+                        <td>30-02-2017 15:11</td>
+                    </tr>
+                    <tr>
+                        <td><a>noom</a></td>
+                        <td>noom</td>
+                        <td>30-02-2017 15:11</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- detail file upload user -->
+            <!-- status online -->
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel">
+                <h2 class="page-header">Online</h2>
+                <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
+                <% for (item in userAll) { %>
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
+                        <td>
+                              <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                        <% if(userAll[item].local.picture != null){%>
+                              <img src="/uploads/<%= userAll[item].local.picture %>" id="userOnlineIMG"/>
+                        <%}else{%>
+                              <img src="/pic-default" id="userOnlineIMG"/>
+                        <%}%>
+                        </td>
+                        <td>
+                            <a href="#" class="w3-left">
+                                <%= userAll[item].local.fname %>
+                            </a>
+                        </td>
+                    </tr>
+                <% } %>
+                </table>
+                <!-- <h2 class="page-header">Offline</h2> -->
+                <!-- end status online -->
+                <!-- status offline -->
+                <div id="rightPanel">
+                    <h2 class="page-header">Offline</h2>
+                    <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddffff">
+                        <tr>
+                            <td><img src="/pic-default" id="userOnlineIMG"/><img src="/imageoffline" alt="" class="icon-online" width="17" height="auto">
+                            </td>
+                            <td>
+                                <a href="#" class="w3-left"
+                                   onclick="document.getElementById('id01').style.display = 'block'"><font color="#BEBEBE">guest</></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="/pic-default" id="userOnlineIMG"/><img src="/imageoffline" alt="" class="icon-online" width="17" height="auto"></td>
+                            <td><a href="#" class="w3-left"
+                                   onclick="document.getElementById('id01').style.display = 'block'"><font color="#BEBEBE">guest</></a></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- end status offline -->
+            </div>
+        </div>
+    </div>
+</div>
+<!--model chat-->
+<div class="w3-container">
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content w3-animate-zoom w3-card-8">
+            <header class="w3-container w3-Lightgray">
+                        <span onclick="closeModel();"
+                              class="w3-closebtn">&times;</span>
+                <h2 id="model-header"></h2>
+            </header>
+            <div class="w3-container">
+                <ul id="messages"></ul>
+                <form action="" id="frmMsg">
+                    <ul class="menubar-chat">
+                        <li>
+                            <input type="file" name="file_upload[]" id="file_upload" multiple="">
+                        </li>
+                        <li>
+                            <a href="#">picture</a>
+                        </li>
+                        <li>
+                            <a href="#">email</a>
+                        </li>
+                        <li>
+                            <a href="#">xxxx</a>
+                        </li>
+                    </ul>
+                    <input type="text" id="m" autocomplete="off" autofocus="true" placeholder="กรุณาเขียนข้อความ.."
+                           required/>
+                           <input type="hidden" id="userRe" >
+                    <button type="submit">
+                        <img class="logo" src="/public/image/">
+                    </button>
+                </form>
+            </div>
+            <div id="output">
+                <ul></ul>
+            </div>
+            <footer class="w3-container w3-Lightgray" style="margin-top: 1%">
+                <p class="w3-center">Modal Footer Yeah..!!!!</p>
+            </footer>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script src="/js"></script>
+<script src="/dataTables-js"></script>
+<!-- <script src="/jqueryjs"></script>
+<script src="/dataTables-bs-js"></script>
+<script src="/bootstrap-js"></script> -->
+<script src="/socketJs"></script>
+
+<script type="text/javascript">
+
+        function getModel(userSH,id){
+             
+            document.getElementById('id01').style.display = 'block';
+            document.getElementById('model-header').innerHTML = userSH;
+            document.getElementById('userRe').value = id;
+        }
+        function closeModel(){
+            $("#output ul").empty();
+            document.getElementById('id01').style.display = 'none';
+        }
+
+
+    $("button").click(function () {
+        var msg = $("#m").val();
+        console.log("Test : " + msg);
+        $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+    });
+    // script socket.io
+    var socket = io();
+    $('form').submit(function () {
+    var msg = $('#m').val();
+    var userSent =  $('#user_id').val();
+    var userRe = $('#userRe').val();
+
+        socket.emit('chat message',userSent,msg,userRe);
+        $('#m').val('');
+        return false;
+    });
+    socket.on('chat message', function (msg) {
+        $('#messages').append($('<li autofocus>').text(msg));
+    });
+    // End script socket.io
+
+    // Drag and Drop files
+    $("input#ufile").change(function () {
+        $("#output ul").empty();
+        var ele = document.getElementById($(this).attr('id'));
+        var result = ele.files;
+        for (var x = 0; x < result.length; x++) {
+            var fle = result[x];
+            $("#output ul").append("<li>" + fle.name + "(TYPE: " + fle.type + ", SIZE: " + fle.size + ")</li>");
+        }
+    });
+    // dataTable
+    $(document).ready(function() {
+    $('#tableFile').dataTable();
+    } );
+</script>
