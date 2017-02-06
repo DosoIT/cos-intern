@@ -259,9 +259,25 @@
 
     /* end Device Phone And Desktop*/
     .headersys {
-        margin-top: 5%;
+        margin-top: -5%;
         text-align: center;
         /*border-bottom: 1px solid #ccc;*/
+    }
+    .ft-coc{
+        width: 50%;
+        margin-top: -3%;
+    }
+    .bullhorn{
+        position: absolute;
+         margin-top: -2%;
+    }
+    .pp{
+        font-size: 20pt;
+        margin-top: 1%;
+    }
+    .ft-cos-white{
+        margin-left: 0%;
+        width: 20%;
     }
 </style>
 <body>
@@ -283,9 +299,13 @@
             </div>
             <div class="row headersys">
                 <h1>
-                    <span style="color:#59cde2;">Communication</span>
-                    <span style="color:#e3c800;">office system</span>
-                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                    <div>
+                        <img src="/image/cos-bg-white.png" alt="font-cos-white" class="ft-cos-white">
+                    </div>
+                    <div>
+                        <img src="/image/font-cos.png" alt="font-cos" class="ft-coc">
+                        <i class="fa fa-bullhorn bullhorn" aria-hidden="true"></i>
+                    </div>
                 </h1>
                 <p class="pp">ระบบสื่อสารภายในองค์กร</p>
             </div>
@@ -390,13 +410,14 @@
     <div id="id01" class="w3-modal">
         <div class="w3-modal-content w3-animate-zoom w3-card-8">
             <header class="w3-container w3-Lightgray">
-                        <span onclick="closeModel();"
-                              class="w3-closebtn">&times;</span>
+                        <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                 <h2 id="model-header"></h2>
             </header>
             <div class="w3-container">
-                <ul id="messages"></ul>
                 <form action="" id="frmMsg">
+                    <ul id="messages">
+                        <div id="div1"  ondragstart="dragstart_handler(event);"></div>
+                    </ul>
                     <ul class="menubar-chat">
                         <li>
                             <!-- <input type="file" name="file_upload[]" id="file_upload" multiple=""> -->
@@ -440,9 +461,7 @@
 <script src="/socketJs"></script>
 
 <script type="text/javascript">
-
         function getModel(userSH,id){
-             
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
             document.getElementById('userRe').value = id;
@@ -451,7 +470,6 @@
             $("#output ul").empty();
             document.getElementById('id01').style.display = 'none';
         }
-
 
     $("button").click(function () {
         var msg = $("#m").val();
@@ -472,6 +490,12 @@
     socket.on('chat message', function (msg) {
         $('#messages').append($('<li autofocus>').text(msg));
     });
+
+    socket.emit('userID',$('#user_id').val());
+
+   
+    // socket.emit('disconnect','Noom attapon');
+    
     // End script socket.io
 
     // Drag and Drop files
@@ -488,4 +512,12 @@
     $(document).ready(function() {
     $('#tableFile').dataTable();
     } );
+
+
+
+  window.unload = confirmExit;
+  function confirmExit()
+  {
+    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
+  }
 </script>

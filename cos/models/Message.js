@@ -5,7 +5,9 @@ module.exports = {
     messageInsert,
     updateProfile,
     getUserAll,
-    userLogout
+    userLogout,
+  
+    
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -76,17 +78,12 @@ function getUserByID(id,callback) {
     }
 }
 
-
-
-
 function getMessageByuserSent(user) {
     var message = db.collection('message');
     message.find({user_sent: user}).toArray(function (err, items) {
         console.log('getMessageByuserSent');
     });
 }
-
-
 
 //Group ===========================
 function createGroup(Gname, user) {
@@ -150,9 +147,6 @@ function getGroupByID(gid) {
     });
 }
 
-
-
-
 //User Group =====================================
 
 function delUserGroup(gid, user) {
@@ -181,7 +175,6 @@ function getUserGroupByuser(user) {
 //Message Group ==============================================
 function insertMessageroup(msg, gid) {
     var msg = db.collection('group_message');
-
     var data = {
         'g_message': msg,
         'g_id': gid,
@@ -217,4 +210,8 @@ function userLogout(id){
                 }
             }
         );
+
+      console.log('User Logout Success....');
 }
+
+

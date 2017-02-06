@@ -8,10 +8,9 @@ var storage = multer.diskStorage({
   destination: './uploads/',
   filename: function (req, file, cb,raw) {
      filenames="Avatar"+(Math.floor((Math.random() * 1000) + 1))+ path.extname(file.originalname);
-      cb(null,filenames)
+            cb(null,filenames)
         }
     }
-
 )
 
 var upload = multer({ storage: storage })
@@ -151,7 +150,6 @@ var upload = multer({ storage: storage })
     app.get('/logout', function(req, res) {
         messages.userLogout(req.user._id);
         req.session.destroy();
-        // req.logout();
         res.redirect('/');
     });
 
