@@ -44,9 +44,11 @@ console.log('=====================================================');
 console.log('|>>>> >>>>> Node.js running on port ' + port+' <<<<< <<<<<|');
 console.log('=====================================================');
 io.on('connection', function (socket) {
-    	console.log('a user connected server');
+        console.log('=====================================================');
+    	console.log('a user connected server : ' ,socket.connected);
+        console.log('=====================================================');
     socket.on('disconnect', function () {
-        console.log('user disconnected server');
+        console.log('user disconnected server : ',socket.connected);
     });
 });
 
@@ -55,7 +57,6 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('hi');
 });
 io.on('connection', function (socket) {
-	
     socket.on('chat message', function (userSent,msg, userRecei) {
         io.emit('chat message', msg);
    		message.messageInsert(userSent,msg,userRecei);

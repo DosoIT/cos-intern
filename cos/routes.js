@@ -149,6 +149,7 @@ var upload = multer({ storage: storage })
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function(req, res) {
+        messages.userLogout(req.user._id);
         req.session.destroy();
         // req.logout();
         res.redirect('/');

@@ -4,7 +4,8 @@ var objId = require('mongodb').ObjectID;
 module.exports = {
     messageInsert,
     updateProfile,
-    getUserAll
+    getUserAll,
+    userLogout
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -208,5 +209,12 @@ function updateProfile(data){
             }});
          return false;
     }
-
-
+function userLogout(id){
+    var users = db.collection('users');
+         users.update({"_id":new objId(id)},{
+            $set:{
+                "local.st":false
+                }
+            }
+        );
+}
