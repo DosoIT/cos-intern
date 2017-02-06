@@ -85,7 +85,6 @@ var upload = multer({ storage: storage })
     app.get('/imageoffline', function(req, res){
         res.sendFile(__dirname + '/public/image/icon-offline.png');
     });
-    
 
     app.get('/socketJs',function(req,res) {
         res.sendFile(__dirname + '/public/js/socket.io.js');
@@ -128,12 +127,10 @@ var upload = multer({ storage: storage })
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    // 
     app.get('/userpic', function(req, res){
                res.sendFile(__dirname + '/uploads/'+req.user.local.picture);
     });
      app.get('/profileUpdate', isLoggedIn, function(req, res) {
-         
             res.render('./profile.ejs', {
                 user : req.user // get the user out of session and pass to template
             });
