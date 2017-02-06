@@ -5,11 +5,8 @@ module.exports = {
     messageInsert,
     updateProfile,
     getUserAll,
-<<<<<<< HEAD
-    createGroup
-=======
+    createGroup,
     userLogout
->>>>>>> origin/master
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -80,17 +77,12 @@ function getUserByID(id, callback) {
     }
 }
 
-
-
-
 function getMessageByuserSent(user) {
     var message = db.collection('message');
     message.find({user_sent: user}).toArray(function (err, items) {
         console.log('getMessageByuserSent');
     });
 }
-
-
 
 //Group ===========================
 function createGroup(Gname, user) {
@@ -166,9 +158,6 @@ function getGroupByID(user_id, callback) {
     });
 }
 
-
-
-
 //User Group =====================================
 
 function delUserGroup(gid, user) {
@@ -215,7 +204,6 @@ function insertMessageroup(msg, gid) {
 }
 function updateProfile(data) {
     var users = db.collection('users');
-<<<<<<< HEAD
     users.update({"_id": new objId(data._id)}, {$set: {
             "local.fname": data.fname,
             "local.lname": data.lname,
@@ -227,18 +215,6 @@ function updateProfile(data) {
     return false;
 }
 
-
-=======
-         users.update({"_id":new objId(data._id)},{$set:{
-                "local.fname":data.fname,
-                "local.lname":data.lname,
-                "local.tel":data.tel,
-                "local.position":data.position,
-                "local.email":data.email,
-                "local.picture":data.picture,
-            }});
-         return false;
-    }
 function userLogout(id){
     var users = db.collection('users');
          users.update({"_id":new objId(id)},{
@@ -248,4 +224,3 @@ function userLogout(id){
             }
         );
 }
->>>>>>> origin/master
