@@ -128,6 +128,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
+<<<<<<< HEAD
     // 
     app.get('/userpic', function (req, res) {
         res.sendFile(__dirname + '/uploads/' + req.user.local.picture);
@@ -137,6 +138,15 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
         res.render('./profile.ejs', {
             user: req.user // get the user out of session and pass to template
         });
+=======
+    app.get('/userpic', function(req, res){
+               res.sendFile(__dirname + '/uploads/'+req.user.local.picture);
+    });
+     app.get('/profileUpdate', isLoggedIn, function(req, res) {
+            res.render('./profile.ejs', {
+                user : req.user // get the user out of session and pass to template
+            });
+>>>>>>> origin/master
     });
     app.get('/profile', isLoggedIn, function (req, res) {
         if (req.user.local.fname == null) {
@@ -151,7 +161,12 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     // =====================================
     // LOGOUT ==============================
     // =====================================
+<<<<<<< HEAD
     app.get('/logout', function (req, res) {
+=======
+    app.get('/logout', function(req, res) {
+        messages.userLogout(req.user._id);
+>>>>>>> origin/master
         req.session.destroy();
         // req.logout();
         res.redirect('/');

@@ -14,6 +14,7 @@ var userSchema = mongoose.Schema({
         tel     	: String,
         position    : String,
         picture     : String,
+        st          : Boolean,
     }
 
 });

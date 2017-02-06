@@ -74,6 +74,7 @@ module.exports = function(passport) {
                 newUser.local.tel = null;
                 newUser.local.position = null;
                 newUser.local.picture = null;
+                newUser.local.st = true;
                 // save the user
                 newUser.save(function(err) {
                     if (err)
@@ -105,6 +106,18 @@ module.exports = function(passport) {
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
+            if(!err){
+                User.update({'local.email':email},{
+                    $set:{
+                        "local.st":true
+                        }
+                    },
+                    function (err,item) {
+                        console.log(item);
+                    }
+                )
+                    console.log("update status user complete..");
+            }
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);

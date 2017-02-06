@@ -53,7 +53,7 @@
 
     #userOnlineIMG {
         width: 25px;
-        height: auto;
+        height: 25px;
     }
 
     .icon-online {
@@ -337,12 +337,12 @@
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel">
                 <h2 class="page-header">Online</h2>
                 <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
-                <% for (item in userAll) { %>
+                <% for (item in userAll) { if(userAll[item].local.st==true){%>
                      <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
                         <td>
                               <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
                         <% if(userAll[item].local.picture != null){%>
-                              <img src="/uploads/<%= userAll[item].local.picture %>" id="userOnlineIMG"/>
+                              <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
                         <%}else{%>
                               <img src="/pic-default" id="userOnlineIMG"/>
                         <%}%>
@@ -353,27 +353,31 @@
                             </a>
                         </td>
                     </tr>
-                <% } %>
+                <% } } %>
                 </table>
                 <!-- <h2 class="page-header">Offline</h2> -->
                 <!-- end status online -->
                 <!-- status offline -->
                 <div id="rightPanel">
                     <h2 class="page-header">Offline</h2>
-                    <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddffff">
-                        <tr>
-                            <td><img src="/pic-default" id="userOnlineIMG"/><img src="/imageoffline" alt="" class="icon-online" width="17" height="auto">
-                            </td>
-                            <td>
-                                <a href="#" class="w3-left"
-                                   onclick="document.getElementById('id01').style.display = 'block'"><font color="#BEBEBE">guest</></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="/pic-default" id="userOnlineIMG"/><img src="/imageoffline" alt="" class="icon-online" width="17" height="auto"></td>
-                            <td><a href="#" class="w3-left"
-                                   onclick="document.getElementById('id01').style.display = 'block'"><font color="#BEBEBE">guest</></a></td>
-                        </tr>
+                    <table style="width: 100%; text-align: center;" id="tableOnline">
+                        <% for (item in userAll) { if(userAll[item].local.st==false){%>
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
+                        <td>
+                              <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
+                        <% if(userAll[item].local.picture != null){%>
+                              <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
+                        <%}else{%>
+                              <img src="/pic-default" id="userOnlineIMG"/>
+                        <%}%>
+                        </td>
+                        <td>
+                            <a href="#" class="w3-left">
+                                <%= userAll[item].local.fname %>
+                            </a>
+                        </td>
+                    </tr>
+                <% } } %>
                     </table>
                 </div>
                 <!-- end status offline -->
@@ -395,16 +399,17 @@
                 <form action="" id="frmMsg">
                     <ul class="menubar-chat">
                         <li>
-                            <input type="file" name="file_upload[]" id="file_upload" multiple="">
+                            <!-- <input type="file" name="file_upload[]" id="file_upload" multiple=""> -->
+                            <i class="fa fa-paperclip" aria-hidden="true"></i>
                         </li>
                         <li>
-                            <a href="#">picture</a>
+                            <i class="fa fa-picture-o" aria-hidden="true"></i>
                         </li>
                         <li>
-                            <a href="#">email</a>
+                            <i class="fa fa-user-plus" aria-hidden="true"></i>
                         </li>
                         <li>
-                            <a href="#">xxxx</a>
+                            <i class="fa fa-hashtag" aria-hidden="true"></i>
                         </li>
                     </ul>
                     <input type="text" id="m" autocomplete="off" autofocus="true" placeholder="กรุณาเขียนข้อความ.."

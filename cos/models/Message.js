@@ -5,7 +5,11 @@ module.exports = {
     messageInsert,
     updateProfile,
     getUserAll,
+<<<<<<< HEAD
     createGroup
+=======
+    userLogout
+>>>>>>> origin/master
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -211,6 +215,7 @@ function insertMessageroup(msg, gid) {
 }
 function updateProfile(data) {
     var users = db.collection('users');
+<<<<<<< HEAD
     users.update({"_id": new objId(data._id)}, {$set: {
             "local.fname": data.fname,
             "local.lname": data.lname,
@@ -223,3 +228,24 @@ function updateProfile(data) {
 }
 
 
+=======
+         users.update({"_id":new objId(data._id)},{$set:{
+                "local.fname":data.fname,
+                "local.lname":data.lname,
+                "local.tel":data.tel,
+                "local.position":data.position,
+                "local.email":data.email,
+                "local.picture":data.picture,
+            }});
+         return false;
+    }
+function userLogout(id){
+    var users = db.collection('users');
+         users.update({"_id":new objId(id)},{
+            $set:{
+                "local.st":false
+                }
+            }
+        );
+}
+>>>>>>> origin/master
