@@ -438,9 +438,9 @@
       <header class="w3-container">
         <span onclick="document.getElementById('model-group').style.display='none'" 
         class="w3-closebtn">&times;</span>
-            <h2>Add Name Group</h2>
+            <h2>Add Group</h2>
       </header>
-    <div class="w3-container">
+    <div class="w3-container" id="groupName">
        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -449,31 +449,74 @@
                 </div>
             </div> <!-- div row -->
         </div> <!-- div col -->
-    </div>
-              <footer class="w3-container">
+         <footer class="w3-container">
                  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
-                     <button type="submit" class="w3-btn w3-round-xlarge w3-amber">+Add</button>
+                     <button type="button" class="w3-btn w3-round-xlarge w3-amber" onclick="getUser()">+ Create</button>
                 </div>
-              </footer>
-    <div class="w3-container">
+         </footer>
+    </div>
+             
+    <div class="w3-container" id="list-user" style="display: none;">
        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
             <div class="row">
-             <label>List User</label>
+             <h3>List User</h3>
                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                  
                     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                        <label>Online</label>
-                        <% for (item in userAll) { %>
-                        <ul>
-                            <li><input type="checkbox"><%= userAll[item].local.fname %></li>
-                        </ul>
-                         <% } %>
+                        <table width="100%">
+                            <tr>
+                                <th>
+                                 <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                                    Online
+                                 </th>                              
+                            </tr>
+                           <tr>
+                            <td colspan="2" class="page-header"></td>
+                           </tr>
+                            <tr>
+                             <% for (item in userAll) { if(userAll[item].local.st==true){ %>
+                                <td>
+                                <div style="margin-top: 5%;">
+                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%;">
+                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
+                                      <%= userAll[item].local.fname %>
+                                </div>
+                                </td>                                
+                            <%}}%>
+                            </tr>
+                        </table> 
                     </div>
                     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                        <label>Offline</label>
+                        <table width="100%" style="margin-bottom: 10%;">
+                            <tr>
+                                <th>
+                                 <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
+                                Offline
+                                 </th>                      
+                            </tr>
+                           <tr>
+                            <td colspan="2" class="page-header"></td>
+                           </tr>
+                            <tr>
+                             <% for (item in userAll) { if(userAll[item].local.st==false){ %>
+                                <td>
+                                <div style="margin-top: 5%;">
+                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; ">
+                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
+                                      <%= userAll[item].local.fname %>
+                                </div>
+                                </td>                                
+                            <%}}%>
+                            </tr>
+                        </table>
                     </div>
-                </div>
             </div> <!-- div row -->
         </div> <!-- div col -->
+        <footer class="w3-container">
+                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
+                     <button type="submit" class="w3-btn w3-round-xlarge w3-green" >Start</button>
+                </div>
+         </footer>
     </div>
         </div> <!-- w3-container -->
 </div><!-- end chat group model -->
@@ -489,6 +532,11 @@
 <script src="/socketJs"></script>
 
 <script type="text/javascript">
+        function getUser(){
+                document.getElementById('groupName').style.display='none';
+                document.getElementById('list-user').style.display='block';
+        }
+
         function getModel(userSH,id){
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
