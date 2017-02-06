@@ -295,7 +295,9 @@
     <div class="row" id="rowBG">
         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel">
-                <h2 class="page-header">Group</h2>
+                <div class="w3-dropup-hover">
+                    <h2 class="page-header"><a href="#" onclick="document.getElementById('model-group').style.display='block'">Group + </a></h2>
+                </div>
                 <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddfffff" class="table-responsive">
                     <tr>
                         <td>
@@ -429,6 +431,53 @@
         </div>
     </div>
 </div>
+<!--chat group model -->
+<form action="">
+<div id="model-group" class="w3-modal">
+    <div class="w3-modal-content">
+      <header class="w3-container">
+        <span onclick="document.getElementById('model-group').style.display='none'" 
+        class="w3-closebtn">&times;</span>
+            <h2>Add Name Group</h2>
+      </header>
+    <div class="w3-container">
+       <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <label>Create Name Group</label>
+                    <input type="text" name="addGroup" class="form-control">
+                </div>
+            </div> <!-- div row -->
+        </div> <!-- div col -->
+    </div>
+              <footer class="w3-container">
+                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
+                     <button type="submit" class="w3-btn w3-round-xlarge w3-amber">+Add</button>
+                </div>
+              </footer>
+    <div class="w3-container">
+       <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+            <div class="row">
+             <label>List User</label>
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                        <label>Online</label>
+                        <% for (item in userAll) { %>
+                        <ul>
+                            <li><input type="checkbox"><%= userAll[item].local.fname %></li>
+                        </ul>
+                         <% } %>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                        <label>Offline</label>
+                    </div>
+                </div>
+            </div> <!-- div row -->
+        </div> <!-- div col -->
+    </div>
+        </div> <!-- w3-container -->
+</div><!-- end chat group model -->
+</form>
 </body>
 </html>
 
@@ -440,9 +489,7 @@
 <script src="/socketJs"></script>
 
 <script type="text/javascript">
-
         function getModel(userSH,id){
-             
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
             document.getElementById('userRe').value = id;
@@ -451,8 +498,6 @@
             $("#output ul").empty();
             document.getElementById('id01').style.display = 'none';
         }
-
-
     $("button").click(function () {
         var msg = $("#m").val();
         console.log("Test : " + msg);
@@ -488,4 +533,15 @@
     $(document).ready(function() {
     $('#tableFile').dataTable();
     } );
+     $(document).ready(function() {
+    $('#tableuser').dataTable();
+    } );
+        // mySelect name group
+    function myFunction() {
+    var x = document.getElementById("mySelect");
+     // var option = document.createElement("option");
+    var strUser = x.options[x.selectedIndex].value;
+    // option.text = strUser;
+    }
+    // End mySelect name group
 </script>
