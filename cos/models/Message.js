@@ -6,15 +6,15 @@ module.exports = {
     updateProfile,
     getUserAll,
     userLogout,
-  
-    
+    createGroup,
+    userLogout
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
 });
 
 //User=============================
-function messageInsert(sent,msg,receive) {
+function messageInsert(sent, msg, receive) {
 
     var msgtb = db.collection('message');
 
@@ -65,7 +65,7 @@ function getUserAll(callback) {
     }
 }
 
-function getUserByID(id,callback) {
+function getUserByID(id, callback) {
 
     if (db) {
         var userAll = db.collection('users');
@@ -98,25 +98,24 @@ function createGroup(Gname, user) {
     group.insert(data, function (err, item) {
         if (!err) {
             console.log('Insert Group OK...');
-
             for (var key in user) {
                 usergData = {
-                    'g_id': item._id,
-                    'user_id': key,
+                    'g_id': item.insertedIds,
+                    'user_id': user[key],
                     'del_st': false,
                     'dateTime': new Date()
                 };
+                userG.insert(usergData, function (err, item) {
+                    if (!err) {
+                        console.log('Insert User Group OK.....');
+                    } else {
+                        console.log('Insert User Group No.....');
+                    }
+                });
             }
-            userG.insert(usergData, function (err, item) {
-                if (!err) {
-                    console.log('Insert User Group OK.....');
-                } else {
-                    console.log('Insert User Group No.....');
-                }
-            });
+
         } else {
             console.log('Insert Group Noo....');
-            db.close();
         }
     });
 
@@ -125,20 +124,32 @@ function createGroup(Gname, user) {
 function getGroup(callback) {
     var group = db.collection('group');
     group.find().toArray(function (err, item) {
-            if (!err) {
-                console.log('Find Group Ok.');
-                callback(item);
-            } else {
-                console.log('Find Group Noooo.');
-                db.close();
-            }
-            });
-    }
-function getGroupByID(gid) {
+        if (!err) {
+            console.log('Find Group Ok.');
+            callback(item);
+        } else {
+            console.log('Find Group Noooo.');
+            db.close();
+        }
+    });
+}
+function getGroupByID(user_id, callback) {
     var group = db.collection('group');
-    group.find({_id: gid}).toArraya(function (err, item) {
+    var user_group = db.collection('user_group');
+
+    user_group.find({user_id: new objId(user_id)}).toArraya(function (err, item) {
         if (!err) {
             console.log('Find Group By ID Ok.');
+            var groupName = [];
+            for (var key in item) {
+                group.find({_id: new objId(key.g_id)}, function (err, itemG) {
+                    groupName = {
+                        'user_grou_id': key._id,
+                        'group_name': itemG.g_name,
+
+                    };
+                });
+            }
             callback(item);
         } else {
             console.log('Find Group BY ID Noooo.');
@@ -190,18 +201,19 @@ function insertMessageroup(msg, gid) {
         }
     });
 }
-function updateProfile(data){
+function updateProfile(data) {
     var users = db.collection('users');
-         users.update({"_id":new objId(data._id)},{$set:{
-                "local.fname":data.fname,
-                "local.lname":data.lname,
-                "local.tel":data.tel,
-                "local.position":data.position,
-                "local.email":data.email,
-                "local.picture":data.picture,
-            }});
-         return false;
-    }
+    users.update({"_id": new objId(data._id)}, {$set: {
+            "local.fname": data.fname,
+            "local.lname": data.lname,
+            "local.tel": data.tel,
+            "local.position": data.position,
+            "local.email": data.email,
+            "local.picture": data.picture,
+        }});
+    return false;
+}
+
 function userLogout(id){
     var users = db.collection('users');
          users.update({"_id":new objId(id)},{

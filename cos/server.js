@@ -24,6 +24,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.use('/uploads',express.static(__dirname + '/uploads'));
 app.use('/image',express.static(__dirname + '/public/image'));
+
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
