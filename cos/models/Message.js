@@ -5,6 +5,7 @@ module.exports = {
     messageInsert,
     updateProfile,
     getUserAll,
+    userLogout,
     createGroup,
     userLogout
 };
@@ -97,7 +98,6 @@ function createGroup(Gname, user) {
     group.insert(data, function (err, item) {
         if (!err) {
             console.log('Insert Group OK...');
-            
             for (var key in user) {
                 usergData = {
                     'g_id': item.insertedIds,
@@ -186,7 +186,6 @@ function getUserGroupByuser(user) {
 //Message Group ==============================================
 function insertMessageroup(msg, gid) {
     var msg = db.collection('group_message');
-
     var data = {
         'g_message': msg,
         'g_id': gid,
@@ -223,4 +222,8 @@ function userLogout(id){
                 }
             }
         );
+
+      console.log('User Logout Success....');
 }
+
+

@@ -1,4 +1,5 @@
 // app/routes.js
+
 module.exports = function (app, passport, urlencodedParser, jsonParser, session) {
     var messages = require('./models/Message.js');
     var multer = require('multer');
@@ -102,6 +103,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     });
 
     app.get('/home', isLoggedIn, function (req, res) {
+        messages.getGroupByuser(req.user._id);
         messages.getUserAll(function (item) {
             res.render('./home.ejs', {userAll: item, user: req.user});
         });
@@ -152,7 +154,6 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     app.get('/logout', function(req, res) {
         messages.userLogout(req.user._id);
         req.session.destroy();
-        // req.logout();
         res.redirect('/');
     });
 
@@ -194,8 +195,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
         }
     });
 
-    app.get('/addGroup', function (req, res) {
-//        messages.createGroup(gid, user);
+    app.post('/addGroup',isLoggedIn, function (req, res) {
+       messages.createGroup(req.body.group_n,req.body.user_id);
+       res.redirect('/home');
     });
 // route middleware to make sure a user is logged in
     function isLoggedIn(req, res, next) {
