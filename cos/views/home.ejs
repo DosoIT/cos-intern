@@ -62,9 +62,9 @@
         padding: 0;
         overflow-y: overlay;
     }
-    #messages{
+    /*#messages{
         text-align: right;
-    }
+    }*/
     /*#messages > p:last-child, p:focus {
         color: red;
     }*/
@@ -239,6 +239,20 @@
     .ft-cos-white{
         margin-left: 0%;
         width: 20%;
+    }
+    .border-msg-sn{
+        display: inline-block;
+        border: 2px solid #a1a1a1;
+        padding: 10px 40px; 
+        background: #dddddd;
+        border-radius: 25px;
+    }
+    .border-msg-reply{
+        display: inline-block;
+        border: 2px solid #a1a1a1;
+        padding: 10px 40px; 
+        background: #dddddd;
+        border-radius: 25px;
     }
 </style>
 <body>
@@ -549,11 +563,12 @@
         return false;
     });
     socket.on('chat message', function (msg,user_id,userRecei) {
-        // console.log("this\'s user id client : "+socket.id);
             if(user_id == '<%= user._id %>'){
-                $('#messages').append($('<p></p>').text(msg));
-            }else{
-                $('#messages').append($('<p align="left" style="color:green"></p>').text(msg));
+                $('#messages').append($('<p align="right" class="border-msg-sn"></p><br>').text(msg+" : "+'<%= user.local.fname %>'));
+                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+            }else if(userRecei == '<%= user._id %>'){
+                $('#messages').append($('<p align="left" class="border-msg-reply" style="color:green"></p><br>').text(msg+" : "+'<%= user.local.fname %>'));
+                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
             }
     });
 
