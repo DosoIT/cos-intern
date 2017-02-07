@@ -55,6 +55,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     app.get('/css', function (req, res) {
         res.sendFile(__dirname + '/public/css/bootstrap.min.css');
     });
+    app.get('/style', function (req, res) {
+        res.sendFile(__dirname + '/public/css/style.css');
+    });
     app.get('/css-datatable', function (req, res) {
         res.sendFile(__dirname + '/public/css/css-datatable/dataTables.bootstrap.min.css');
     });
@@ -103,7 +106,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     });
 
     app.get('/home', isLoggedIn, function (req, res) {
-        messages.getGroupByuser(req.user._id);
+        // messages.getGroupByuser(req.user._id);
         messages.getUserAll(function (item) {
             res.render('./home.ejs', {userAll: item, user: req.user});
         });
