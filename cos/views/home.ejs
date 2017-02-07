@@ -62,18 +62,20 @@
         padding: 0;
         overflow-y: overlay;
     }
-
-    #messages > li:last-child, li:focus {
+    #messages{
+        text-align: right;
+    }
+    /*#messages > p:last-child, p:focus {
         color: red;
+    }*/
+
+    #messages p {
+        padding: 5px 20px;
     }
 
-    #messages li {
-        padding: 5px 10px;
-    }
-
-    #messages li:nth-child(odd) {
+    /*#messages p:nth-child(odd) {
         background: #eee;
-    }
+    }*/
 
     .w3-modal-content {
         top: 1%;
@@ -240,7 +242,6 @@
     }
 </style>
 <body>
-    <% if (user.local.st !=false) {%>
 <div class="container">
     <div class="row" id="rowHeadder">
         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
@@ -380,9 +381,7 @@
             </header>
             <div class="w3-container">
                 <form action="" id="frmMsg">
-                    <ul id="messages">
-                        <div id="div1"  ondragstart="dragstart_handler(event);"></div>
-                    </ul>
+                    <div id="messages"></div>
                     <ul class="menubar-chat">
                         <li>
                             
@@ -543,12 +542,19 @@
     var userSent =  $('#user_id').val();
     var userRe = $('#userRe').val();
 
-        socket.emit('chat message',userSent,msg,userRe);
+    console.log("user sent is : "+userSent);
+
+    socket.emit('chat message',userSent,msg,userRe);
         $('#m').val('');
         return false;
     });
-    socket.on('chat message', function (msg) {
-        $('#messages').append($('<li autofocus>').text(msg));
+    socket.on('chat message', function (msg,user_id,userRecei) {
+        // console.log("this\'s user id client : "+socket.id);
+            if(user_id == '<%= user._id %>'){
+                $('#messages').append($('<p></p>').text(msg));
+            }else{
+                $('#messages').append($('<p align="left" style="color:green"></p>').text(msg));
+            }
     });
 
     socket.emit('userID',$('#user_id').val());

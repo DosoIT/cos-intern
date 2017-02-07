@@ -54,13 +54,14 @@ io.on('connection', function (socket) {
 io.on('connection', function (socket) {
         console.log('=====================================================');
         console.log('a user connected server : ' ,socket.connected);
+        console.log('a user connected server  ID: ' ,socket.id);
         console.log('=====================================================');
 
 
 
     // Message
     socket.on('chat message', function (userSent,msg, userRecei) {
-        io.emit('chat message', msg);
+        io.emit('chat message', msg,user_id[socket.id],userRecei);
    		message.messageInsert(userSent,msg,userRecei);
     });
 
@@ -68,7 +69,9 @@ io.on('connection', function (socket) {
     socket.on('userID',function(id){
          user_id[socket.id]= id;
         console.log('UserIDDDD = '+id);
+        console.log('user Ccc = '+user_id[socket.id]);
     })
+
 
     // Disconnect
     socket.on('disconnect', function () {
