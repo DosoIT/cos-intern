@@ -103,7 +103,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     });
 
     app.get('/home', isLoggedIn, function (req, res) {
-        messages.getGroupByuser(req.user._id);
+        // messages.getGroupByuser(req.user._id);
         messages.getUserAll(function (item) {
             res.render('./home.ejs', {userAll: item, user: req.user});
         });
