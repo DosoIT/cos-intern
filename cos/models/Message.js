@@ -222,7 +222,7 @@ function userLogout(id){
                 }
             }
         );
-
+        return false;
       console.log('User Logout Success....');
 }
 

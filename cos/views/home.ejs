@@ -2,6 +2,9 @@
 <head>
     <title>PDB COS</title>
     <meta charset="UTF-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="css">
@@ -476,20 +479,18 @@
                 </div>
          </footer>
     </div>
-             
     <div class="w3-container" id="list-user" style="display: none;">
        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
             <div class="row">
              <h3>List User</h3>
                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                  
                     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
                         <table width="100%">
                             <tr>
                                 <th>
                                  <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
                                     Online
-                                 </th>                              
+                                 </th>
                             </tr>
                            <tr>
                             <td colspan="2" class="page-header"></td>
@@ -502,10 +503,10 @@
                                      <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
                                       <%= userAll[item].local.fname %>
                                 </div>
-                                </td>                                
+                                </td>
                             <%}}%>
                             </tr>
-                        </table> 
+                        </table>
                     </div>
                     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
                         <table width="100%" style="margin-bottom: 10%;">
@@ -513,7 +514,7 @@
                                 <th>
                                  <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
                                 Offline
-                                 </th>                      
+                                 </th>
                             </tr>
                            <tr>
                             <td colspan="2" class="page-header"></td>
@@ -526,7 +527,7 @@
                                      <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
                                       <%= userAll[item].local.fname %>
                                 </div>
-                                </td>                                
+                                </td>
                             <%}}%>
                             </tr>
                         </table>
@@ -590,30 +591,12 @@
 
     socket.emit('userID',$('#user_id').val());
 
-    // socket.emit('disconnect','Noom attapon');
-    // End script socket.io
-
-    // Drag and Drop files
-    $("input#ufile").change(function () {
-        $("#output ul").empty();
-        var ele = document.getElementById($(this).attr('id'));
-        var result = ele.files;
-        for (var x = 0; x < result.length; x++) {
-            var fle = result[x];
-            $("#output ul").append("<li>" + fle.name + "(TYPE: " + fle.type + ", SIZE: " + fle.size + ")</li>");
-        }
-    });
     // dataTable
     $(document).ready(function() {
     $('#tableFile').dataTable();
     } );
 
-
-
- 
      $(document).ready(function() {
     $('#tableuser').dataTable();
     } );
-        // mySelect name group
-  
 </script>
