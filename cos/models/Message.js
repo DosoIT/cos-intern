@@ -7,7 +7,8 @@ module.exports = {
     getUserAll,
     userLogout,
     createGroup,
-    userLogout
+    userLogout,
+    getGroupByID
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -136,26 +137,23 @@ function getGroup(callback) {
 function getGroupByID(user_id, callback) {
     var group = db.collection('group');
     var user_group = db.collection('user_group');
-
-    user_group.find({user_id: new objId(user_id)}).toArraya(function (err, item) {
+    
+    user_group.find({user_id:user_id}).toArray(function (err, item) {
         if (!err) {
             console.log('Find Group By ID Ok.');
-            var groupName = [];
-            for (var key in item) {
+            var groupName = {};
+            for(key in item) {
+                console.log('user_g :'+key._id);
                 group.find({_id: new objId(key.g_id)}, function (err, itemG) {
-                    groupName = {
-                        'user_grou_id': key._id,
-                        'group_name': itemG.g_name,
-
-                    };
-                });
+                    
+                })
             }
-            callback(item);
+            callback(groupName);
         } else {
             console.log('Find Group BY ID Noooo.');
-            db.close();
         }
     });
+    
 }
 
 //User Group =====================================
