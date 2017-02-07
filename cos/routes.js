@@ -104,6 +104,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
 
     app.get('/home', isLoggedIn, function (req, res) {
         // messages.getGroupByuser(req.user._id);
+        messages.getGroupByID(req.user._id,function(callback){
+            console.log(callback);
+        });
         messages.getUserAll(function (item) {
             res.render('./home.ejs', {userAll: item, user: req.user});
         });
