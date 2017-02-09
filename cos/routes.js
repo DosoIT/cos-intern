@@ -106,11 +106,12 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     });
 
     app.get('/home', isLoggedIn, function (req, res) {
-        messages.getGroupByID(req.user._id,function(callback){
-            console.log(callback);
-        });
-        messages.getUserAll(function (item) {
-            res.render('./home.ejs', {userAll: item, user: req.user});
+        messages.getGroupByID(req.user._id, function (callback) {
+            messages.getGroup(function (err, groupDe) {
+                messages.getUserAll(function (err1, item) {
+                    res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback});
+                });
+            });
         });
     });
 
@@ -136,13 +137,13 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
 
-    app.get('/userpic', function(req, res){
-               res.sendFile(__dirname + '/uploads/'+req.user.local.picture);
+    app.get('/userpic', function (req, res) {
+        res.sendFile(__dirname + '/uploads/' + req.user.local.picture);
     });
-     app.get('/profileUpdate', isLoggedIn, function(req, res) {
-            res.render('./profile.ejs', {
-                user : req.user // get the user out of session and pass to template
-            });
+    app.get('/profileUpdate', isLoggedIn, function (req, res) {
+        res.render('./profile.ejs', {
+            user: req.user // get the user out of session and pass to template
+        });
     });
     app.get('/profile', isLoggedIn, function (req, res) {
         if (req.user.local.fname == null) {
@@ -156,7 +157,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.get('/logout', function(req, res) {
+    app.get('/logout', function (req, res) {
         messages.userLogout(req.user._id);
         req.session.destroy();
         res.redirect('/');
@@ -200,9 +201,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
         }
     });
 
-    app.post('/addGroup',isLoggedIn, function (req, res) {
-       messages.createGroup(req.body.group_n,req.body.user_id);
-       res.redirect('/home');
+    app.post('/addGroup', isLoggedIn, function (req, res) {
+        messages.createGroup(req.body.group_n, req.body.user_id);
+        res.redirect('/home');
     });
 // route middleware to make sure a user is logged in
     function isLoggedIn(req, res, next) {
