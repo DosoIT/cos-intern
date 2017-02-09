@@ -18,7 +18,6 @@ MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
 
 //User=============================
 function messageInsert(sent, msg, receive) {
-
     var msgtb = db.collection('message');
 
     var data = {
@@ -78,7 +77,10 @@ function getUserByID(id, callback) {
 
 function getMessageByuser(userSent,userRe,callback) {
     var message = db.collection('message');
-    message.find({$and:[{user_sent:userSent},{user_receive:userRe}]}).limit(10).sort({_id:-1}).toArray(function(err,items){
+    message.find({$or:[
+    {$and:[{user_sent:userSent},{user_receive:userRe}]},
+    {$and:[{user_sent:userRe},{user_receive:userSent}]}
+    ]}).limit(10).sort({_id:-1}).toArray(function(err,items){
         callback(items);
     });
     // message.find({user_sent: userSent},{$and:{user_receive:userRe}}).toArray(function (err, items) {

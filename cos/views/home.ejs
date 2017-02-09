@@ -113,27 +113,13 @@
     #messages:hover{
      overflow-y: overlay;
     }
-    /*#messages > p:last-child, p:focus {*/
-
-
-    /*#messages{
-        text-align: right;
-    }*/
-    /*#messages > p:last-child, p:focus {
+    #messages > p:last-child {
         color: red;
     }
-    #messages{
-        text-align: right;
-    }
     #messages p {
-        margin-right: 4%;
-        padding: 5px 20px;
+        margin-right: 1%;
+        padding: 1px 20px 2px 9px;
     }
-
-    /*#messages p:nth-child(odd) {
-        background: #eee;
-    }*/
-
     .w3-modal-content {
         top: 1%;
     }
@@ -348,8 +334,10 @@
         width: 20%;
     }
 
-    .border-msg-sn {
-        display: inline-block;
+    .msg-sn {
+        text-align: right;
+        padding: 1px;
+        /*display: inline-flex;
         border: 2px solid #a1a1a1;
         padding: 10px 40px;
         background: #dddddd;
@@ -363,9 +351,9 @@
         padding: 10px 40px; 
         background: #fff;
         border-radius: 25px;
-    }
+        border-radius: 25px;*/
     .msg-reply{
-        /*display: inline-block;*/
+        display: inline-block;
         border: 2px solid #a1a1a1;
         padding: 10px 40px;
         background: #dddddd;
@@ -380,6 +368,7 @@
         margin-top: -10px;
         color: #a1a1a1;
     }
+
 </style>
 <body>
  <% if(user.local.st != false){%>
@@ -482,7 +471,7 @@
                 <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
                     <% for (item in userAll) { if(userAll[item].local.st==true){ %>
                     <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg(this)">
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg('<%= userAll[item]._id %>')">
                         <td>
                             <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
                             <% if(userAll[item].local.picture != null){ %>
@@ -509,7 +498,7 @@
                     <table style="width: 100%; text-align: center;" id="tableOnline">
                         <% for (item in userAll) { if(userAll[item].local.st==false){%>
                         <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg()">
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg('<%= userAll[item]._id %>')" >
                         <td>
                               <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
                         <% if(userAll[item].local.picture != null){%>
@@ -519,7 +508,7 @@
                         <%}%>
                         </td>
                         <td>
-                            <a href="#" class="w3-left">
+                            <a href="#" class="w3-left" >
                                 <%= userAll[item].local.fname %>
                             </a>
                         </td>
@@ -543,9 +532,7 @@
             </header>
             <div class="w3-container">
                 <form action="" id="frmMsg">
-                    <div id="messages">
-                        <p>Show message Here!!</p>
-                    </div>
+                    <div id="messages"></div>
                     <ul class="menubar-chat">
                         <li>
                             <i class="fa fa-paperclip" aria-hidden="true"></i>
@@ -705,11 +692,10 @@
     // script socket.io
     var socket = io();
     var userSent =  $('#user_id').val();
+
     $('#frmMsg').submit(function () {
     var userRe = $('#userRe').val();
     var msg = $('#m').val();
-    var userWays = userSent.toString()+''+userRe.toString();
-    console.log("Ways = "+userWays);
         socket.emit('chat message',userSent,msg,userRe);
         $('#m').val('');
         return false;
@@ -717,9 +703,13 @@
     socket.on('chat message', function (msg, user_id, userRecei) {
         if (user_id == '<%= user._id %>') {
             $('#messages').append($('<p class="border-msg-sn"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+        if (user_id == '<%= user._id%>') {
+            // user sent
+            $('#messages').append($('<p class="w3-right-align"></p>').text(msg));
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-        } else if (userRecei == '<%= user._id %>') {
-            $('#messages').append($('<p align="left" class="border-msg-reply" style="color:green"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+        } else{
+            // user reply
+            $('#messages').append($('<div class="dv-msg-reply"><p align="left" class="msg-reply"></p></div><br>').text(msg));
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         }
     });
@@ -730,21 +720,26 @@
     });
         // End dataTable
     socket.emit('userID',$('#user_id').val());
-    function getMsg(eln){
-        console.log(eln);
+     socket.on('typing',function(msg){
+            console.log("MESSAGES : "+msg);
+            $("#reader").text("ok typing..");
+        });
+    function getMsg(userRe){
         var cnt = 0;
         socket.emit('get message',userSent,userRe);
         $("#messages").empty();
+
         socket.on('msg',function(items){
             $("#messages").empty();
                 for (var i = items.length - 1; i >= 0; i--) {
-                    // if(items[i].user_sent == userSent){
-                        $('#messages').append($('<p align="right" class="border-msg"></p><br>').text(items[i].message))
+                    console.log("get msg = "+items[i].message);
+                    if(items[i].user_sent == userSent){
+                        $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-                //     }else{
-                //         $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
-                //         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-                //    }
+                    }else{
+                        $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
+                        $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                   }
                 }
         });
     }
@@ -761,7 +756,6 @@
                 }, 3000);
             }
         });
-        $("#m");
      });
 
         // sort
