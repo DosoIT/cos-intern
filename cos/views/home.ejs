@@ -285,7 +285,7 @@
     }
 </style>
 <body>
- 
+ <% if(user.local.st != false){%>
 <div class="container">
     <div class="row" id="rowHeadder">
         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
@@ -326,17 +326,23 @@
                           <a href="#">Group +</a>
                         </div>
                     </h2>
-                <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddfffff" class="table-responsive">
+                <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
+                <% for(g in userGroup){%>
                     <tr>
                         <td>
                             <a href="#" class="w3-left"
-                               onclick="document.getElementById('id01').style.display = 'block'">Group name</a>
+                               onclick="document.getElementById('id01').style.display = 'block'">
+                               <% for(item in group){%>
+                                <% if(group[item]._id.toString() == userGroup[g].g_id){%>
+                                  <%=group[item].g_name%>
+                                  <%}else{%>
+
+                                  <%}%>
+                               <%}%>
+                            </a>
                         </td>
                     </tr>
-                    <tr>
-                        <td><a href="#" class="w3-left"
-                               onclick="document.getElementById('id01').style.display = 'block'">Group name</a></td>
-                    </tr>
+                   <% } %>
                 </table>
             </div>
             <!-- detail file upload user -->
@@ -368,6 +374,7 @@
                 <h2 class="page-header">Online</h2>
                 <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
            <% for (item in userAll) { if(userAll[item].local.st==true){ %>
+                    <%if(userAll[item]._id.toString() != user._id.toString()){%>
                      <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
                         <td>
                               <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
@@ -383,7 +390,7 @@
                             </a>
                         </td>
                     </tr>
-                <% } } %>
+                <% } } } %>
                 </table>
                 <!-- <h2 class="page-header">Offline</h2> -->
                 <!-- end status online -->
@@ -392,6 +399,7 @@
                     <h2 class="page-header">Offline</h2>
                     <table style="width: 100%; text-align: center;" id="tableOnline">
                         <% for (item in userAll) { if(userAll[item].local.st==false){%>
+                        <%if(userAll[item]._id.toString() != user._id.toString()){%>
                      <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
                         <td>
                               <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
@@ -404,10 +412,11 @@
                         <td>
                             <a href="#" class="w3-left">
                                 <%= userAll[item].local.fname %>
+                                
                             </a>
                         </td>
                     </tr>
-                <% } } %>
+                <% } } }%>
                     </table>
                 </div>
                 <!-- end status offline -->
@@ -480,11 +489,10 @@
         </div> <!-- div col -->
          <footer class="w3-container">
                  <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
-                     <button type="button" class="w3-btn w3-round-xlarge w3-amber" onclick="getUser()">+ Create</button>
+                     <button type="button" class="w3-btn w3-round-xlarge w3-amber" onclick="getUser();">+ Create</button>
                 </div>
          </footer>
     </div>
-    <div class="w3-container" id="list-user" style="display: none;">
     <div class="w3-container w3-animate-zoom" id="list-user" style="display: none;">
        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
             <div class="row">
@@ -501,8 +509,10 @@
                            <tr>
                             <td colspan="2" class="page-header"></td>
                            </tr>
-                            <tr>
+                            
                              <% for (item in userAll) { if(userAll[item].local.st==true){ %>
+                             <%if(userAll[item]._id.toString() != user._id.toString()){%>
+                             <tr>
                                 <td>
                                 <div style="margin-top: 5%;">
                                     <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%;" value="<%= userAll[item]._id %>">
@@ -510,8 +520,9 @@
                                       <%= userAll[item].local.fname %>
                                 </div>
                                 </td>
-                            <%}}%>
-                            </tr>
+                             </tr>
+                            <%} } }%>
+                            
                         </table>
                     </div>
                     <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
@@ -525,8 +536,10 @@
                            <tr>
                             <td colspan="2" class="page-header"></td>
                            </tr>
-                            <tr>
+                            
                              <% for (item in userAll) { if(userAll[item].local.st==false){ %>
+                             <%if(userAll[item]._id.toString() != user._id.toString()){%>
+                             <tr>
                                 <td>
                                 <div style="margin-top: 5%;">
                                     <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
@@ -534,9 +547,11 @@
                                       <%= userAll[item].local.fname %>
                                 </div>
                                 </td>
-                            <%}}%>
-                            </tr>
+                             </tr>
+                            <%} } }%>
+                            
                         </table>
+                        <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
                     </div>
             </div> <!-- div row -->
         </div> <!-- div col -->
@@ -549,6 +564,12 @@
         </div> <!-- w3-container -->
 </div><!-- end chat group model -->
 </form>
+
+<% }else{%>
+    <script type="text/javascript">
+        window.location.href="/";
+    </script>
+<% } %>
 </body>
 </html>
 
@@ -582,11 +603,15 @@
     });
     // script socket.io
     var socket = io();
-    $('#frmMsg').submit(function () {
-    var msg = $('#m').val();
     var userSent =  $('#user_id').val();
-    var userRe = $('#userRe').val();
+    
+    
 
+    $('#frmMsg').submit(function () {
+    var userRe = $('#userRe').val();
+    var msg = $('#m').val();
+    var userWays = userSent.toString()+''+userRe.toString();
+    console.log("Ways = "+userWays);
         socket.emit('chat message',userSent,msg,userRe);
         $('#m').val('');
         return false;
