@@ -12,6 +12,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var configDB = require('./config/database.js');
 var message = require('./models/Message.js');
+
 // uncomment this line
 require('./config/passport')(passport); // pass passport for configuration
 // configuration ===============================================================
@@ -42,6 +43,7 @@ require('./routes.js')(app, passport,urlencodedParser,jsonParser,session); // lo
 // ================= launch Socket.io  ==============================
 var server = app.listen(port);
 var io = require('socket.io').listen(server);
+
 console.log('=====================================================');
 console.log('|>>>> >>>>> Node.js running on port ' + port+' <<<<< <<<<<|');
 console.log('=====================================================');
@@ -57,8 +59,6 @@ io.on('connection', function (socket) {
         console.log('a user connected server  ID: ' ,socket.id);
         console.log('=====================================================');
 
-
-
     // Message
     socket.on('chat message', function (userSent,msg, userRecei) {
         io.emit('chat message', msg,user_id[socket.id],userRecei);
@@ -72,7 +72,13 @@ io.on('connection', function (socket) {
         console.log('user Ccc = '+user_id[socket.id]);
     })
 
+    // getMessages to show
+    socket.on('get message', function(userSent,userRe){
+        message.getMessageByuser(userSent,userRe,function(items){
+            io.emit('msg',items);
+        });
 
+    });
     // Disconnect
     socket.on('disconnect', function () {
         console.log('user disconnected server : ',{userID:user_id[socket.id], status: "disconnected from server"});

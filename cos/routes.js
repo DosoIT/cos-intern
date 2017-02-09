@@ -110,7 +110,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
             console.log(callback);
         });
         messages.getUserAll(function (item) {
-            res.render('./home.ejs', {userAll: item, user: req.user});
+            res.render('./home.ejs', {msg:item,userAll: item, user: req.user});
         });
     });
 

@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="metroCss">
     <script scripts="metroJs"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 <style>
     .container {
@@ -111,9 +110,9 @@
     #messages:hover{
      overflow-y: overlay;
     }
-    /*#messages > p:last-child, p:focus {
+    #messages > p:last-child, p:focus {
         color: red;
-    }*/
+    }
     #messages{
         text-align: right;
     }
@@ -392,11 +391,11 @@
             <!-- status online -->
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel">
                 <h2 class="page-header">Online</h2>
-                <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
-           <% for (item in userAll) { if(userAll[item].local.st==true){ %>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
+                <table style="width: 100%; text-align: center;" id="tableOnline" class="table-responsive">
+                <% for (item in userAll) { if(userAll[item].local.st==true){ %>
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg()">
                         <td>
-                              <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                            <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
                         <% if(userAll[item].local.picture != null){%>
                               <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
                         <%}else{%>
@@ -418,7 +417,7 @@
                     <h2 class="page-header">Offline</h2>
                     <table style="width: 100%; text-align: center;" id="tableOnline">
                         <% for (item in userAll) { if(userAll[item].local.st==false){%>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg();">
                         <td>
                               <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
                         <% if(userAll[item].local.picture != null){%>
@@ -452,7 +451,9 @@
             </header>
             <div class="w3-container">
                 <form action="" id="frmMsg">
-                    <div id="messages"></div>
+                    <div id="messages">
+                        <p>Show message Here!!</p>
+                    </div>
                     <ul class="menubar-chat">
                         <li>
                             <i class="fa fa-paperclip" aria-hidden="true"></i>
@@ -592,6 +593,7 @@
         }
         function closeModel(){
             $("#output ul").empty();
+            $("#messages").empty();
             document.getElementById('id01').style.display = 'none';
         }
 
@@ -602,10 +604,10 @@
     });
     // script socket.io
     var socket = io();
-    $('#frmMsg').submit(function () {
-    var msg = $('#m').val();
     var userSent =  $('#user_id').val();
     var userRe = $('#userRe').val();
+    $('#frmMsg').submit(function () {
+    var msg = $('#m').val();
 
     console.log("user sent is : "+userSent);
 
@@ -615,15 +617,32 @@
     });
     socket.on('chat message', function (msg,user_id,userRecei) {
             if(user_id == '<%= user._id %>'){
-                $('#messages').append($('<p class="border-msg"></p><br>').text(msg))
+                $('#messages').append($('<p align="right" class="border-msg"></p><br>').text(msg))
                  $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
             }else{
                 $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(msg));
-                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
             }
     });
     socket.emit('userID',$('#user_id').val());
 
+    function getMsg(){
+        var cnt = 0;
+        socket.emit('get message',userSent,userRe);
+        $("#messages").empty();
+        socket.on('msg',function(items){
+            $("#messages").empty();
+                for (var i = items.length - 1; i >= 0; i--) {
+                    // if(items[i].user_sent == userSent){
+                        $('#messages').append($('<p align="right" class="border-msg"></p><br>').text(items[i].message))
+                        $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                //     }else{
+                //         $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
+                //         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                //    }
+                }
+        });
+    }
     // dataTable
     $(document).ready(function() {
     $('#tableFile').dataTable();
@@ -643,11 +662,11 @@
         });
         $("#m").keyup(function(){
             if($(this).val() != ''){
-                setTimeout(function(){ 
+                setTimeout(function(){
                     $("#reader").fadeOut();
                 }, 3000);
             }
         });
-        $("#m").
+        // $("#m").
      });
 </script>

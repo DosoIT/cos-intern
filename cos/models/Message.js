@@ -8,7 +8,8 @@ module.exports = {
     userLogout,
     createGroup,
     userLogout,
-    getGroupByID
+    getGroupByID,
+    getMessageByuser
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -41,7 +42,6 @@ function messageInsert(sent, msg, receive) {
 }
 
 function getDataMessage(callback) {
-
     if (db) {
         var message = db.collection('message');
         message.find().toArray(function (err, items) {
@@ -79,23 +79,23 @@ function getUserByID(id, callback) {
     }
 }
 
-function getMessageByuserSent(user) {
+function getMessageByuser(userSent,userRe,callback) {
     var message = db.collection('message');
-    message.find({user_sent: user}).toArray(function (err, items) {
-        console.log('getMessageByuserSent');
+    message.find({$and:[{user_sent:userSent},{user_receive:userRe}]}).limit(10).sort({_id:-1}).toArray(function(err,items){
+        callback(items);
     });
+    // message.find({user_sent: userSent},{$and:{user_receive:userRe}}).toArray(function (err, items) {
+    // });
 }
 
 //Group ===========================
 function createGroup(Gname, user) {
-
     var group = db.collection('group');
     var userG = db.collection('user_group');
     var data = {
         'g_name': Gname
     };
     var usergData = [];
-
     group.insert(data, function (err, item) {
         if (!err) {
             console.log('Insert Group OK...');
@@ -114,7 +114,6 @@ function createGroup(Gname, user) {
                     }
                 });
             }
-
         } else {
             console.log('Insert Group Noo....');
         }
