@@ -14,6 +14,8 @@
     "body-parser": "^1.16.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
+    "drag-and-drop-files": "0.0.1",
+    "drag-drop": "^2.13.1",
     "ejs": "^2.5.5",
     "express": "^4.14.1",
     "express-session": "^1.15.0",
@@ -24,6 +26,8 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "promise": "^7.1.1",
+    "react": "^15.4.2",
+    "react-dropzone": "^3.9.2",
     "socket.io": "^1.7.2"
   }
 }

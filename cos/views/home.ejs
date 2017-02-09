@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="css">
+    <link rel="stylesheet" href="style">
     <link rel="stylesheet" href="font-icon">
     <link rel="stylesheet" href="metroCss">
     <script scripts="metroJs"></script>
@@ -15,25 +16,28 @@
 
 </head>
 <style>
+    body{
+        height: 100%;
+    }
     .container {
         width: 100%;
         height: 100%;
     }
 
     #rowBG {
-        height: 100%;
+        height: auto;
     }
 
     #leftPanel {
-        height: 100%;
+        height: auto;
     }
 
     #rightPanel {
-        height: 100%;
+        height: auto;
     }
 
     #middlePanel {
-        height: 100%;
+        height: auto;
     }
 
     #picProfile {
@@ -96,7 +100,8 @@
         border: none;
         padding: 10px;
     }
-    a:hover{
+
+    a:hover {
         color: #3333FF;
     }
 
@@ -105,25 +110,36 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        overflow-y: overlay;
+        overflow-y: hidden;
+    }
+    #messages:hover{
+     overflow-y: overlay;
     }
 
-    #messages > li:last-child, li:focus {
+    /*#messages{
+        text-align: right;
+    }*/
+    /*#messages > p:last-child, p:focus {
         color: red;
+    }*/
+    #messages{
+        text-align: right;
+    }
+    #messages p {
+        margin-right: 4%;
+        padding: 5px 20px;
     }
 
-    #messages li {
-        padding: 5px 10px;
-    }
-
-    #messages li:nth-child(odd) {
+    /*#messages p:nth-child(odd) {
         background: #eee;
-    }
+    }*/
 
     .w3-modal-content {
         top: 1%;
     }
-
+    .menubar-chat > ul{
+        border: 1px solid #ccc;
+    }
     .menubar-chat > li {
         list-style: none;
         float: left;
@@ -201,6 +217,21 @@
         [class*="col-"] {
             width: auto;
         }
+        #tableOnline{
+            width: 100%;
+        }
+        #leftPanel{
+            width: 100%;
+        }
+        #rightPanel{
+            width: 100%;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #rowHeadder{
+            width: 100%;
+        }
     }
 
     @media only screen and (max-width: 360px) {
@@ -212,6 +243,21 @@
         [class*="col-"] {
             width: auto;
         }
+        #tableOnline{
+            width: 100%;
+        }
+        #leftPanel{
+            width: 100%;
+        }
+        #rightPanel{
+            width: 100%;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #rowHeadder{
+            width: 100%;
+        }
     }
 
     @media only screen and (max-width: 412px) {
@@ -222,6 +268,21 @@
 
         [class*="col-"] {
             width: auto;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #leftPanel{
+            width: 100%;
+        }
+        #rightPanel{
+            width: 100%;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #rowHeadder{
+            width: 100%;
         }
     }
 
@@ -255,7 +316,6 @@
             width: auto;
             margin-top: 0%;
         }
-
         [class*="col-"] {
             width: auto;
         }
@@ -267,25 +327,66 @@
         text-align: center;
         /*border-bottom: 1px solid #ccc;*/
     }
-    .ft-coc{
+
+    .ft-coc {
         width: 50%;
         margin-top: -3%;
     }
-    .bullhorn{
+
+    .bullhorn {
         position: absolute;
-         margin-top: -2%;
+        margin-top: -2%;
     }
-    .pp{
+
+    .pp {
         font-size: 20pt;
         margin-top: 1%;
     }
-    .ft-cos-white{
+
+    .ft-cos-white {
         margin-left: 0%;
         width: 20%;
     }
+
+    .border-msg-sn {
+        display: inline-block;
+        border: 2px solid #a1a1a1;
+        padding: 10px 40px;
+        background: #dddddd;
+        border-radius: 25px;
+    }
+
+    .border-msg-reply {
+        display: inline-block;
+    .border-msg{
+        display: inline-block;
+        border: 2px solid #a1a1a1;
+        padding: 10px 40px; 
+        background: #fff;
+        border-radius: 25px;
+    }
+    .msg-reply{
+        /*display: inline-block;*/
+        border: 2px solid #a1a1a1;
+        padding: 10px 40px;
+        background: #dddddd;
+        border-radius: 25px;
+    }
+    .drag {
+        border: 5px dotted red;
+        border-bottom: dotted #ff0000;
+      }
+    #reader{
+        display: none;
+        margin-top: -10px;
+        color: #a1a1a1;
+    }
 </style>
 <body>
+<<<<<<< HEAD
  <% if(user.local.st != false){%>
+=======
+>>>>>>> origin/master
 <div class="container">
     <div class="row" id="rowHeadder">
         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
@@ -321,6 +422,7 @@
         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel">
                 <h2 class="page-header">
+<<<<<<< HEAD
                         <div class="w3-dropdown-hover">
                         <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">Add Group</a>
                           <a href="#">Group +</a>
@@ -328,6 +430,16 @@
                     </h2>
                 <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
                 <% for(g in userGroup){%>
+=======
+                    <div class="w3-dropdown-hover">
+                        <a href="#" onclick="document.getElementById('model-group').style.display='block'"
+                           title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">Add Group</a>
+                        <a href="#">Group +</a>
+                    </div>
+                </h2>
+                <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddfffff"
+                       class="table-responsive">
+>>>>>>> origin/master
                     <tr>
                         <td>
                             <a href="#" class="w3-left"
@@ -377,12 +489,13 @@
                     <%if(userAll[item]._id.toString() != user._id.toString()){%>
                      <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
                         <td>
-                              <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
-                        <% if(userAll[item].local.picture != null){%>
-                              <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
-                        <%}else{%>
-                              <img src="/pic-default" id="userOnlineIMG"/>
-                        <%}%>
+                            <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                            <% if(userAll[item].local.picture != null){ %>
+                            <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle'
+                                 id="userOnlineIMG"/>
+                            <% }else{ %>
+                            <img src="/pic-default" id="userOnlineIMG"/>
+                            <% } %>
                         </td>
                         <td>
                             <a href="#" class="w3-left">
@@ -391,6 +504,7 @@
                         </td>
                     </tr>
                 <% } } } %>
+
                 </table>
                 <!-- <h2 class="page-header">Offline</h2> -->
                 <!-- end status online -->
@@ -429,17 +543,15 @@
     <div id="id01" class="w3-modal">
         <div class="w3-modal-content w3-animate-zoom w3-card-8">
             <header class="w3-container w3-Lightgray">
-                        <span onclick="closeModel();" class="w3-closebtn">&times;</span>
+                <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                 <h2 id="model-header"></h2>
+                <div id="reader">กำลังพิมพ์...</div>
             </header>
             <div class="w3-container">
                 <form action="" id="frmMsg">
-                    <ul id="messages">
-                        <div id="div1"  ondragstart="dragstart_handler(event);"></div>
-                    </ul>
+                    <div id="messages"></div>
                     <ul class="menubar-chat">
                         <li>
-                            <!-- <input type="file" name="file_upload[]" id="file_upload" multiple=""> -->
                             <i class="fa fa-paperclip" aria-hidden="true"></i>
                         </li>
                         <li>
@@ -452,14 +564,33 @@
                             <i class="fa fa-hashtag" aria-hidden="true"></i>
                         </li>
                     </ul>
-                    <input type="text" id="m" autocomplete="off" autofocus="true" placeholder="กรุณาเขียนข้อความ.."
+                    <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
                            required/>
-                           <input type="hidden" id="userRe" >
+                    <input type="hidden" id="userRe">
                     <button type="submit">
                         <img class="logo" src="/public/image/">
                     </button>
                 </form>
             </div>
+                    <!-- dragdrop zone -->
+                    <form id="upload" action="index.html" method="POST" enctype="multipart/form-data">
+                            <fieldset>
+                                <legend>HTML File Upload</legend>
+                                <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+                                <div>
+                                  <label for="fileselect">Files to upload:</label>
+                                  <input type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
+                                  <div id="filedrag">or drop files here</div>
+                                </div>
+                                <div id="submitbutton">
+                                  <button type="submit">Upload Files</button>
+                                </div>
+                            </fieldset>
+                            </form>
+                            <div id="messages">
+                              <p>Status Messages</p>
+                            </div>
+                    <!-- end draf drop zone -->
             <div id="output">
                 <ul></ul>
             </div>
@@ -553,16 +684,81 @@
                         </table>
                         <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
                     </div>
-            </div> <!-- div row -->
-        </div> <!-- div col -->
-        <footer class="w3-container">
-                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
-                     <button type="submit" class="w3-btn w3-round-xlarge w3-green">Start</button>
+                </footer>
+            </div> <!-- End Create Name Group -->
+            <!-- List User -->
+            <div class="w3-container w3-animate-zoom" id="list-user" style="display: none;">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div class="row">
+                        <h3>List User</h3>
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                                <table width="100%">
+                                    <tr>
+                                        <th>
+                                            <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                                            Online
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="page-header"></td>
+                                    </tr>
+                                    <% for (item in userAll) { if(userAll[item].local.st == true){ %>
+                                    <tr>
+                                        <td>
+                                            <div style="margin-top: 5%;">
+                                                <input type="checkbox" name="user_id[]"
+                                                       style="margin-left: -35%;margin-right:-40%;"
+                                                       value="<%= userAll[item]._id %>">
+                                                <img src="/uploads/<%= userAll[item].local.picture %>" width="25px"
+                                                     height="25px" class="img-circle" id="userOnlineIMG">
+                                                <%= userAll[item].local.fname %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }} %>
+                                </table>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                                <table width="100%" style="margin-bottom: 10%;">
+                                    <tr>
+                                        <th>
+                                            <img src="/imageoffline" alt="" class="icon-online" width="20"
+                                                 height="auto">
+                                            Offline
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="page-header"></td>
+                                    </tr>
+                                    <% for (item in userAll) { if(userAll[item].local.st == false){ %>
+                                    <tr>
+                                        <td>
+                                            <div style="margin-top: 5%;">
+                                                <input type="checkbox" name="user_id[]"
+                                                       style="margin-left: -35%;margin-right:-40%; "
+                                                       value="<%= userAll[item]._id %>">
+                                                <img src="/uploads/<%= userAll[item].local.picture %>" width="25px"
+                                                     height="25px" class="img-circle" id="userOnlineIMG">
+                                                <%= userAll[item].local.fname %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }} %>
+                                </table>
+                            </div>
+                        </div> <!-- div row -->
+                    </div> <!-- div col -->
+                    <footer class="w3-container">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right"
+                             style="margin-top: 2%; margin-bottom: 2%;">
+                            <button type="submit" class="w3-btn w3-round-xlarge w3-green">Start</button>
+                        </div>
+                    </footer>
                 </div>
-         </footer>
+            </div> <!-- End List User -->
     </div>
-        </div> <!-- w3-container -->
-</div><!-- end chat group model -->
+    <!-- end chat group model -->
 </form>
 
 <% }else{%>
@@ -575,26 +771,22 @@
 
 <script src="/js"></script>
 <script src="/dataTables-js"></script>
-<!-- <script src="/jqueryjs"></script>
-<script src="/dataTables-bs-js"></script>
-<script src="/bootstrap-js"></script> -->
 <script src="/socketJs"></script>
-
 <script type="text/javascript">
-        function getUser(){
-                document.getElementById('groupName').style.display='none';
-                document.getElementById('list-user').style.display='block';
-        }
+    function getUser() {
+        document.getElementById('groupName').style.display = 'none';
+        document.getElementById('list-user').style.display = 'block';
+    }
 
-        function getModel(userSH,id){
-            document.getElementById('id01').style.display = 'block';
-            document.getElementById('model-header').innerHTML = userSH;
-            document.getElementById('userRe').value = id;
-        }
-        function closeModel(){
-            $("#output ul").empty();
-            document.getElementById('id01').style.display = 'none';
-        }
+    function getModel(userSH, id) {
+        document.getElementById('id01').style.display = 'block';
+        document.getElementById('model-header').innerHTML = userSH;
+        document.getElementById('userRe').value = id;
+    }
+    function closeModel() {
+        $("#output ul").empty();
+        document.getElementById('id01').style.display = 'none';
+    }
 
     $("button").click(function () {
         var msg = $("#m").val();
@@ -616,10 +808,32 @@
         $('#m').val('');
         return false;
     });
-    socket.on('chat message', function (msg) {
-        $('#messages').append($('<li autofocus>').text(msg));
+    socket.on('chat message', function (msg, user_id, userRecei) {
+        if (user_id == '<%= user._id %>') {
+            $('#messages').append($('<p align="right" class="border-msg-sn"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+        } else if (userRecei == '<%= user._id %>') {
+            $('#messages').append($('<p align="left" class="border-msg-reply" style="color:green"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+        }
     });
 
+    socket.emit('userID', $('#user_id').val());
+
+    // dataTable
+    $(document).ready(function () {
+        $('#tableFile').dataTable();
+    });
+    // drag drop
+    socket.on('chat message', function (msg,user_id,userRecei) {
+            if(user_id == '<%= user._id %>'){
+                $('#messages').append($('<p class="border-msg"></p><br>').text(msg))
+                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+            }else{
+                $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(msg));
+                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+            }
+    });
     socket.emit('userID',$('#user_id').val());
 
     // dataTable
@@ -629,4 +843,23 @@
      $(document).ready(function() {
     $('#tableuser').dataTable();
     } );
+
+     // $("#m").focus(function(){
+     //    $("#reader").text("อ่านเเล้ว");
+     // });
+     $(document).ready(function(){
+        $("#m").keypress(function(){
+            if($(this).val() != ''){
+                $("#reader").show();
+            }
+        });
+        $("#m").keyup(function(){
+            if($(this).val() != ''){
+                setTimeout(function(){ 
+                    $("#reader").fadeOut();
+                }, 3000);
+            }
+        });
+        $("#m").
+     });
 </script>

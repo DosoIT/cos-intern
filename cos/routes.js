@@ -55,6 +55,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     app.get('/css', function (req, res) {
         res.sendFile(__dirname + '/public/css/bootstrap.min.css');
     });
+    app.get('/style', function (req, res) {
+        res.sendFile(__dirname + '/public/css/style.css');
+    });
     app.get('/css-datatable', function (req, res) {
         res.sendFile(__dirname + '/public/css/css-datatable/dataTables.bootstrap.min.css');
     });
@@ -86,12 +89,12 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session)
     app.get('/imageoffline', function (req, res) {
         res.sendFile(__dirname + '/public/image/icon-offline.png');
     });
-
-
     app.get('/socketJs', function (req, res) {
         res.sendFile(__dirname + '/public/js/socket.io.js');
     });
-
+    app.get('/indexJS', function (req, res) {
+        res.sendFile(__dirname + '/public/js/index.js');
+    });
     // =====================================
     // LOGIN ===============================
     // =====================================
