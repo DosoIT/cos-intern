@@ -113,27 +113,13 @@
     #messages:hover{
      overflow-y: overlay;
     }
-    /*#messages > p:last-child, p:focus {*/
-
-
-    /*#messages{
-        text-align: right;
-    }*/
-    /*#messages > p:last-child, p:focus {
+    #messages > p:last-child {
         color: red;
     }
-    #messages{
-        text-align: right;
-    }
     #messages p {
-        margin-right: 4%;
-        padding: 5px 20px;
+        margin-right: 1%;
+        padding: 1px 20px 2px 9px;
     }
-
-    /*#messages p:nth-child(odd) {
-        background: #eee;
-    }*/
-
     .w3-modal-content {
         top: 1%;
     }
@@ -348,25 +334,17 @@
         width: 20%;
     }
 
-    .border-msg-sn {
-        display: inline-block;
+    .msg-sn {
+        text-align: right;
+        padding: 1px;
+        /*display: inline-flex;
         border: 2px solid #a1a1a1;
         padding: 10px 40px;
         background: #dddddd;
-        border-radius: 25px;
-    }
-
-    .border-msg-reply {
-        display: inline-block;
-    .border-msg{
-        display: inline-block;
-        border: 2px solid #a1a1a1;
-        padding: 10px 40px; 
-        background: #fff;
-        border-radius: 25px;
+        border-radius: 25px;*/
     }
     .msg-reply{
-        /*display: inline-block;*/
+        display: inline-block;
         border: 2px solid #a1a1a1;
         padding: 10px 40px;
         background: #dddddd;
@@ -381,6 +359,7 @@
         margin-top: -10px;
         color: #a1a1a1;
     }
+
 </style>
 <body>
  <% if(user.local.st != false){%>
@@ -535,9 +514,7 @@
             </header>
             <div class="w3-container">
                 <form action="" id="frmMsg">
-                    <div id="messages">
-                        <p>Show message Here!!</p>
-                    </div>
+                    <div id="messages"></div>
                     <ul class="menubar-chat">
                         <li>
                             <i class="fa fa-paperclip" aria-hidden="true"></i>
@@ -772,10 +749,12 @@
     });
     socket.on('chat message', function (msg, user_id, userRecei) {
         if (user_id == '<%= user._id%>') {
-            $('#messages').append($('<p align="right" class="border-msg-sn"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+            // user sent
+            $('#messages').append($('<p class="w3-right-align"></p>').text(msg));
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-        } else if (userRecei == '<%= user._id %>') {
-            $('#messages').append($('<p align="left" class="border-msg-reply" style="color:green"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+        } else{
+            // user reply
+            $('#messages').append($('<div class="dv-msg-reply"><p align="left" class="msg-reply"></p></div><br>').text(msg));
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         }
     });
@@ -784,28 +763,30 @@
     $(document).ready(function () {
         $('#tableFile').dataTable();
     });
-    // drag drop
-   
     socket.emit('userID',$('#user_id').val());
+     socket.on('typing',function(msg){
+            console.log("MESSAGES : "+msg);
+            $("#reader").text("ok typing..");
+        });
     function getMsg(userRe){
         var cnt = 0;
         socket.emit('get message',userSent,userRe);
         $("#messages").empty();
+
         socket.on('msg',function(items){
             $("#messages").empty();
                 for (var i = items.length - 1; i >= 0; i--) {
                     console.log("get msg = "+items[i].message);
-                    // if(items[i].user_sent == userSent){
-                        $('#messages').append($('<p align="right" class="border-msg"></p><br>').text(items[i].message))
+                    if(items[i].user_sent == userSent){
+                        $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-                //     }else{
-                //         $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
-                //         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-                //    }
+                    }else{
+                        $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
+                        $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                   }
                 }
         });
     }
-   
      // $("#m").focus(function(){
      //    $("#reader").text("อ่านเเล้ว");
      // });
