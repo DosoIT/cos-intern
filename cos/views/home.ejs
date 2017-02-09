@@ -474,7 +474,7 @@
                 <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
                     <% for (item in userAll) { if(userAll[item].local.st==true){ %>
                     <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg(this)">
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg('<%= userAll[item]._id %>')">
                         <td>
                             <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
                             <% if(userAll[item].local.picture != null){ %>
@@ -501,7 +501,7 @@
                     <table style="width: 100%; text-align: center;" id="tableOnline">
                         <% for (item in userAll) { if(userAll[item].local.st==false){%>
                         <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg()">
+                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg('<%= userAll[item]._id %>')" >
                         <td>
                               <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
                         <% if(userAll[item].local.picture != null){%>
@@ -511,7 +511,7 @@
                         <%}%>
                         </td>
                         <td>
-                            <a href="#" class="w3-left">
+                            <a href="#" class="w3-left" >
                                 <%= userAll[item].local.fname %>
                             </a>
                         </td>
@@ -762,17 +762,16 @@
     // script socket.io
     var socket = io();
     var userSent =  $('#user_id').val();
+
     $('#frmMsg').submit(function () {
     var userRe = $('#userRe').val();
     var msg = $('#m').val();
-    var userWays = userSent.toString()+''+userRe.toString();
-    console.log("Ways = "+userWays);
         socket.emit('chat message',userSent,msg,userRe);
         $('#m').val('');
         return false;
     });
     socket.on('chat message', function (msg, user_id, userRecei) {
-        if (user_id == '<%= user._id %>') {
+        if (user_id == '<%= user._id%>') {
             $('#messages').append($('<p align="right" class="border-msg-sn"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         } else if (userRecei == '<%= user._id %>') {
@@ -786,24 +785,16 @@
         $('#tableFile').dataTable();
     });
     // drag drop
-    socket.on('chat message', function (msg,user_id,userRecei) {
-            if(user_id == '<%= user._id %>'){
-                $('#messages').append($('<p align="right" class="border-msg"></p><br>').text(msg))
-                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-            }else{
-                $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(msg));
-                $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-            }
-    });
+   
     socket.emit('userID',$('#user_id').val());
-    function getMsg(eln){
-        console.log(eln);
+    function getMsg(userRe){
         var cnt = 0;
         socket.emit('get message',userSent,userRe);
         $("#messages").empty();
         socket.on('msg',function(items){
             $("#messages").empty();
                 for (var i = items.length - 1; i >= 0; i--) {
+                    console.log("get msg = "+items[i].message);
                     // if(items[i].user_sent == userSent){
                         $('#messages').append($('<p align="right" class="border-msg"></p><br>').text(items[i].message))
                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
@@ -814,14 +805,7 @@
                 }
         });
     }
-    // dataTable
-    $(document).ready(function() {
-    $('#tableFile').dataTable();
-    } );
-     $(document).ready(function() {
-    $('#tableuser').dataTable();
-    } );
-
+   
      // $("#m").focus(function(){
      //    $("#reader").text("อ่านเเล้ว");
      // });
@@ -838,6 +822,5 @@
                 }, 3000);
             }
         });
-        $("#m");
      });
 </script>
