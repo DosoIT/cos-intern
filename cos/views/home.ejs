@@ -510,7 +510,7 @@
             <header class="w3-container w3-Lightgray">
                 <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                 <h2 id="model-header"></h2>
-                <div id="reader">กำลังพิมพ์...</div>
+                <div id="reader"></div>
             </header>
             <div class="w3-container">
                 <form action="" id="frmMsg">
@@ -764,10 +764,7 @@
         $('#tableFile').dataTable();
     });
     socket.emit('userID',$('#user_id').val());
-     socket.on('typing',function(msg){
-            console.log("MESSAGES : "+msg);
-            $("#reader").text("ok typing..");
-        });
+
     function getMsg(userRe){
         var cnt = 0;
         socket.emit('get message',userSent,userRe);
@@ -790,17 +787,29 @@
      // $("#m").focus(function(){
      //    $("#reader").text("อ่านเเล้ว");
      // });
+     socket.on('typingShow',function(msg,id){
+                console.log("MESSAGES : "+id);
+                if(userSent == id){
+                   
+                }else{
+                    $("#reader").show();
+                    $("#reader").text(msg);
+                }
+                
+              });
      $(document).ready(function(){
         $("#m").keypress(function(){
             if($(this).val() != ''){
-                $("#reader").show();
+              socket.emit("typing","กำลังพิมพ์......");
             }
         });
         $("#m").keyup(function(){
             if($(this).val() != ''){
                 setTimeout(function(){
-                    $("#reader").fadeOut();
-                }, 3000);
+                    $("#reader").fedeOut();
+                     socket.emit("typing","");
+                },1000);
+
             }
         });
      });
