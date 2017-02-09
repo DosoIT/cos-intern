@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="metroCss">
     <script scripts="metroJs"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <style>
     body{
@@ -20,8 +21,53 @@
     }
     .container {
         width: 100%;
-
         height: 100%;
+    }
+
+    #rowBG {
+        height: auto;
+    }
+
+    #leftPanel {
+        height: auto;
+    }
+
+    #rightPanel {
+        height: auto;
+    }
+
+    #middlePanel {
+        height: auto;
+    }
+
+    #picProfile {
+        width: 140px;
+        height: 140px;
+    }
+
+    #rowHeadder {
+        margin-top: 3%;
+        margin-bottom: 3%;
+    }
+
+    #tableFile {
+        color: lightsteelblue;
+        margin-top: 200px;
+    }
+    #tableOnline {
+        color: lightsteelblue;
+        height: 70px;
+    }
+
+    #userOnlineIMG {
+        width: 25px;
+        height: 25px;
+    }
+
+    .icon-online {
+        position: relative;
+        margin-top: -2%;
+        margin-left: 10%;
     }
 
     * {
@@ -64,7 +110,10 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        overflow-y: overlay;
+        overflow-y: hidden;
+    }
+    #messages:hover{
+     overflow-y: overlay;
     }
 
     /*#messages{
@@ -73,8 +122,11 @@
     /*#messages > p:last-child, p:focus {
         color: red;
     }*/
-
+    #messages{
+        text-align: right;
+    }
     #messages p {
+        margin-right: 4%;
         padding: 5px 20px;
     }
 
@@ -85,7 +137,9 @@
     .w3-modal-content {
         top: 1%;
     }
-
+    .menubar-chat > ul{
+        border: 1px solid #ccc;
+    }
     .menubar-chat > li {
         list-style: none;
         float: left;
@@ -304,6 +358,15 @@
 
     .border-msg-reply {
         display: inline-block;
+    .border-msg{
+        display: inline-block;
+        border: 2px solid #a1a1a1;
+        padding: 10px 40px; 
+        background: #fff;
+        border-radius: 25px;
+    }
+    .msg-reply{
+        /*display: inline-block;*/
         border: 2px solid #a1a1a1;
         padding: 10px 40px;
         background: #dddddd;
@@ -313,6 +376,11 @@
         border: 5px dotted red;
         border-bottom: dotted #ff0000;
       }
+    #reader{
+        display: none;
+        margin-top: -10px;
+        color: #a1a1a1;
+    }
 </style>
 <body>
 <div class="container">
@@ -455,6 +523,7 @@
             <header class="w3-container w3-Lightgray">
                 <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                 <h2 id="model-header"></h2>
+                <div id="reader">กำลังพิมพ์...</div>
             </header>
             <div class="w3-container">
                 <form action="" id="frmMsg">
@@ -473,7 +542,7 @@
                             <i class="fa fa-hashtag" aria-hidden="true"></i>
                         </li>
                     </ul>
-                    <input type="text" id="m" autocomplete="off" autofocus="true" placeholder="กรุณาเขียนข้อความ.."
+                    <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
                            required/>
                     <input type="hidden" id="userRe">
                     <button type="submit">
@@ -667,4 +736,41 @@
         $('#tableFile').dataTable();
     });
     // drag drop
+    socket.on('chat message', function (msg,user_id,userRecei) {
+            if(user_id == '<%= user._id %>'){
+                $('#messages').append($('<p class="border-msg"></p><br>').text(msg))
+                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+            }else{
+                $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(msg));
+                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+            }
+    });
+    socket.emit('userID',$('#user_id').val());
+
+    // dataTable
+    $(document).ready(function() {
+    $('#tableFile').dataTable();
+    } );
+     $(document).ready(function() {
+    $('#tableuser').dataTable();
+    } );
+
+     // $("#m").focus(function(){
+     //    $("#reader").text("อ่านเเล้ว");
+     // });
+     $(document).ready(function(){
+        $("#m").keypress(function(){
+            if($(this).val() != ''){
+                $("#reader").show();
+            }
+        });
+        $("#m").keyup(function(){
+            if($(this).val() != ''){
+                setTimeout(function(){ 
+                    $("#reader").fadeOut();
+                }, 3000);
+            }
+        });
+        $("#m").
+     });
 </script>
