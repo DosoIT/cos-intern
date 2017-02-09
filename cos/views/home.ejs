@@ -21,7 +21,6 @@
     }
     .container {
         width: 100%;
-        height: 100%;
     }
 
     #rowBG {
@@ -440,7 +439,7 @@
             </div>
             <!-- detail file upload user -->
             <div class="col-xs-8 col-md-8 col-sm-8 col-lg-8" id="middlePanel">
-                <h1 class="page-header topheader">File Upload</h1>
+                <h1 class="page-header">File Upload</h1>
                 <table style="width:100%; text-align: center;" id="tableFile" class="table table-striped table-hover">
                     <thead>
                     <th style="text-align: center;">File Name</th>
@@ -550,25 +549,6 @@
                     </button>
                 </form>
             </div>
-                    <!-- dragdrop zone -->
-                    <form id="upload" action="index.html" method="POST" enctype="multipart/form-data">
-                            <fieldset>
-                                <legend>HTML File Upload</legend>
-                                <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
-                                <div>
-                                  <label for="fileselect">Files to upload:</label>
-                                  <input type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
-                                  <div id="filedrag">or drop files here</div>
-                                </div>
-                                <div id="submitbutton">
-                                  <button type="submit">Upload Files</button>
-                                </div>
-                            </fieldset>
-                            </form>
-                            <div id="messages">
-                              <p>Status Messages</p>
-                            </div>
-                    <!-- end draf drop zone -->
             <div id="output">
                 <ul></ul>
             </div>
@@ -747,14 +727,6 @@
     });
     socket.emit('userID',$('#user_id').val());
 
-    // dataTable
-    $(document).ready(function() {
-    $('#tableFile').dataTable();
-    } );
-     $(document).ready(function() {
-    $('#tableuser').dataTable();
-    } );
-
      // $("#m").focus(function(){
      //    $("#reader").text("อ่านเเล้ว");
      // });
@@ -771,6 +743,6 @@
                 }, 3000);
             }
         });
-        $("#m").
+        $("#m");
      });
 </script>
