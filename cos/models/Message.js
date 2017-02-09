@@ -9,7 +9,8 @@ module.exports = {
     createGroup,
     userLogout,
     getGroupByID,
-    getMessageByuser
+    getMessageByuser,
+    getGroup
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -56,11 +57,7 @@ function getDataMessage(callback) {
 function getUserAll(callback) {
 
     if (db) {
-        var userAll = db.collection('users');
-        userAll.find().toArray(function (err, items) {
-            callback(items);
-        });
-
+        var userAll = db.collection('users').find().toArray(callback);
     } else {
         return 0;
     }
@@ -98,11 +95,11 @@ function createGroup(Gname, user) {
     var usergData = [];
     group.insert(data, function (err, item) {
         if (!err) {
-            console.log('Insert Group OK...');
+            console.log('Insert Group OK...' + item.insertedIds[0]);
             for (var key in user) {
                 usergData = {
-                    'g_id': item.insertedIds,
-                    'user_id': user[key],
+                    'g_id': item.insertedIds[0],
+                    'user_id': new objId(user[key]),
                     'del_st': false,
                     'dateTime': new Date()
                 };
@@ -123,36 +120,24 @@ function createGroup(Gname, user) {
 
 function getGroup(callback) {
     var group = db.collection('group');
-    group.find().toArray(function (err, item) {
-        if (!err) {
-            console.log('Find Group Ok.');
-            callback(item);
-        } else {
-            console.log('Find Group Noooo.');
-            db.close();
-        }
-    });
+    group.find().toArray(callback);
 }
-function getGroupByID(user_id, callback) {
-    var group = db.collection('group');
+function getGroupByID(id, callback) {
     var user_group = db.collection('user_group');
-    
-    user_group.find({user_id:user_id}).toArray(function (err, item) {
+    var groupObj = {};
+    var groupID = [];
+
+    user_group.find({user_id: new objId(id)}).toArray(function (err, item) {
         if (!err) {
-            console.log('Find Group By ID Ok.');
-            var groupName = {};
-            for(key in item) {
-                console.log('user_g :'+key._id);
-                group.find({_id: new objId(key.g_id)}, function (err, itemG) {
-                    
-                })
+            for (var value in item) {
+                var gid = item[value].g_id;
+                groupID.push({'g_id': gid});
             }
-            callback(groupName);
+           callback(groupID);
         } else {
             console.log('Find Group BY ID Noooo.');
         }
     });
-    
 }
 
 //User Group =====================================
@@ -211,16 +196,16 @@ function updateProfile(data) {
     return false;
 }
 
-function userLogout(id){
+function userLogout(id) {
     var users = db.collection('users');
-         users.update({"_id":new objId(id)},{
-            $set:{
-                "local.st":false
-                }
-            }
-        );
-        return false;
-      console.log('User Logout Success....');
+    users.update({"_id": new objId(id)}, {
+        $set: {
+            "local.st": false
+        }
+    }
+    );
+    return false;
+    console.log('User Logout Success....');
 }
 
 
