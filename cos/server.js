@@ -58,8 +58,8 @@ io.on('connection', function (socket) {
         console.log('a user connected server : ' ,socket.connected);
         console.log('a user connected server  ID: ' ,socket.id);
         console.log('=====================================================');
-    socket.on('typing',function(msg){
-        io.emit("typingShow",msg,user_id[socket.id]);
+    socket.on('typing',function(msg,st){
+        io.emit("typingShow",msg,user_id[socket.id],st);
     });
     // Message
     socket.on('chat message', function (userSent,msg, userRecei) {

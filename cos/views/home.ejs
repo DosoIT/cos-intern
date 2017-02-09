@@ -697,13 +697,12 @@
     var userRe = $('#userRe').val();
     var msg = $('#m').val();
         socket.emit('chat message',userSent,msg,userRe);
+        socket.emit("typing","กำลังพิมพ์......","st1");
         $('#m').val('');
         return false;
     });
     socket.on('chat message', function (msg, user_id, userRecei) {
         if (user_id == '<%= user._id %>') {
-            $('#messages').append($('<p class="border-msg-sn"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
-        if (user_id == '<%= user._id%>') {
             // user sent
             $('#messages').append($('<p class="w3-right-align"></p>').text(msg));
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
@@ -740,53 +739,33 @@
                 }
         });
     }
+     socket.on('typingShow',function(msg,id,st){
 
-     // $("#m").focus(function(){
-     //    $("#reader").text("อ่านเเล้ว");
-     // });
-     socket.on('typingShow',function(msg,id){
-                console.log("MESSAGES : "+id);
-                if(userSent == id){
-                   
+            if(st=="st1"){
+                setTimeout(function(){
+                    $("#reader").fadeOut(700);
+                },1000);
+            }else if(st=="st2"){
+                 if(userSent == id){
                 }else{
                     $("#reader").show();
                     $("#reader").text(msg);
                 }
-                
-              });
+            }
+                console.log("MESSAGES : "+id);
+        });
 
      $(document).ready(function(){
-        $("#m").keypress(function(){
+        $("#m").keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
             if($(this).val() != ''){
-              socket.emit("typing","กำลังพิมพ์......");
+              socket.emit("typing","กำลังพิมพ์......","st2");
+            }
+            if(keycode == '13'){
+                socket.emit("typing","กำลังพิมพ์......","st1");
             }
         });
-        $("#m").keyup(function(){
-            if($(this).val() != ''){
-                setTimeout(function(){
-                    $("#reader").fedeOut();
-                     socket.emit("typing","");
-                },1000);
 
-            }
-        });
+
      });
-
-        // sort
-
-        function sortgroup(){
-            <% userGroup.sort(); %>
-        }
-        // function sortlist() {
-        // var lb = document.getElementById('mylist');
-        // arrTexts = new Array();
-        // for(i=0; i<lb.length; i++)  {
-        //   arrTexts[i] = lb.options[i].text;
-        // };
-        // arrTexts.sort();
-        // for(i=0; i<lb.length; i++)  {
-        //   lb.options[i].text = arrTexts[i];
-        //   lb.options[i].value = arrTexts[i];
-        // };
-        // };
 </script>
