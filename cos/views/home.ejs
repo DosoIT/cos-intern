@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <style>
+    body{
+        height: 100%;
+    }
     .container {
         width: 100%;
 
@@ -51,7 +54,8 @@
         border: none;
         padding: 10px;
     }
-    a:hover{
+
+    a:hover {
         color: #3333FF;
     }
 
@@ -62,6 +66,7 @@
         padding: 0;
         overflow-y: overlay;
     }
+
     /*#messages{
         text-align: right;
     }*/
@@ -158,6 +163,21 @@
         [class*="col-"] {
             width: auto;
         }
+        #tableOnline{
+            width: 100%;
+        }
+        #leftPanel{
+            width: 100%;
+        }
+        #rightPanel{
+            width: 100%;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #rowHeadder{
+            width: 100%;
+        }
     }
 
     @media only screen and (max-width: 360px) {
@@ -169,6 +189,21 @@
         [class*="col-"] {
             width: auto;
         }
+        #tableOnline{
+            width: 100%;
+        }
+        #leftPanel{
+            width: 100%;
+        }
+        #rightPanel{
+            width: 100%;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #rowHeadder{
+            width: 100%;
+        }
     }
 
     @media only screen and (max-width: 412px) {
@@ -179,6 +214,21 @@
 
         [class*="col-"] {
             width: auto;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #leftPanel{
+            width: 100%;
+        }
+        #rightPanel{
+            width: 100%;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #rowHeadder{
+            width: 100%;
         }
     }
 
@@ -212,7 +262,6 @@
             width: auto;
             margin-top: 0%;
         }
-
         [class*="col-"] {
             width: auto;
         }
@@ -224,36 +273,46 @@
         text-align: center;
         /*border-bottom: 1px solid #ccc;*/
     }
-    .ft-coc{
+
+    .ft-coc {
         width: 50%;
         margin-top: -3%;
     }
-    .bullhorn{
+
+    .bullhorn {
         position: absolute;
-         margin-top: -2%;
+        margin-top: -2%;
     }
-    .pp{
+
+    .pp {
         font-size: 20pt;
         margin-top: 1%;
     }
-    .ft-cos-white{
+
+    .ft-cos-white {
         margin-left: 0%;
         width: 20%;
     }
-    .border-msg-sn{
+
+    .border-msg-sn {
         display: inline-block;
         border: 2px solid #a1a1a1;
-        padding: 10px 40px; 
+        padding: 10px 40px;
         background: #dddddd;
         border-radius: 25px;
     }
-    .border-msg-reply{
+
+    .border-msg-reply {
         display: inline-block;
         border: 2px solid #a1a1a1;
-        padding: 10px 40px; 
+        padding: 10px 40px;
         background: #dddddd;
         border-radius: 25px;
     }
+    .drag {
+        border: 5px dotted red;
+        border-bottom: dotted #ff0000;
+      }
 </style>
 <body>
 <div class="container">
@@ -291,12 +350,14 @@
         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel">
                 <h2 class="page-header">
-                        <div class="w3-dropdown-hover">
-                        <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">Add Group</a>
-                          <a href="#">Group +</a>
-                        </div>
-                    </h2>
-                <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddfffff" class="table-responsive">
+                    <div class="w3-dropdown-hover">
+                        <a href="#" onclick="document.getElementById('model-group').style.display='block'"
+                           title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">Add Group</a>
+                        <a href="#">Group +</a>
+                    </div>
+                </h2>
+                <table style="width: 100%; text-align: center;" id="tableOnline" border="#ddfffff"
+                       class="table-responsive">
                     <tr>
                         <td>
                             <a href="#" class="w3-left"
@@ -336,16 +397,17 @@
             <!-- status online -->
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel">
                 <h2 class="page-header">Online</h2>
-                <table style="width: 100%; text-align: center;" id="tableOnline"  class="table-responsive">
-           <% for (item in userAll) { if(userAll[item].local.st==true){ %>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
+                <table style="width: 100%; text-align: center;" id="tableOnline" class="table-responsive">
+                    <% for (item in userAll) { if(userAll[item].local.st == true){ %>
+                    <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
                         <td>
-                              <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
-                        <% if(userAll[item].local.picture != null){%>
-                              <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
-                        <%}else{%>
-                              <img src="/pic-default" id="userOnlineIMG"/>
-                        <%}%>
+                            <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                            <% if(userAll[item].local.picture != null){ %>
+                            <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle'
+                                 id="userOnlineIMG"/>
+                            <% }else{ %>
+                            <img src="/pic-default" id="userOnlineIMG"/>
+                            <% } %>
                         </td>
                         <td>
                             <a href="#" class="w3-left">
@@ -353,7 +415,7 @@
                             </a>
                         </td>
                     </tr>
-                <% } } %>
+                    <% } } %>
                 </table>
                 <!-- <h2 class="page-header">Offline</h2> -->
                 <!-- end status online -->
@@ -361,23 +423,24 @@
                 <div id="rightPanel">
                     <h2 class="page-header">Offline</h2>
                     <table style="width: 100%; text-align: center;" id="tableOnline">
-                        <% for (item in userAll) { if(userAll[item].local.st==false){%>
-                     <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
-                        <td>
-                              <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
-                        <% if(userAll[item].local.picture != null){%>
-                              <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
-                        <%}else{%>
-                              <img src="/pic-default" id="userOnlineIMG"/>
-                        <%}%>
-                        </td>
-                        <td>
-                            <a href="#" class="w3-left">
-                                <%= userAll[item].local.fname %>
-                            </a>
-                        </td>
-                    </tr>
-                <% } } %>
+                        <% for (item in userAll) { if(userAll[item].local.st == false){ %>
+                        <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');">
+                            <td>
+                                <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
+                                <% if(userAll[item].local.picture != null){ %>
+                                <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle'
+                                     id="userOnlineIMG"/>
+                                <% }else{ %>
+                                <img src="/pic-default" id="userOnlineIMG"/>
+                                <% } %>
+                            </td>
+                            <td>
+                                <a href="#" class="w3-left">
+                                    <%= userAll[item].local.fname %>
+                                </a>
+                            </td>
+                        </tr>
+                        <% } } %>
                     </table>
                 </div>
                 <!-- end status offline -->
@@ -390,7 +453,7 @@
     <div id="id01" class="w3-modal">
         <div class="w3-modal-content w3-animate-zoom w3-card-8">
             <header class="w3-container w3-Lightgray">
-                        <span onclick="closeModel();" class="w3-closebtn">&times;</span>
+                <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                 <h2 id="model-header"></h2>
             </header>
             <div class="w3-container">
@@ -398,8 +461,7 @@
                     <div id="messages"></div>
                     <ul class="menubar-chat">
                         <li>
-                            
-                        <i class="fa fa-paperclip" aria-hidden="true"></i>
+                            <i class="fa fa-paperclip" aria-hidden="true"></i>
                         </li>
                         <li>
                             <i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -413,12 +475,31 @@
                     </ul>
                     <input type="text" id="m" autocomplete="off" autofocus="true" placeholder="กรุณาเขียนข้อความ.."
                            required/>
-                           <input type="hidden" id="userRe" >
+                    <input type="hidden" id="userRe">
                     <button type="submit">
                         <img class="logo" src="/public/image/">
                     </button>
                 </form>
             </div>
+                    <!-- dragdrop zone -->
+                    <form id="upload" action="index.html" method="POST" enctype="multipart/form-data">
+                            <fieldset>
+                                <legend>HTML File Upload</legend>
+                                <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+                                <div>
+                                  <label for="fileselect">Files to upload:</label>
+                                  <input type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
+                                  <div id="filedrag">or drop files here</div>
+                                </div>
+                                <div id="submitbutton">
+                                  <button type="submit">Upload Files</button>
+                                </div>
+                            </fieldset>
+                            </form>
+                            <div id="messages">
+                              <p>Status Messages</p>
+                            </div>
+                    <!-- end draf drop zone -->
             <div id="output">
                 <ul></ul>
             </div>
@@ -430,119 +511,126 @@
 </div>
 <!--chat group model -->
 <form action="/addGroup" method="post">
-<div id="model-group" class="w3-modal">
-    <div class="w3-modal-content">
-      <header class="w3-container">
-        <span onclick="document.getElementById('model-group').style.display='none'" 
-        class="w3-closebtn">&times;</span>
-            <h2>Add Group</h2>
-      </header>
-    <div class="w3-container" id="groupName">
-       <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-            <div class="row">
+    <div id="model-group" class="w3-modal">
+        <div class="w3-modal-content">
+            <header class="w3-container">
+        <span onclick="document.getElementById('model-group').style.display='none'"
+              class="w3-closebtn">&times;</span>
+                <h2>Add Group</h2>
+            </header>
+            <!-- Create Name Group -->
+            <div class="w3-container" id="groupName">
                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                    <label>Create Name Group</label>
-                    <input type="text" name="group_n" class="form-control">
-                </div>
-            </div> <!-- div row -->
-        </div> <!-- div col -->
-         <footer class="w3-container">
-                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
-                     <button type="button" class="w3-btn w3-round-xlarge w3-amber" onclick="getUser()">+ Create</button>
-                </div>
-         </footer>
-    </div>
-    <div class="w3-container w3-animate-zoom" id="list-user" style="display: none;">
-       <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-            <div class="row">
-             <h3>List User</h3>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <label>Create Name Group</label>
+                            <input type="text" name="group_n" class="form-control">
+                        </div>
+                    </div> <!-- div row -->
+                </div> <!-- div col -->
+                <footer class="w3-container">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right"
+                         style="margin-top: 2%; margin-bottom: 2%;">
+                        <button type="button" class="w3-btn w3-round-xlarge w3-amber slide" onclick="getUser()">+ Create
+                        </button>
+                    </div>
+                </footer>
+            </div> <!-- End Create Name Group -->
+            <!-- List User -->
+            <div class="w3-container w3-animate-zoom" id="list-user" style="display: none;">
                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                        <table width="100%">
-                            <tr>
-                                <th>
-                                 <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
-                                    Online
-                                 </th>
-                            </tr>
-                           <tr>
-                            <td colspan="2" class="page-header"></td>
-                           </tr>
-                             <% for (item in userAll) { if(userAll[item].local.st==true){ %>
-                             <tr>
-                                <td>
-                                <div style="margin-top: 5%;">
-                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%;" value="<%= userAll[item]._id %>">
-                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
-                                      <%= userAll[item].local.fname %>
-                                </div>
-                                </td>
-                            </tr>
-                            <%}}%>
-                        </table>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                        <table width="100%" style="margin-bottom: 10%;">
-                            <tr>
-                                <th>
-                                 <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
-                                Offline
-                                 </th>
-                            </tr>
-                           <tr>
-                            <td colspan="2" class="page-header"></td>
-                           </tr>
-                           <% for (item in userAll) { if(userAll[item].local.st==false){ %>
-                            <tr>
-                                <td>
-                                <div style="margin-top: 5%;">
-                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
-                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
-                                      <%= userAll[item].local.fname %>
-                                </div>
-                                </td>
-                            </tr>
-                            <%}}%>
-                        </table>
-                    </div>
-            </div> <!-- div row -->
-        </div> <!-- div col -->
-        <footer class="w3-container">
-                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
-                     <button type="submit" class="w3-btn w3-round-xlarge w3-green">Start</button>
+                    <div class="row">
+                        <h3>List User</h3>
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                                <table width="100%">
+                                    <tr>
+                                        <th>
+                                            <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                                            Online
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="page-header"></td>
+                                    </tr>
+                                    <% for (item in userAll) { if(userAll[item].local.st == true){ %>
+                                    <tr>
+                                        <td>
+                                            <div style="margin-top: 5%;">
+                                                <input type="checkbox" name="user_id[]"
+                                                       style="margin-left: -35%;margin-right:-40%;"
+                                                       value="<%= userAll[item]._id %>">
+                                                <img src="/uploads/<%= userAll[item].local.picture %>" width="25px"
+                                                     height="25px" class="img-circle" id="userOnlineIMG">
+                                                <%= userAll[item].local.fname %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }} %>
+                                </table>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                                <table width="100%" style="margin-bottom: 10%;">
+                                    <tr>
+                                        <th>
+                                            <img src="/imageoffline" alt="" class="icon-online" width="20"
+                                                 height="auto">
+                                            Offline
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="page-header"></td>
+                                    </tr>
+                                    <% for (item in userAll) { if(userAll[item].local.st == false){ %>
+                                    <tr>
+                                        <td>
+                                            <div style="margin-top: 5%;">
+                                                <input type="checkbox" name="user_id[]"
+                                                       style="margin-left: -35%;margin-right:-40%; "
+                                                       value="<%= userAll[item]._id %>">
+                                                <img src="/uploads/<%= userAll[item].local.picture %>" width="25px"
+                                                     height="25px" class="img-circle" id="userOnlineIMG">
+                                                <%= userAll[item].local.fname %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }} %>
+                                </table>
+                            </div>
+                        </div> <!-- div row -->
+                    </div> <!-- div col -->
+                    <footer class="w3-container">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right"
+                             style="margin-top: 2%; margin-bottom: 2%;">
+                            <button type="submit" class="w3-btn w3-round-xlarge w3-green">Start</button>
+                        </div>
+                    </footer>
                 </div>
-        </footer>
+            </div> <!-- End List User -->
     </div>
-        </div> <!-- w3-container -->
-</div><!-- end chat group model -->
+    <!-- end chat group model -->
 </form>
-    <% }else{ %>
-    <script>
-            window.location.href="/";
-    </script>
-    <%  } %>
 </body>
 </html>
 
 <script src="/js"></script>
 <script src="/dataTables-js"></script>
 <script src="/socketJs"></script>
-
 <script type="text/javascript">
-        function getUser(){
-                document.getElementById('groupName').style.display='none';
-                document.getElementById('list-user').style.display='block';
-        }
+    function getUser() {
+        document.getElementById('groupName').style.display = 'none';
+        document.getElementById('list-user').style.display = 'block';
+    }
 
-        function getModel(userSH,id){
-            document.getElementById('id01').style.display = 'block';
-            document.getElementById('model-header').innerHTML = userSH;
-            document.getElementById('userRe').value = id;
-        }
-        function closeModel(){
-            $("#output ul").empty();
-            document.getElementById('id01').style.display = 'none';
-        }
+    function getModel(userSH, id) {
+        document.getElementById('id01').style.display = 'block';
+        document.getElementById('model-header').innerHTML = userSH;
+        document.getElementById('userRe').value = id;
+    }
+    function closeModel() {
+        $("#output ul").empty();
+        document.getElementById('id01').style.display = 'none';
+    }
 
     $("button").click(function () {
         var msg = $("#m").val();
@@ -552,33 +640,31 @@
     // script socket.io
     var socket = io();
     $('#frmMsg').submit(function () {
-    var msg = $('#m').val();
-    var userSent =  $('#user_id').val();
-    var userRe = $('#userRe').val();
+        var msg = $('#m').val();
+        var userSent = $('#user_id').val();
+        var userRe = $('#userRe').val();
 
-    console.log("user sent is : "+userSent);
+        console.log("user sent is : " + userSent);
 
-    socket.emit('chat message',userSent,msg,userRe);
+        socket.emit('chat message', userSent, msg, userRe);
         $('#m').val('');
         return false;
     });
-    socket.on('chat message', function (msg,user_id,userRecei) {
-            if(user_id == '<%= user._id %>'){
-                $('#messages').append($('<p align="right" class="border-msg-sn"></p><br>').text(msg+" : "+'<%= user.local.fname %>'));
-                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-            }else if(userRecei == '<%= user._id %>'){
-                $('#messages').append($('<p align="left" class="border-msg-reply" style="color:green"></p><br>').text(msg+" : "+'<%= user.local.fname %>'));
-                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-            }
+    socket.on('chat message', function (msg, user_id, userRecei) {
+        if (user_id == '<%= user._id %>') {
+            $('#messages').append($('<p align="right" class="border-msg-sn"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+        } else if (userRecei == '<%= user._id %>') {
+            $('#messages').append($('<p align="left" class="border-msg-reply" style="color:green"></p><br>').text(msg + " : " + '<%= user.local.fname %>'));
+            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+        }
     });
 
-    socket.emit('userID',$('#user_id').val());
+    socket.emit('userID', $('#user_id').val());
 
     // dataTable
-    $(document).ready(function() {
-    $('#tableFile').dataTable();
-    } );
-     $(document).ready(function() {
-    $('#tableuser').dataTable();
-    } );
+    $(document).ready(function () {
+        $('#tableFile').dataTable();
+    });
+    // drag drop
 </script>

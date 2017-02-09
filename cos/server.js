@@ -12,6 +12,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var configDB = require('./config/database.js');
 var message = require('./models/Message.js');
+var dragDrop = require('drag-drop');
 // uncomment this line
 require('./config/passport')(passport); // pass passport for configuration
 // configuration ===============================================================
