@@ -1,24 +1,34 @@
 // app/routes.js
 
-module.exports = function (app, passport, urlencodedParser, jsonParser, session) {
+module.exports = function (app, passport, urlencodedParser, jsonParser, session,express) {
     var messages = require('./models/Message.js');
     var multer = require('multer');
     var path = require('path');
     var filenames = "";
     var storage = multer.diskStorage({
         destination: './uploads/',
-        filename: function (req, file, cb, raw) {
+            filename: function (req, file, cb, raw) {
             filenames = "Avatar" + (Math.floor((Math.random() * 1000) + 1)) + path.extname(file.originalname);
             cb(null, filenames)
+            }
         }
-    }
 
     )
 
-    var upload = multer({storage: storage})
-    // =====================================
-    // HOME PAGE (with login links) ========
-    // =====================================
+    var drangfiles = multer({dest:'uploads/files'});
+    app.post( '/drangFiles', drangfiles.single( 'file' ), function( req, res, next ) {
+      // Metadata about the uploaded file can now be found in req.file
+      console.log("drang/drop complete..");
+      return res.status( 200 ).send( req.file );
+    });
+
+    var upload = multer({storage: storage});
+    app.get('/drop-js',function(req,res){
+        res.sendFile(__dirname+'/public/js/dropzone.js')
+    });
+    app.get('/drop-css',function(req,res){
+        res.sendFile(__dirname+'/public/css/dropzone.css')
+    });
     app.get('/', function (req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });

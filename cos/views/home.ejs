@@ -5,12 +5,15 @@
     <meta http-equiv='cache-control' content='no-cache'>
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
+    <meta name="csrf-token" content="XYZ123">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="css">
     <link rel="stylesheet" href="style">
     <link rel="stylesheet" href="font-icon">
     <link rel="stylesheet" href="metroCss">
+    <link rel="stylesheet" href="drop-css">
+    <script type="text/javascript" src="drop-js"></script>
     <script scripts="metroJs"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -307,7 +310,6 @@
         }
     }
 
-    /* end Device Phone And Desktop*/
     .headersys {
         margin-top: -5%;
         text-align: center;
@@ -341,17 +343,8 @@
         border: 2px solid #a1a1a1;
         padding: 10px 40px;
         background: #dddddd;
-        border-radius: 25px;
-    }
-    .border-msg-reply {
-        display: inline-block;
-    .border-msg{
-        display: inline-block;
-        border: 2px solid #a1a1a1;
-        padding: 10px 40px; 
-        background: #fff;
-        border-radius: 25px;
         border-radius: 25px;*/
+    }
     .msg-reply{
         display: inline-block;
         border: 2px solid #a1a1a1;
@@ -531,7 +524,7 @@
                 <div id="reader"></div>
             </header>
             <div class="w3-container">
-                <form action="" id="frmMsg">
+                <form id="frmMsg" method="post"  enctype="multipart/form-data">
                     <div id="messages"></div>
                     <ul class="menubar-chat">
                         <li>
@@ -553,6 +546,12 @@
                     <button type="submit">
                         <img class="logo" src="/public/image/">
                     </button>
+                </form>
+                <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
+                  <div class="fallback">
+                    <input name="file" type="file" />
+                  </div>
+                  <input type="submit" value="ADD+">
                 </form>
             </div>
             <div id="output">
@@ -765,7 +764,37 @@
                 socket.emit("typing","กำลังพิมพ์......","st1");
             }
         });
-
-
      });
+
+     // drang-drop zone script
+    Dropzone.options.uploadWidget = {
+      paramName: 'file',
+      maxFilesize: 2, // MB
+      maxFiles: 1,
+      dictDefaultMessage: 'Drag an image here to upload, or click to select one',
+      headers: {
+        'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,
+      },
+      acceptedFiles: 'image/*',
+      init: function() {
+        this.on('success', function( file, resp ){
+          console.log( file );
+          console.log( resp );
+        });
+        this.on('thumbnail', function(file) {
+          if ( file.width < 640 || file.height < 480 ) {
+            file.rejectDimensions();
+          }
+          else {
+            file.acceptDimensions();
+          }
+        });
+      },
+      accept: function(file, done) {
+        file.acceptDimensions = done;
+        file.rejectDimensions = function() {
+          done('The image must be at least 640 x 480px')
+        };
+      }
+    };
 </script>
