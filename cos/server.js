@@ -23,6 +23,7 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+
 app.use('/uploads',express.static(__dirname + '/uploads'));
 app.use('/image',express.static(__dirname + '/public/image'));
 
@@ -38,7 +39,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes =====================================================================
-require('./routes.js')(app, passport,urlencodedParser,jsonParser,session); // load our routes and pass in our app and fully configured passport
+require('./routes.js')(app, passport,urlencodedParser,jsonParser,session,express); // load our routes and pass in our app and fully configured passport
 
 // ================= launch Socket.io  ==============================
 var server = app.listen(port);
