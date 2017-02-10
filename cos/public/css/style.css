@@ -142,4 +142,23 @@ body {
         margin-top: -2%;
         margin-left: 10%;
     }
-    /*drag drop*/
+    	/*text menu*/
+    #text-file, #text-group, #text-online, #text-offline, #text-header{
+    	color: white;
+    	text-shadow: 1px 1px 1px black, 0 0 5px blue, 0 0 1px darkblue;
+    }
+    a:link{
+    text-decoration:none;
+    }
+    a:visited{
+    text-decoration:none;
+    }
+    #text-profile{
+    	margin-left: 25%;
+    }
+    #link-profile{
+    	padding: 5px;
+    }
+    #text-icons{
+    	width: 40%;
+    }
