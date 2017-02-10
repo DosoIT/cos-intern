@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="style">
     <link rel="stylesheet" href="font-icon">
     <link rel="stylesheet" href="metroCss">
+    <link rel="stylesheet" href="drop-css">
     <script scripts="metroJs"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -560,7 +561,7 @@
                     <div id="reader"></div>
                 </header>
                 <div class="w3-container">
-                    <form action="" id="frmMsg">
+                    <form id="frmMsg" method="post"  enctype="multipart/form-data">
                         <div id="messages"></div>
                             <ul class="menubar-chat">
                                 <li>
@@ -583,6 +584,12 @@
                             <img class="logo" src="/public/image/">
                         </button>
                     </form>
+                        <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
+                        <div class="fallback">
+                        <input name="file" type="file" />
+                        </div>
+                        <input type="submit" value="ADD+">
+                        </form>
                 </div>
                 <div id="output">
                     <ul></ul>
@@ -704,6 +711,7 @@
 
 <script src="/js"></script>
 <script src="/dataTables-js"></script>
+<script src="drop-js"></script>
 <script src="/socketJs"></script>
 <script type="text/javascript">
         function getUser() {
@@ -802,7 +810,36 @@
                 socket.emit("typing","กำลังพิมพ์......","st1");
             }
         });
-
-
      });
+     // drang-drop zone script
+    Dropzone.options.uploadWidget = {
+      paramName: 'file',
+      maxFilesize: 2, // MB
+      maxFiles: 1,
+      dictDefaultMessage: 'Drag an image here to upload, or click to select one',
+      headers: {
+        'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,
+      },
+      acceptedFiles: 'image/*',
+      init: function() {
+        this.on('success', function( file, resp ){
+          console.log( file );
+          console.log( resp );
+        });
+        this.on('thumbnail', function(file) {
+          if ( file.width < 640 || file.height < 480 ) {
+            file.rejectDimensions();
+          }
+          else {
+            file.acceptDimensions();
+          }
+        });
+      },
+      accept: function(file, done) {
+        file.acceptDimensions = done;
+        file.rejectDimensions = function() {
+          done('The image must be at least 640 x 480px')
+        };
+      }
+    };
 </script>
