@@ -10,7 +10,8 @@ module.exports = {
     userLogout,
     getGroupByID,
     getMessageByuser,
-    getGroup
+    getGroup,
+    userReconnect
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -208,6 +209,17 @@ function userLogout(id) {
     );
     return false;
     console.log('User Logout Success....');
+}
+function userReconnect(id) {
+    var users = db.collection('users');
+    users.update({"_id": new objId(id)}, {
+        $set: {
+            "local.st": true
+        }
+    }
+    );
+    return true;
+    console.log('User userReconnect Success....');
 }
 
 
