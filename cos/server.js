@@ -50,6 +50,9 @@ console.log('|>>>> >>>>> Node.js running on port ' + port+' <<<<< <<<<<|');
 console.log('=====================================================');
 
 var user_id={};
+var room ={};
+var people = {};
+var user = [];
 // // Broad casting
 io.on('connection', function (socket) {
     socket.broadcast.emit('hi');
@@ -63,28 +66,66 @@ io.on('connection', function (socket) {
         io.emit("typingShow",msg,user_id[socket.id],st);
     });
     // Message
-    socket.on('chat message', function (userSent,msg, userRecei) {
-        io.emit('chat message', msg,user_id[socket.id],userRecei);
-   		message.messageInsert(userSent,msg,userRecei);
-    });
+    // socket.on('chat message', function (userSent,msg, userRecei) {
+    //     io.emit('chat message', msg,user_id[socket.id],userRecei);
+   	// 	message.messageInsert(userSent,msg,userRecei);
+    // });
 
     // getUserID
     socket.on('userID',function(id){
          user_id[socket.id]= id;
-        console.log('UserIDDDD = '+id);
-        console.log('user Ccc = '+user_id[socket.id]);
-    })
+    });
+    
+    ////privat chat
+        socket.on('subscribe', function(userSent,id) { 
+            console.log('joining room', room);
+            user.push({'user':userSent});
+            user.push({'user':id});
+            people[room] = user;
+            user=[];
 
-    // getMessages to show
-    socket.on('get message', function(userSent,userRe){
-        message.getMessageByuser(userSent,userRe,function(items){
-            io.emit('msg',items);
+            var room1 = userSent+""+id;
+            var room2 = id+""+userSent;
+
+            socket.join(room1); 
+            socket.join(room2); 
+
+            console.log(people);
         });
 
+        socket.on('unsubscribe', function(userSent,userRe) {  
+            console.log('leaving room', userSent,userRe);
+             var room1 = userSent+""+userRe;
+             var room2 = userRe+""+userSent;
+            
+            socket.leave(room1); 
+            socket.leave(room2); 
+        })
+
+        socket.on('send', function(data) {
+            console.log('sending message');
+            io.sockets.in(data.room).emit('send message01', data);
+            message.messageInsert(data.userSent,data.message,data.userRe);            
+        });
+    ////
+    // getMessages to show
+        socket.on('get message', function(userSent,userRe,sortQty){
+
+            message.getMessageByuser(userSent,userRe,sortQty,function(items){
+                var room = userSent+""+userRe;
+                io.sockets.in(room).emit('msg',items,userRe);
+            });
+
+        });
+
+    // reconnect
+    socket.on('userReconnect',function(user){
+        console.log('user Reconnect.....');
+        message.userReconnect(user);
     });
     // Disconnect
     socket.on('disconnect', function () {
         console.log('user disconnected server : ',{userID:user_id[socket.id], status: "disconnected from server"});
-        // var userdie = message.userLogout(user_id[socket.id]);
+        var userdie = message.userLogout(user_id[socket.id]);
     });
 });
