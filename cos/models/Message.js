@@ -76,12 +76,15 @@ function getUserByID(id, callback) {
     }
 }
 
-function getMessageByuser(userSent,userRe,callback) {
+function getMessageByuser(userSent,userRe,sortQty,callback) {
     var message = db.collection('message');
+     var nomber = parseInt(sortQty);
+    console.log("sort QTY = "+nomber+"  userSent :"+userSent+"  userRe: "+userRe);
     message.find({$or:[
     {$and:[{user_sent:userSent},{user_receive:userRe}]},
     {$and:[{user_sent:userRe},{user_receive:userSent}]}
-    ]}).limit(10).sort({_id:-1}).toArray(function(err,items){
+    ]}).limit(nomber).sort({_id:-1}).toArray(function(err,items){
+        console.log("Item :"+items.length);
         callback(items);
     });
     // message.find({user_sent: userSent},{$and:{user_receive:userRe}}).toArray(function (err, items) {

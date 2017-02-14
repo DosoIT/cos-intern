@@ -366,6 +366,7 @@
         background: #fff;
         border-radius: 25px;
         border-radius: 25px;*/
+    }
     .msg-reply{
         display: inline-block;
         border: 2px solid #a1a1a1;
@@ -378,6 +379,13 @@
         margin-top: -10px;
         color: #a1a1a1;
     }
+
+    #hisAll{
+        text-align: right;
+        font-size: 16pt;
+        color: #979a9e;
+    }
+
 
 </style>
 <body>
@@ -565,8 +573,11 @@
             <div class="w3-modal-content w3-animate-zoom w3-card-8">
                 <header class="w3-container w3-Lightgray">
                     <span onclick="closeModel();" class="w3-closebtn">&times;</span>
-                    <h2 id="model-header"></h2>
-                    <div id="reader"></div>
+                        <h2 id="model-header"></h2>
+                        <div id="hisAll" >History</div>
+                        <input type="text" id="counter" style="display: none;" value="10">
+                        <div id="reader"></div>
+
                 </header>
                 <div class="w3-container">
                     <form id="frmMsg" >
@@ -774,6 +785,7 @@
 <script type="text/javascript">
 var socket = io();
 var userSent =  $('#user_id').val();
+var sortQty = 10;
 socket.emit('userReconnect',userSent);
 
         function getUser() {
@@ -827,7 +839,6 @@ socket.emit('userReconnect',userSent);
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }
                     });
-                   
     // End script socket.io
         // dataTable
     $(document).ready(function () {
@@ -838,7 +849,7 @@ socket.emit('userReconnect',userSent);
 
     function getMsg(userRe){
         var cnt = 0;
-        socket.emit('get message',userSent,userRe);
+        socket.emit('get message',userSent,userRe,sortQty);
         $("#messages").empty();
 
         socket.on('msg',function(items,userRe){
@@ -874,6 +885,40 @@ socket.emit('userReconnect',userSent);
             }
                 console.log("MESSAGES : "+id);
         });
+
+     //get History
+    $(document).ready(function () {
+        var $button = $('#hisAll');
+        var $counter = $('#counter');
+
+        $('#hisAll').click(function(){
+            console.log("hisAll");
+          $counter.val( parseInt($counter.val()) + 10 ); // `parseInt` converts the `value` from a string to a number
+          var qty = $counter.val();
+          var userRe = $('#userRe').val();
+          socket.emit('get message',userSent,userRe,qty);
+        $("#messages").empty();
+
+        socket.on('msg',function(items,userRe){
+            console.log("555"+items.length);
+            $("#messages").empty();
+             for (var i = items.length - 1; i >= 0; i--) {
+                    console.log("get msg = "+items[i].message);
+
+                  if(items[i].user_sent == userSent || items[i].user_receive == userRe || items[i].user_sent == userRe || items[i].user_receive == userSent ){
+
+                    if(items[i].user_sent == userSent){
+                        $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
+                    }else{
+                        $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
+                   }
+               }
+           }
+        });
+
+        });
+});
+     /////////////////////
 
      $(document).ready(function(){
         $("#m").keypress(function(event){

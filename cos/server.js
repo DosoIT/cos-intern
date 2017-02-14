@@ -109,9 +109,9 @@ io.on('connection', function (socket) {
         });
     ////
     // getMessages to show
-        socket.on('get message', function(userSent,userRe){
+        socket.on('get message', function(userSent,userRe,sortQty){
 
-            message.getMessageByuser(userSent,userRe,function(items){
+            message.getMessageByuser(userSent,userRe,sortQty,function(items){
                 var room = userSent+""+userRe;
                 io.sockets.in(room).emit('msg',items,userRe);
             });
