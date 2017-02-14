@@ -385,6 +385,10 @@
         font-size: 16pt;
         color: #979a9e;
     }
+    .badge{
+        background-color: red;
+    }
+
 
 
 </style>
@@ -535,6 +539,16 @@
                                                 <%= userAll[item].local.fname %>
                                             </a>
                                         </td>
+                                        <td>
+                                            <%
+                                                count=0;
+                                                for(i in log){
+                                                   if(userAll[item]._id.toString() == log[i].user_sent.toString()){
+                                                           count++;
+                                                  }
+                                              }%>
+                                            <span class="badge"><%if(count != 0){%><%=count; %><%}%></span>
+                                        </td>
                                     </tr>
                                 <% } } } %>
                             </table>
@@ -559,6 +573,10 @@
                                                     <font color="#BEBEBE"><%= userAll[item].local.fname %></font>
                                                 </a>
                                             </td>
+                                            <td>
+                                           
+                                            
+                                        </td>
                                         </tr>
                                     <% } } }%>
                                 </table>
@@ -797,6 +815,8 @@ socket.emit('userReconnect',userSent);
                 document.getElementById('model-header').innerHTML = userSH;
                var iduser = document.getElementById('userRe').value = id;
 
+               socket.emit('clearLog',userSent,id);
+
                socket.emit('subscribe',userSent,id);
             }
             function closeModel(){
@@ -806,6 +826,7 @@ socket.emit('userReconnect',userSent);
                 var userRe = $('#userRe').val();
                 socket.emit('unsubscribe',userSent,userRe);
                 document.getElementById('model-chat-group').style.display = 'none';
+                location.reload();
             }
             function dragDrop(){
                 document.getElementById('drag-drop-zone').style.display = 'block';
@@ -835,7 +856,7 @@ socket.emit('userReconnect',userSent);
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         } else{
                             // user reply
-                            $('#messages').append($('<div class="dv-msg-reply"><p align="left" cl       p></div><br>').text(data.message));
+                            $('#messages').append($('<p align="left" cl       p><br>').text(data.message));
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }
                     });

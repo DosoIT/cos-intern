@@ -11,7 +11,9 @@ module.exports = {
     getGroupByID,
     getMessageByuser,
     getGroup,
-    userReconnect
+    userReconnect,
+    getLog,
+    clearLog
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -20,7 +22,7 @@ MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
 //User=============================
 function messageInsert(sent, msg, receive) {
     var msgtb = db.collection('message');
-
+    var log = db.collection('log_chat');
     var data = {
         'user_sent': sent,
         'user_receive': receive,
@@ -34,6 +36,14 @@ function messageInsert(sent, msg, receive) {
             console.log('insert success');
         } else {
             console.log('insert feil');
+        }
+    });
+
+    log.insert(data,function(err,item){
+        if (!err) {
+            console.log('insert Log success');
+        } else {
+            console.log('insert Log feil');
         }
     });
 
@@ -79,12 +89,10 @@ function getUserByID(id, callback) {
 function getMessageByuser(userSent,userRe,sortQty,callback) {
     var message = db.collection('message');
      var nomber = parseInt(sortQty);
-    console.log("sort QTY = "+nomber+"  userSent :"+userSent+"  userRe: "+userRe);
     message.find({$or:[
     {$and:[{user_sent:userSent},{user_receive:userRe}]},
     {$and:[{user_sent:userRe},{user_receive:userSent}]}
     ]}).limit(nomber).sort({_id:-1}).toArray(function(err,items){
-        console.log("Item :"+items.length);
         callback(items);
     });
     // message.find({user_sent: userSent},{$and:{user_receive:userRe}}).toArray(function (err, items) {
@@ -223,6 +231,23 @@ function userReconnect(id) {
     );
     return true;
     console.log('User userReconnect Success....');
+}
+
+function getLog(id,callback){
+        var log = db.collection('log_chat');
+        log.find({user_receive:id.toString()}).toArray(function(err,item){
+            callback(item);
+        });
+}
+function clearLog(userSent,id){
+        var log = db.collection('log_chat');
+
+        log.find({$and:[{user_receive:userSent},{user_sent:id}]}).toArray(function(err,item){
+                       for(var i in item){
+                        log.remove({_id:{$in:[new objId(item[i]._id)]}});
+                       }
+        });
+
 }
 
 

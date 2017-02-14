@@ -133,8 +133,10 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     app.get('/home', isLoggedIn, function (req, res) {
         messages.getGroupByID(req.user._id, function (callback) {
             messages.getGroup(function (err, groupDe) {
-                messages.getUserAll(function (err1, item) {
-                    res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback});
+                messages.getLog(req.user._id,function(log){
+                    messages.getUserAll(function (err1, item) {
+                        res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback,log:log});
+                    });
                 });
             });
         });

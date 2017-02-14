@@ -87,25 +87,22 @@ io.on('connection', function (socket) {
             var room1 = userSent+""+id;
             var room2 = id+""+userSent;
 
-            socket.join(room1); 
-            socket.join(room2); 
-
-            console.log(people);
+            socket.join(room1);
+            socket.join(room2);
         });
 
-        socket.on('unsubscribe', function(userSent,userRe) {  
+        socket.on('unsubscribe', function(userSent,userRe) {
             console.log('leaving room', userSent,userRe);
              var room1 = userSent+""+userRe;
              var room2 = userRe+""+userSent;
-            
-            socket.leave(room1); 
-            socket.leave(room2); 
+            socket.leave(room1);
+            socket.leave(room2);
         })
 
         socket.on('send', function(data) {
             console.log('sending message');
             io.sockets.in(data.room).emit('send message01', data);
-            message.messageInsert(data.userSent,data.message,data.userRe);            
+            message.messageInsert(data.userSent,data.message,data.userRe);
         });
     ////
     // getMessages to show
@@ -117,7 +114,9 @@ io.on('connection', function (socket) {
             });
 
         });
-
+        socket.on('clearLog',function(userSent,id){
+             message.clearLog(userSent,id);
+        });
     // reconnect
     socket.on('userReconnect',function(user){
         console.log('user Reconnect.....');
