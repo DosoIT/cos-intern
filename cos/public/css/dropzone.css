@@ -180,7 +180,6 @@
   border: 2px dashed #ccc;
   color: #ccc;
   line-height: 100px;
-  text-align: center;
   }
   .dropzone.dz-clickable {
     cursor: pointer; }

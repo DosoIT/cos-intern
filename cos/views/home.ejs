@@ -394,7 +394,7 @@
                     <div class="w3-animate-bottom" id="text-profile">
                         <input type="hidden" id="user_id" value="<%= user._id %>">
                         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
-                            <table class="table-responsive" border="1">
+                            <table class="table-responsive">
                             <tr>
                                 <td class="text-left" id="text-icons">
                                     <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
@@ -716,31 +716,35 @@
                     <div></div>
                 </header>
                 <div class="w3-container">
-                    <form id="frmMsg" method="post"  enctype="multipart/form-data">
-                        <div id="messages"></div>
-                            <ul class="menubar-chat">
-                                <li>
-                                    <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                </li>
-                                <li>
-                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                </li>
-                                <li>
-                                    <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                </li>
-                            </ul>
-                        <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
-                               required maxlength="100" />
-                        <input type="hidden" id="userRe">
-                        <button type="submit">
-                            <img class="logo" src="/public/image/">
-                        </button>
-                    </form>
+                    <div style="display: block;" id="chat-group">
+                        <form id="frmMsg" method="post"  enctype="multipart/form-data">
+                            <div id="messages"></div>
+                                <ul class="menubar-chat">
+                                    <li>
+                                        <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDrop();"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    </li>
+                                </ul>
+                            <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
+                                   required maxlength="100" />
+                            <input type="hidden" id="userRe">
+                            <button type="submit">
+                                <img class="logo" src="/public/image/">
+                            </button>
+                        </form>
+                    </div> <!-- end chat-group -->
+                    <div id="drag-drop-zone" style="display: none;">
                         <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
                             <div class="fallback">
                                 <input name="file" type="file"/>
                             </div>
                         </form>
+                    </div> <!-- end in drag-drop-zone -->
                 </div>
                 <div id="output">
                     <ul></ul>
@@ -780,6 +784,10 @@
                 $("#messages").empty();
                 document.getElementById('id01').style.display = 'none';
                 document.getElementById('model-chat-group').style.display = 'none';
+            }
+            function dragDrop(){
+                document.getElementById('drag-drop-zone').style.display = 'block';
+                document.getElementById('chat-group').style.display = 'none';
             }
         $("button").click(function () {
             var msg = $("#m").val();
