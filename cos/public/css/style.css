@@ -155,10 +155,15 @@ body {
     }
     #text-profile{
     	margin-left: 20%;
+    	width: 100%;
     }
     #link-profile{
     	padding: 1px;
     }
     #text-icons{
     	width: 40%;
+    }
+    #btnCreate{
+    	white-space: normal;
+    	width: 100px;
     }
