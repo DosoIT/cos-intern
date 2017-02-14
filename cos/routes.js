@@ -114,6 +114,12 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     app.get('/indexJS', function (req, res) {
         res.sendFile(__dirname + '/public/js/index.js');
     });
+    app.get('/singinUpJS', function (req, res) {
+        res.sendFile(__dirname + '/public/js/signin-signup.js');
+    });
+    app.get('/signinUpCSS', function (req, res) {
+        res.sendFile(__dirname + '/public/css/signin-signup.css');
+    });
     // =====================================
     // LOGIN ===============================
     // =====================================

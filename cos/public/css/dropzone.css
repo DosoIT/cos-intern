@@ -171,13 +171,16 @@
     -o-transform: scale(1);
     transform: scale(1); } }
 .dropzone, .dropzone * {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+}
 
 .dropzone {
-  min-height: 150px;
-  border: 2px solid rgba(0, 0, 0, 0.3);
-  background: white;
-  padding: 20px 20px; }
+  width: 100%;
+  height: auto;
+  border: 2px dashed #ccc;
+  color: #ccc;
+  line-height: 100px;
+  }
   .dropzone.dz-clickable {
     cursor: pointer; }
     .dropzone.dz-clickable * {
@@ -187,7 +190,10 @@
   .dropzone.dz-started .dz-message {
     display: none; }
   .dropzone.dz-drag-hover {
-    border-style: solid; }
+    /*border-style: solid; */
+    border-color: #000;
+    color: #000;
+  }
     .dropzone.dz-drag-hover .dz-message {
       opacity: 0.5; }
   .dropzone .dz-message {
