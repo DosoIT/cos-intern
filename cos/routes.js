@@ -3,34 +3,29 @@
 module.exports = function (app, passport, urlencodedParser, jsonParser, session,express) {
     var messages = require('./models/Message.js');
     var multer = require('multer');
-    var multer2 = require('multer');
     var path = require('path');
     var filenames = "";
-    var filenames2 = "";
-    var storage = multer.diskStorage({
+    var name ="";
+
+    var storage = new multer.diskStorage({
         destination: './uploads/',
-            filename: function (req, file, cb, raw) {
+            filename: function (req, file, cb) {
             filenames = "Avatar" + (Math.floor((Math.random() * 1000) + 1)) + path.extname(file.originalname);
             cb(null, filenames)
             }
         }
-    )
+    );
 
-    // Dran/Drop file here
-        var storageDg= multer2.diskStorage({
-            destination:"./uploads/files",
-            filename:function(req,file,callback){
-                callback(null,path.extname(file.originalname));
+    var dd = new multer.diskStorage({
+        destination: './uploads/files/',
+            filename: function (req, file, cb) {
+            filenames = "file_" + (Math.floor((Math.random() * 1000) + 1)) + path.extname(file.originalname);
+            cb(null, filenames)
             }
-        });
-    var _dg = multer({dest:'uploads/files'}).any( 'file' );
-    // var _dg = multer2({storageDg:storageDg});
-    app.post( '/drangFiles',_dg,function( req, res ){
-        console.log("drang/drop %s","complete..");
-        console.log(req.files);
-      return res.status( 200 ).send( req.files );
-    });
+        }
+    );
 
+    var der = multer({storage: dd});
     var upload = multer({storage: storage});
     app.get('/drop-js',function(req,res){
         res.sendFile(__dirname+'/public/js/dropzone.js')
@@ -224,6 +219,13 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
                 console.log('update failed');
             }
         }
+    });
+
+    app.post( '/drangFiles',der.any(),isLoggedIn,function( req, res){
+
+        console.log("filename = ",filenames);
+        // console.log(req.files);
+        return res.status( 200 ).send(req.files);
     });
 
     app.post('/addGroup', isLoggedIn, function (req, res) {
