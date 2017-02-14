@@ -393,25 +393,30 @@
                     <br><br>
                     <div class="w3-animate-bottom" id="text-profile">
                         <input type="hidden" id="user_id" value="<%= user._id %>">
-                        <table class="table-responsive">
-                        <tr>
-                            <td class="text-right" id="text-icons">
-                                <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
-                            </td>
-                            <td class="text-left" id="link-profile">
-                                <a href="/profileUpdate"><%= user.local.fname %></a>
-                                <img src="/imageonline" alt="Online" class="icon-online" width="20" height="auto" title="Online Now" style="margin-top: -10%;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right" id="text-icons">
-                                <i class="fa fa-sign-out w3-xlarge" aria-hidden="true"> : </i>
-                            </td>
-                            <td class="text-left" id="link-profile">
-                                <a href="/logout">Log-out</a>
-                            </td>
-                        </tr>
-                        </table>
+                        <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+                            <table class="table-responsive">
+                            <tr>
+                                <td class="text-left" id="text-icons">
+                                    <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
+                                </td>
+                                <td class="text-left" id="link-profile">
+                                    <a href="/profileUpdate"><%= user.local.fname %></a>
+                                </td>
+                                <td colspan="1">
+                                    <img src="/imageonline" alt="Online" class="icon-online" width="20" height="auto" title="Online Now" style="margin-top: -10%;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left" id="text-icons">
+                                    <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
+                                </td>
+                                <td class="text-left" id="link-profile" colspan="2">
+                                    <a href="/logout">Log-out</a>
+                                </td>
+                                <td></td>
+                            </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -458,7 +463,7 @@
                             <tr>
                                 <td>
                                     <a href="#" class="w3-left"
-                                       onclick="document.getElementById('id01').style.display = 'block'">
+                                       onclick="document.getElementById('model-chat-group').style.display = 'block'">
                                        <% for(item in group){%>
                                         <% if(group[item]._id.toString() == userGroup[g].g_id){%>
                                           <%=group[item].g_name%>
@@ -587,12 +592,12 @@
                             <img class="logo" src="/public/image/">
                         </button>
                     </form>
-                        <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
+                    <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
                         <div class="fallback">
-                        <input name="file" type="file" />
+                        <input name="file" type="file"/>
                         </div>
                         <input type="submit" value="ADD+">
-                        </form>
+                    </form>
                 </div>
                 <div id="output">
                     <ul></ul>
@@ -703,6 +708,56 @@
             </div> <!-- end w3-modal-content -->
         </form> <!-- end form chat group -->
     </div> <!-- end div model group -->
+
+    <!--model chat Group-->
+    <div class="w3-container">
+        <div id="model-chat-group" class="w3-modal">
+            <div class="w3-modal-content w3-animate-zoom w3-card-8">
+                <header class="w3-container w3-Lightgray">
+                    <span onclick="closeModel();" class="w3-closebtn">&times;</span>
+                    <h2 id="model-header">Chat group</h2>
+                    <div></div>
+                </header>
+                <div class="w3-container">
+                    <div style="display: block;" id="chat-group">
+                        <form id="frmMsg" method="post"  enctype="multipart/form-data">
+                            <div id="messages"></div>
+                                <ul class="menubar-chat">
+                                    <li>
+                                        <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDrop();"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    </li>
+                                </ul>
+                            <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
+                                   required maxlength="100" />
+                            <input type="hidden" id="userRe">
+                            <button type="submit">
+                                <img class="logo" src="/public/image/">
+                            </button>
+                        </form>
+                    </div> <!-- end chat-group -->
+                    <div id="drag-drop-zone" style="display: none;">
+                        <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
+                            <div class="fallback">
+                                <input name="file" type="file"/>
+                            </div>
+                        </form>
+                    </div> <!-- end in drag-drop-zone -->
+                </div>
+                <div id="output">
+                    <ul></ul>
+                </div>
+                <footer class="w3-container w3-Lightgray" style="margin-top: 1%">
+                    <p class="w3-center">Modal Footer Chat Group</p>
+                </footer>
+            </div> <!-- end w3-modal-content -->
+        </div> <!-- end w3-model -->
+    </div><!--End chat group model -->
 </div> <!-- End Container Main -->
 <% }else{%>
     <script type="text/javascript">
@@ -737,8 +792,12 @@ socket.emit('userReconnect',userSent);
                 $("#messages").empty();
                 document.getElementById('id01').style.display = 'none';
                 var userRe = $('#userRe').val();
-
                 socket.emit('unsubscribe',userSent,userRe);
+                document.getElementById('model-chat-group').style.display = 'none';
+            }
+            function dragDrop(){
+                document.getElementById('drag-drop-zone').style.display = 'block';
+                document.getElementById('chat-group').style.display = 'none';
             }
         $("button").click(function () {
             var msg = $("#m").val();
