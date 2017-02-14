@@ -302,13 +302,13 @@ body {
 
 @media screen and (min-width: 48em) {
     body {
-        margin-bottom: 33.25em
+        margin-bottom: auto;
     }
 }
 
 @media screen and (min-width: 68.75em) {
     body {
-        margin-bottom: 21.5625em
+        margin-bottom: auto;
     }
 }
 
@@ -11229,18 +11229,6 @@ body.search {
         width: 50%
     }
 }
-
-img[src^='https://d.adroll.com/'] {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px
-}
-
 .banner--vd {
     background-color: #ddeafd;
     background-image: url(/assets/inbox/banner-valentine-ee3230e27d1646af042449336ec5d4a694d9e31f621923d0111489acf7bfe3be.jpg)

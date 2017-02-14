@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Sign In</title>
     <link rel="stylesheet" href="signinUpCSS">
     <link rel="stylesheet" href="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <style>
-body
 .tablesorter-disableSelection{
     -ms-user-select:none;
     -moz-user-select:moz-none;
@@ -40,8 +40,10 @@ body
         <div class="cell cell--800 well well--xl">
             <div class="g g--l">
                 <div class="g-b g-b--m--2of6 mbm mbf--m" id="img-cos">
-                    <img alt="COS" src="/image/cos-bg.png">
-                    <img alt="COS-font" src="/image/font-cos.png">
+                    <a href="/">
+                        <img alt="COS" src="/image/cos-bg.png">
+                        <img alt="COS-font" src="/image/font-cos.png">
+                    </a>
                 </div>
                 <div class="g-b g-b--m--4of6">
                     <h1 class="h h--bold mbf">Sign In</h1>
@@ -62,7 +64,7 @@ body
                                 <input type="password" name="password" id="password"
                                          placeholder="Password" required class="form-input mbxs"/>
                                 <a class="bdrn tsxs">
-                                <i class="icn icn--question"></i>
+                                <i class="fa fa-question fa-lg"></i>
                                     <b class="link link--underline">Forgot your password?</b>
                                 </a>
                             </fieldset>
@@ -82,3 +84,4 @@ body
 </body>
 </html>
 <script type="text/javascript" src="singinUpJS"></script>
+<script src="/js"></script>

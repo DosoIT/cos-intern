@@ -90,7 +90,7 @@
         box-sizing: border-box;
     }
     form {
-        border: 1px solid #ccc;
+/*        border: 1px solid #ccc;*/
         padding: 3px;
         position: relative;
         width: 100%;
@@ -204,7 +204,7 @@
     }
 
     .col-12 {
-        width: auto%;
+        width: 100%;
     }
 
     @media only screen and (max-width: 320px) {
@@ -229,6 +229,9 @@
             width: 100%;
         }
         #rowHeadder{
+            width: 100%;
+        }
+        #Btnchat-group{
             width: 100%;
         }
     }
@@ -284,44 +287,56 @@
         #rowHeadder{
             width: 100%;
         }
+        #Btnchat-group{
+            width: 100%;
+        }
     }
 
     @media only screen and (max-width: 768px) {
         /* For IPad */
         .container {
-            width: auto;
+            width: 100%;
             padding: 0;
         }
-
         [class*="col-"] {
-            width: auto;
+            width: 100%;
+        }
+        #text-profile{
+            margin-right: -60%;
+            background-color: red;
         }
     }
 
     @media only screen and (max-width: 800px) {
         /* For mobile phones: */
         .container {
-            width: auto;
+            width: 100%;
             padding: 0;
         }
 
         [class*="col-"] {
-            width: auto;
+            width: 100%;
         }
     }
 
     @media only screen and (max-width: 1024px) {
         /* For IPad Pro */
         .container {
-            width: auto;
+            width: 100%;
             margin-top: 0%;
         }
         [class*="col-"] {
-            width: auto;
+            width: 100%;
+        }
+        #Btnchat-group{
+            width: 100%;
+        }
+        #text-profile{
+            width: 100%;
         }
     }
-
     /* end Device Phone And Desktop*/
+
     .headersys {
         margin-top: -5%;
         text-align: center;
@@ -391,31 +406,29 @@
                         <img src="/uploads/<%= user.local.picture %>" alt="picture" id="picProfile" class="img-circle"/>
                     </div>
                     <br><br>
-                    <div class="w3-animate-bottom" id="text-profile">
-                        <input type="hidden" id="user_id" value="<%= user._id %>">
-                        <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
-                            <table class="table-responsive">
-                            <tr>
-                                <td class="text-left" id="text-icons">
-                                    <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
-                                </td>
-                                <td class="text-left" id="link-profile">
-                                    <a href="/profileUpdate"><%= user.local.fname %></a>
-                                </td>
-                                <td colspan="1">
-                                    <img src="/imageonline" alt="Online" class="icon-online" width="20" height="auto" title="Online Now" style="margin-top: -10%;">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-left" id="text-icons">
-                                    <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
-                                </td>
-                                <td class="text-left" id="link-profile" colspan="2">
-                                    <a href="/logout">Log-out</a>
-                                </td>
-                                <td></td>
-                            </tr>
-                            </table>
+                    <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+                        <div class="w3-animate-bottom w3-center" id="text-profile">
+                            <input type="hidden" id="user_id" value="<%= user._id %>">
+                            <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12 text-center">
+                                <table class="table-responsive">
+                                <tr>
+                                    <td class="text-left" id="text-icons">
+                                        <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
+                                    </td>
+                                    <td class="text-left" id="link-profile">
+                                        <a href="/profileUpdate"><%= user.local.fname %></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left" id="text-icons">
+                                        <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
+                                    </td>
+                                    <td class="text-left" id="link-profile">
+                                        <a href="/logout">Log-out</a>
+                                    </td>
+                                </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -566,11 +579,12 @@
                     <div id="reader"></div>
                 </header>
                 <div class="w3-container">
+                    <div id="chat-user" style="display: block;">
                     <form id="frmMsg" method="post"  enctype="multipart/form-data">
                         <div id="messages"></div>
                             <ul class="menubar-chat">
                                 <li>
-                                    <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                    <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDropUser();"></i>
                                 </li>
                                 <li>
                                     <i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -589,12 +603,17 @@
                             <img class="logo" src="/public/image/">
                         </button>
                     </form>
-                    <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
-                        <div class="fallback">
-                        <input name="file" type="file"/>
-                        </div>
-                        <input type="submit" value="ADD+">
-                    </form>
+                    </div> <!-- chat-user -->
+                    <div id="drag-drop-zone-user" style="display: none;">
+                        <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
+                            <div class="fallback">
+                                <input name="file" type="file"/>
+                            </div>
+                            <div class="text-center" id="submit-drag">
+                                <input type="submit" value="Send">
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div id="output">
                     <ul></ul>
@@ -604,105 +623,108 @@
                 </footer>
             </div> <!-- end w3-modal-content -->
         </div> <!-- end w3-model -->
-    </div> <!-- end chat user -->
+    </div> <!-- end model chat user -->
+
     <!--chat group model -->
     <div id="model-group" class="w3-modal">
             <form action="/addGroup" method="post">
-            <div class="w3-modal-content">
-                  <header class="w3-container">
-                    <span onclick="document.getElementById('model-group').style.display='none'" 
-                    class="w3-closebtn">&times;</span>
-                        <h2>Add Group</h2>
-                  </header>
-                <div class="w3-container" id="groupName">
-                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <div class="w3-modal-content">
+                      <header class="w3-container">
+                        <span onclick="document.getElementById('model-group').style.display='none'" 
+                        class="w3-closebtn">&times;</span>
+                            <h2>Add Group</h2>
+                      </header>
+                    <div class="w3-container" id="groupName">
                         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                                    <label>Create Name Group</label>
-                                    <input type="text" name="group_n" class="form-control">
-                                </div>
-                            </div><!-- div row -->
-                        </div>
-                         <footer class="w3-container">
-                                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;">
-                                     <button type="button" class="w3-btn w3-round-xlarge w3-amber" onclick="getUser();">+ Create</button>
-                                </div>
-                         </footer>
-                    </div><!-- div col -->
-                </div> <!-- End groupName -->
-                <div class="w3-container w3-animate-zoom" id="list-user" style="display: none;">
-                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                            <!-- div row model group -->
-                        <div class="row">
-                            <h3>List User</h3>
-                                <!-- Create Name Group Model -->
                             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                                <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                                        <!-- table online -->
-                                    <table width="100%">
-                                        <tr>
-                                            <th>
-                                             <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
-                                                Online
-                                             </th>
-                                        </tr>
-                                       <tr>
-                                        <td colspan="2" class="page-header"></td>
-                                       </tr>
-                                         <% for (item in userAll) { if(userAll[item].local.st==true){ %>
-                                         <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                         <tr>
-                                            <td>
-                                            <div style="margin-top: 5%;">
-                                                <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%;" value="<%= userAll[item]._id %>">
-                                                 <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
-                                                  <%= userAll[item].local.fname %>
-                                            </div>
-                                            </td>
-                                         </tr>
-                                        <%} } }%>
-                                    </table> <!-- end table online -->
-                                </div>  <!-- end div table online -->
-                                    <!-- div table offline -->
-                                <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
-                                        <!-- table offline -->
-                                    <table width="100%" style="margin-bottom: 10%;">
-                                        <tr>
-                                            <th>
-                                             <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
-                                            Offline
-                                             </th>
-                                        </tr>
-                                       <tr>
-                                        <td colspan="2" class="page-header"></td>
-                                       </tr>
-                                         <% for (item in userAll) { if(userAll[item].local.st==false){ %>
-                                         <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                         <tr>
-                                            <td>
-                                            <div style="margin-top: 5%;">
-                                                <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
-                                                 <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
-                                                  <%= userAll[item].local.fname %>
-                                            </div>
-                                            </td>
-                                         </tr>
-                                        <%} } }%>
-                                    </table> <!-- End table offline -->
-                                    <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
-                                </div> <!-- end div table offline -->
-                                <footer class="w3-container">
-                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right"
-                                         style="margin-top: 2%; margin-bottom: 2%;">
-                                        <button type="submit" class="w3-btn w3-round-xlarge w3-green">Start</button>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <label>Create Name Group</label>
+                                        <input type="text" name="group_n" class="form-control">
                                     </div>
-                                </footer>
-                            </div> <!-- End Create Name Group Model -->
-                        </div> <!-- div row model group -->
-                    </div><!-- end div col chat group model -->
-                </div> <!-- end model chat user-group -->
-            </div> <!-- end w3-modal-content -->
+                                </div><!-- div row -->
+                            </div>
+                             <footer class="w3-container" style="width: 100%;">
+                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right" style="margin-top: 2%; margin-bottom: 2%;" id="Btnchat-group">
+                                            <div class="row">
+                                                <button type="button" class="w3-btn w3-round-xlarge w3-amber" onclick="getUser();" id="btnCreate">+ Create</button>
+                                            </div>
+                                    </div>
+                             </footer>
+                        </div><!-- div col -->
+                    </div> <!-- End groupName -->
+                    <div class="w3-container w3-animate-zoom" id="list-user" style="display: none;">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <!-- div row model group -->
+                            <div class="row">
+                                <h3>List User</h3>
+                                    <!-- Create Name Group Model -->
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                                            <!-- table online -->
+                                        <table width="100%">
+                                            <tr>
+                                                <th>
+                                                 <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
+                                                    Online
+                                                 </th>
+                                            </tr>
+                                           <tr>
+                                            <td colspan="2" class="page-header"></td>
+                                           </tr>
+                                             <% for (item in userAll) { if(userAll[item].local.st==true){ %>
+                                             <%if(userAll[item]._id.toString() != user._id.toString()){%>
+                                             <tr>
+                                                <td>
+                                                <div style="margin-top: 5%;">
+                                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%;" value="<%= userAll[item]._id %>">
+                                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
+                                                      <%= userAll[item].local.fname %>
+                                                </div>
+                                                </td>
+                                             </tr>
+                                            <%} } }%>
+                                        </table> <!-- end table online -->
+                                    </div>  <!-- end div table online -->
+                                        <!-- div table offline -->
+                                    <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                                            <!-- table offline -->
+                                        <table width="100%" style="margin-bottom: 10%;">
+                                            <tr>
+                                                <th>
+                                                 <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
+                                                Offline
+                                                 </th>
+                                            </tr>
+                                           <tr>
+                                            <td colspan="2" class="page-header"></td>
+                                           </tr>
+                                             <% for (item in userAll) { if(userAll[item].local.st==false){ %>
+                                             <%if(userAll[item]._id.toString() != user._id.toString()){%>
+                                             <tr>
+                                                <td>
+                                                <div style="margin-top: 5%;">
+                                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
+                                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
+                                                      <%= userAll[item].local.fname %>
+                                                </div>
+                                                </td>
+                                             </tr>
+                                            <%} } }%>
+                                        </table> <!-- End table offline -->
+                                        <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
+                                    </div> <!-- end div table offline -->
+                                    <footer class="w3-container">
+                                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-right"
+                                             style="margin-top: 2%; margin-bottom: 2%;">
+                                            <button type="submit" class="w3-btn w3-round-xlarge w3-green">Start</button>
+                                        </div>
+                                    </footer>
+                                </div> <!-- End Create Name Group Model -->
+                            </div> <!-- div row model group -->
+                        </div><!-- end div col chat group model -->
+                    </div> <!-- end model chat user-group -->
+                </div> <!-- end w3-modal-content -->
         </form> <!-- end form chat group -->
     </div> <!-- end div model group -->
 
@@ -742,6 +764,9 @@
                         <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
                             <div class="fallback">
                                 <input name="file" type="file"/>
+                            </div>
+                            <div class="text-center" id="submit-drag">
+                                <input type="submit" value="Send">
                             </div>
                         </form>
                     </div> <!-- end in drag-drop-zone -->
@@ -788,6 +813,10 @@
             function dragDrop(){
                 document.getElementById('drag-drop-zone').style.display = 'block';
                 document.getElementById('chat-group').style.display = 'none';
+            }
+            function dragDropUser(){
+                document.getElementById('drag-drop-zone-user').style.display = 'block';
+                document.getElementById('chat-user').style.display = 'none';
             }
         $("button").click(function () {
             var msg = $("#m").val();
