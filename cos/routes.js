@@ -3,8 +3,10 @@
 module.exports = function (app, passport, urlencodedParser, jsonParser, session,express) {
     var messages = require('./models/Message.js');
     var multer = require('multer');
+    var multer2 = require('multer');
     var path = require('path');
     var filenames = "";
+    var filenames2 = "";
     var storage = multer.diskStorage({
         destination: './uploads/',
             filename: function (req, file, cb, raw) {
@@ -12,14 +14,21 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
             cb(null, filenames)
             }
         }
-
     )
 
-    var drangfiles = multer({dest:'uploads/files'});
-    app.post( '/drangFiles', drangfiles.single( 'file' ), function( req, res, next ) {
-      // Metadata about the uploaded file can now be found in req.file
-      console.log("drang/drop complete..");
-      return res.status( 200 ).send( req.file );
+    // Dran/Drop file here
+        var storageDg= multer2.diskStorage({
+            destination:"./uploads/files",
+            filename:function(req,file,callback){
+                callback(null,path.extname(file.originalname));
+            }
+        });
+    var _dg = multer({dest:'uploads/files'}).any( 'file' );
+    // var _dg = multer2({storageDg:storageDg});
+    app.post( '/drangFiles',_dg,function( req, res ){
+        console.log("drang/drop %s","complete..");
+        console.log(req.files);
+      return res.status( 200 ).send( req.files );
     });
 
     var upload = multer({storage: storage});
