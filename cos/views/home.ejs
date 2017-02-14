@@ -433,7 +433,7 @@
     <div class="row" id="rowBG">
         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
                 <!-- Chat Group -->
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel">
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel" >
                     <h2 class="page-header" id="text-group">
                             <div class="w3-dropdown-hover">
                             <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">
@@ -495,10 +495,13 @@
                     </tr>
                     </tbody>
                 </table>
+                <table>
+                    tr>
+                </table>
             </div>
                 <!-- detail file upload user -->
                      <!-- status online -->
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel">
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel" >
                     <div class="row">
                         <h2 class="page-header" id="text-online">Online</h2>
                             <table id="tableOnline" class="table-hover table-responsive">
@@ -561,7 +564,7 @@
                     <div id="reader"></div>
                 </header>
                 <div class="w3-container">
-                    <form id="frmMsg" method="post"  enctype="multipart/form-data">
+                    <form id="frmMsg" >
                         <div id="messages"></div>
                             <ul class="menubar-chat">
                                 <li>
@@ -714,6 +717,10 @@
 <script src="drop-js"></script>
 <script src="/socketJs"></script>
 <script type="text/javascript">
+var socket = io();
+var userSent =  $('#user_id').val();
+socket.emit('userReconnect',userSent);
+
         function getUser() {
             document.getElementById('groupName').style.display = 'none';
             document.getElementById('list-user').style.display = 'block';
@@ -722,12 +729,17 @@
             function getModel(userSH,id){
                 document.getElementById('id01').style.display = 'block';
                 document.getElementById('model-header').innerHTML = userSH;
-                document.getElementById('userRe').value = id;
+               var iduser = document.getElementById('userRe').value = id;
+
+               socket.emit('subscribe',userSent,id);
             }
             function closeModel(){
                 $("#output ul").empty();
                 $("#messages").empty();
                 document.getElementById('id01').style.display = 'none';
+                var userRe = $('#userRe').val();
+
+                socket.emit('unsubscribe',userSent,userRe);
             }
         $("button").click(function () {
             var msg = $("#m").val();
@@ -735,28 +747,29 @@
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         });
     // script socket.io
-    var socket = io();
-    var userSent =  $('#user_id').val();
-
-    $('#frmMsg').submit(function () {
-    var userRe = $('#userRe').val();
-    var msg = $('#m').val();
-        socket.emit('chat message',userSent,msg,userRe);
-        socket.emit("typing","กำลังพิมพ์......","st1");
-        $('#m').val('');
-        return false;
-    });
-    socket.on('chat message', function (msg, user_id, userRecei) {
-        if (user_id == '<%= user._id %>') {
-            // user sent
-            $('#messages').append($('<p class="w3-right-align"></p>').text(msg));
-            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-        } else{
-            // user reply
-            $('#messages').append($('<div class="dv-msg-reply"><p align="left" class="msg-reply"></p></div><br>').text(msg));
-            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-        }
-    });
+     
+                    $('#frmMsg').submit(function () {
+                    var userRe = $('#userRe').val();
+                    var msg = $('#m').val();
+                        // socket.emit('chat message',userSent,msg,userRe);
+                        var room = userSent+""+userRe;
+                        socket.emit('send', { room:room, message: msg,userSent,userRe});
+                        socket.emit("typing","กำลังพิมพ์......","st1");
+                        $('#m').val('');
+                        return false;
+                    });
+                    socket.on('send message01', function (data) {
+                         if (data.userSent == userSent) {
+                            // user sent
+                            $('#messages').append($('<p class="w3-right-align"></p>').text(data.message));
+                            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                        } else{
+                            // user reply
+                            $('#messages').append($('<div class="dv-msg-reply"><p align="left" cl       p></div><br>').text(data.message));
+                            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                        }
+                    });
+                   
     // End script socket.io
         // dataTable
     $(document).ready(function () {
@@ -770,10 +783,13 @@
         socket.emit('get message',userSent,userRe);
         $("#messages").empty();
 
-        socket.on('msg',function(items){
+        socket.on('msg',function(items,userRe){
             $("#messages").empty();
-                for (var i = items.length - 1; i >= 0; i--) {
+             for (var i = items.length - 1; i >= 0; i--) {
                     console.log("get msg = "+items[i].message);
+
+                  if(items[i].user_sent == userSent || items[i].user_receive == userRe || items[i].user_sent == userRe || items[i].user_receive == userSent ){
+
                     if(items[i].user_sent == userSent){
                         $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
@@ -781,7 +797,8 @@
                         $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                    }
-                }
+               }
+           }
         });
     }
      socket.on('typingShow',function(msg,id,st){
