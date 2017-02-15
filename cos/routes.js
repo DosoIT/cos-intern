@@ -115,6 +115,12 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     app.get('/signinUpCSS', function (req, res) {
         res.sendFile(__dirname + '/public/css/signin-signup.css');
     });
+    app.get('/font-awesome', function (req, res) {
+        res.sendFile(__dirname + '/public/css/font-awesome.min.css');
+    });
+    app.get('/w3css', function (req, res) {
+        res.sendFile(__dirname + '/public/css/w3.css');
+    });
     // =====================================
     // LOGIN ===============================
     // =====================================

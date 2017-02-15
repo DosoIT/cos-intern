@@ -87,10 +87,10 @@
     * {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
+        /*box-sizing: border-box;*/
     }
     form {
-        border: 1px solid #ccc;
+        /*border: 1px solid #ccc;*/
         padding: 3px;
         position: relative;
         width: 100%;
@@ -413,18 +413,14 @@
                                 <td class="text-left" id="link-profile">
                                     <a href="/profileUpdate"><%= user.local.fname %></a>
                                 </td>
-                                <td colspan="1">
-                                    <img src="/imageonline" alt="Online" class="icon-online" width="20" height="auto" title="Online Now" style="margin-top: -10%;">
-                                </td>
                             </tr>
                             <tr>
                                 <td class="text-left" id="text-icons">
                                     <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
                                 </td>
-                                <td class="text-left" id="link-profile" colspan="2">
+                                <td class="text-left" id="link-profile">
                                     <a href="/logout">Log-out</a>
                                 </td>
-                                <td></td>
                             </tr>
                             </table>
                         </div>
@@ -511,9 +507,6 @@
                     </tr>
                     </tbody>
                 </table>
-                <table>
-                    tr>
-                </table>
             </div>
                 <!-- detail file upload user -->
                      <!-- status online -->
@@ -534,7 +527,7 @@
                                             <% } %>
                                         </td>
                                         <td>
-                                            <a href="#" class="w3-left">
+                                            <a href="#" class="w3-left"">
                                                 <%= userAll[item].local.fname %>
                                             </a>
                                         </td>
@@ -577,8 +570,6 @@
                                                 </a>
                                             </td>
                                             <td>
-                                           
-                                            
                                         </td>
                                         </tr>
                                     <% } } }%>
@@ -598,38 +589,37 @@
                         <div id="hisAll" >History</div>
                         <input type="text" id="counter" style="display: none;" value="10">
                         <div id="reader"></div>
-
                 </header>
                 <div class="w3-container">
-                    <form id="frmMsg" >
-                        <div id="messages"></div>
-                            <ul class="menubar-chat">
-                                <li>
-                                    <i class="fa fa-paperclip" aria-hidden="true"></i>
-                                </li>
-                                <li>
-                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                </li>
-                                <li>
-                                    <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                </li>
-                                <li>
-                                    <i class="fa fa-hashtag" aria-hidden="true"></i>
-                                </li>
-                            </ul>
-                        <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
-                               required maxlength="100" />
-                        <input type="hidden" id="userRe">
-                        <button type="submit">
-                            <img class="logo" src="/public/image/">
-                        </button>
-                    </form>
-                    <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
-                        <div class="fallback">
-                        <input name="file" type="file"/>
-                        </div>
-                        <input type="submit" value="ADD+">
-                    </form>
+                    <div id="chat-user" style="display: block;">
+                        <form id="frmMsg" >
+                            <div id="messages"></div>
+                                <ul class="menubar-chat">
+                                    <li>
+                                        <i class="fa fa-paperclip" aria-hidden="true" onclick="dragModelUser();"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    </li>
+                                </ul>
+                            <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
+                                   required maxlength="100" />
+                            <input type="hidden" id="userRe">
+                            <button type="submit">
+                                <img class="logo" src="/public/image/">
+                            </button>
+                        </form>
+                    </div>
+                    <div id="drag-drop-user" style="display: none;">
+                        <form id="upload-widget" method="post" action="/drangFiles" class="dropzone">
+                            <div class="fallback">
+                            <input name="file" type="file"/>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div id="output">
                     <ul></ul>
@@ -645,13 +635,13 @@
             <form action="/addGroup" method="post">
             <div class="w3-modal-content">
                   <header class="w3-container">
-                    <span onclick="document.getElementById('model-group').style.display='none'" 
+                    <span onclick="document.getElementById('model-group').style.display='none'"
                     class="w3-closebtn">&times;</span>
                         <h2>Add Group</h2>
                   </header>
                 <div class="w3-container" id="groupName">
                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" id="create-group">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                     <label>Create Name Group</label>
@@ -751,12 +741,12 @@
                     <div></div>
                 </header>
                 <div class="w3-container">
-                    <div style="display: block;" id="chat-group">
+                    <div style="display: block;" id="chat-group" class="model-body">
                         <form id="frmMsg" method="post"  enctype="multipart/form-data">
                             <div id="messages"></div>
                                 <ul class="menubar-chat">
                                     <li>
-                                        <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDrop();"></i>
+                                        <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDropGrorp();"></i>
                                     </li>
                                     <li>
                                         <i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -784,9 +774,12 @@
                 <div id="output">
                     <ul></ul>
                 </div>
-                <footer class="w3-container w3-Lightgray" style="margin-top: 1%">
+                <!-- <footer class="w3-container w3-Lightgray" style="margin-top: 1%">
                     <p class="w3-center">Modal Footer Chat Group</p>
-                </footer>
+                </footer> -->
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
             </div> <!-- end w3-modal-content -->
         </div> <!-- end w3-model -->
     </div><!--End chat group model -->
@@ -800,6 +793,7 @@
 </html>
 
 <script src="/js"></script>
+<script src="/bootstrap-js"></script>
 <script src="/dataTables-js"></script>
 <script src="drop-js"></script>
 <script src="/socketJs"></script>
@@ -831,9 +825,13 @@ socket.emit('userReconnect',userSent);
                 document.getElementById('model-chat-group').style.display = 'none';
                 location.reload();
             }
-            function dragDrop(){
+            function dragDropGrorp(){
                 document.getElementById('drag-drop-zone').style.display = 'block';
                 document.getElementById('chat-group').style.display = 'none';
+            }
+            function dragModelUser(){
+                document.getElementById('chat-user').style.display = 'none';
+                document.getElementById('drag-drop-user').style.display = 'block';
             }
         $("button").click(function () {
             var msg = $("#m").val();
@@ -841,7 +839,6 @@ socket.emit('userReconnect',userSent);
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         });
     // script socket.io
-     
                     $('#frmMsg').submit(function () {
                     var userRe = $('#userRe').val();
                     var msg = $('#m').val();
@@ -986,4 +983,10 @@ socket.emit('userReconnect',userSent);
         };
       }
     };
+    $('#model-chat-group').on('hidden.bs.model', function(){
+        $('#model-body').find('input').val('')
+    });
+    $('#groupName').on('hidden.bs.model', function(){
+        $('#create-group').find('input').val('')
+    });
 </script>
