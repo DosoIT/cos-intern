@@ -313,8 +313,47 @@
     @media only screen and (max-width: 1024px) {
         /* For IPad Pro */
         .container {
+            width: 100%;
+            margin-top: 0%;
+            position: absolute;
+        }
+        [class*="col-"] {
+            width: auto;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #leftPanel{
+            margin-top: -10%;
+            width: 100%;
+        }
+        #rightPanel{
+            width: 100%;
+        }
+        #tableOnline{
+            width: 100%;
+        }
+        #rowHeadder{
+            width: 100%;
+        }
+        #rowBG{
+            margin-top: 5%;
+        }
+    }
+    @media only screen and (max-width: 1024px) and(max-height: 1366){
+        /* For IPad Pro */
+        .container {
             width: auto;
             margin-top: 0%;
+        }
+        [class*="col-"] {
+            width: auto;
+        }
+    }
+    @media only screen and (max-width: 1920px) and(max-height: 1080){
+        /* For IPad Pro */
+        .container {
+            width: auto;
         }
         [class*="col-"] {
             width: auto;
@@ -395,23 +434,19 @@
                     <div class="w3-animate-bottom" id="text-profile">
                         <input type="hidden" id="user_id" value="<%= user._id %>">
                         <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
-                            <table class="table-responsive">
-                            <tr>
-                                <td class="text-left" id="text-icons">
-                                    <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
-                                </td>
-                                <td class="text-left" id="link-profile">
-                                    <a href="/profileUpdate"><%= user.local.fname %></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-left" id="text-icons">
-                                    <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
-                                </td>
-                                <td class="text-left" id="link-profile">
-                                    <a href="/logout">Log-out</a>
-                                </td>
-                            </tr>
+                            <table class="w3-table">
+                                <tr>
+                                    <td class="text-right" id="text-icons">
+                                        <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
+                                        <a href="/profileUpdate"><%= user.local.fname %></a>
+                                    </td>
+                                </tr>
+                                <tr class="link-logout">
+                                    <td class="text-left" id="text-icons">
+                                        <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
+                                        <a href="/logout">Log-out</a>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -438,16 +473,15 @@
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel" >
                     <h2 class="page-header" id="text-group">
                             <div class="w3-dropdown-hover">
-                            <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">
-                                <font color="white">Add Group</font>
-                            </a>
-                            <a href="#">
-                                <font color="white">Group +</font>
-                            </a>
+                                <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">
+                                    <font color="white">Add Group</font>
+                                </a>
+                                <a href="#">
+                                    <font color="white">Group +</font>
+                                </a>
                             </div>
-                        </h2>
-                    <div class="table-responsive">
-                    <table id="tableGroup" class="table-hover">
+                    </h2>
+                    <table id="tableGroup" class="w3-table table-hover">
                         <% for(g in userGroup){ %>
                             <tr>
                                 <td>
@@ -466,7 +500,6 @@
                             </tr>
                         <% } %>
                     </table>
-                    </div> <!-- end table responsive -->
                 </div>
                 <!-- End Chat group -->
                 <!-- detail file upload user -->
@@ -789,7 +822,7 @@
     </div><!--End chat group model -->
          <!-- Model Image Profile -->
     <div id="modalimage" class="w3-modal" onclick="this.style.display='none'">
-        <span class="w3-closebtn w3-hover-red w3-text-white w3-xxlarge w3-containerw3-display-topright">&times;</span>
+        <span class="w3-closebtn w3-hover-white w3-text-white w3-xxlarge w3-containerw3-display-topright">&times;</span>
             <div class="w3-animate-zoom">
                 <img id="img01">
             </div>
