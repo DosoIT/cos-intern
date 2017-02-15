@@ -802,9 +802,6 @@
                 <!-- <footer class="w3-container w3-Lightgray" style="margin-top: 1%">
                     <p class="w3-center">Modal Footer Chat Group</p>
                 </footer> -->
-                <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
             </div> <!-- end w3-modal-content -->
         </div> <!-- end w3-model -->
     </div><!--End chat group model -->
@@ -881,7 +878,7 @@ socket.emit('userReconnect',userSent);
        function getModelGroup(u_g_id){
           document.getElementById('model-chat-group').style.display = 'block';
           var gname = document.getElementById('gName').value;
-          alert(gname);
+          // alert(gname);
        }
         $("button").click(function () {
             var msg = $("#m").val();
