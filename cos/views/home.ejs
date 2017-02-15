@@ -474,10 +474,11 @@
                             <tr>
                                 <td>
                                     <a href="#" class="w3-left"
-                                       onclick="document.getElementById('model-chat-group').style.display = 'block'">
+                                       onclick="getModelGroup('<%userGroup[g].g_id%>');">
                                        <% for(item in group){%>
                                         <% if(group[item]._id.toString() == userGroup[g].g_id){%>
                                           <%=group[item].g_name%>
+                                            <input type="hidden" id="gName" value="<%=group[item].g_name%>">
                                               <%}else{%>
 
                                               <%}%>
@@ -546,11 +547,17 @@
                                                            count++;
                                                   }
                                               }%>
-                                            <span class="badge">
-                                             <%if(count != 0){%>
+                                              <%if(count != 0){%>
+                                            <span class="badge" style="display:block;">
                                                     <%=count; %>
+                                            </span>
+                                             <%}else{%>
+                                                <style type="text/css">
+                                                    .badge{
+                                                        display:none;
+                                                    }
+                                                </style>
                                              <%}%>
-                                                </span>
                                         </td>
                                     </tr>
                                 <% } } } %>
@@ -577,8 +584,24 @@
                                                 </a>
                                             </td>
                                             <td>
-                                           
-                                            
+                                                 <%
+                                                count=0;
+                                                for(i in log){
+                                                   if(userAll[item]._id.toString() == log[i].user_sent.toString()){
+                                                           count++;
+                                                  }
+                                              }%>
+                                              <%if(count != 0){%>
+                                            <span class="badge" style="display:block;">
+                                                    <%=count; %>
+                                            </span>
+                                             <%}else{%>
+                                                <style type="text/css">
+                                                    .badge{
+                                                        display:none;
+                                                    }
+                                                </style>
+                                             <%}%>
                                         </td>
                                         </tr>
                                     <% } } }%>
@@ -813,35 +836,36 @@ socket.emit('userReconnect',userSent);
             document.getElementById('groupName').style.display = 'none';
             document.getElementById('list-user').style.display = 'block';
         }
-            function getModel(userSH,id){
-                document.getElementById('id01').style.display = 'block';
-                document.getElementById('model-header').innerHTML = userSH;
-               var iduser = document.getElementById('userRe').value = id;
-
-               socket.emit('clearLog',userSent,id);
-
-               socket.emit('subscribe',userSent,id);
-            }
-            function closeModel(){
-                $("#output ul").empty();
-                $("#messages").empty();
-                document.getElementById('id01').style.display = 'none';
-                var userRe = $('#userRe').val();
-                socket.emit('unsubscribe',userSent,userRe);
-                document.getElementById('model-chat-group').style.display = 'none';
-                location.reload();
-            }
-            function dragDrop(){
-                document.getElementById('drag-drop-zone').style.display = 'block';
-                document.getElementById('chat-group').style.display = 'none';
-            }
+        function getModel(userSH,id){
+            document.getElementById('id01').style.display = 'block';
+            document.getElementById('model-header').innerHTML = userSH;
+            var iduser = document.getElementById('userRe').value = id
+           socket.emit('clearLog',userSent,id)
+           socket.emit('subscribe',userSent,id);
+        }
+        function closeModel(){
+            $("#output ul").empty();
+            $("#messages").empty();
+            document.getElementById('id01').style.display = 'none';
+            var userRe = $('#userRe').val();
+            socket.emit('unsubscribe',userSent,userRe);
+            document.getElementById('model-chat-group').style.display = 'none';
+            location.reload();
+       }
+       function dragDrop(){
+           document.getElementById('drag-drop-zone').style.display = 'block';
+           document.getElementById('chat-group').style.display = 'none';
+       }
+       function getModelGroup(u_g_id){
+          document.getElementById('model-chat-group').style.display = 'block';
+          var gname = document.getElementById('gName').value;
+          alert(gname);
+       }
         $("button").click(function () {
             var msg = $("#m").val();
-            console.log("Test : " + msg);
             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         });
     // script socket.io
-     
                     $('#frmMsg').submit(function () {
                     var userRe = $('#userRe').val();
                     var msg = $('#m').val();

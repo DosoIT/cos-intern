@@ -180,11 +180,11 @@ function getUserGroupByuser(user) {
 }
 
 //Message Group ==============================================
-function insertMessageroup(msg, gid) {
-    var msg = db.collection('group_message');
+function insertMessageroup(msg, u_gid) {
+    var msg = db.collection('message_group');
     var data = {
         'g_message': msg,
-        'g_id': gid,
+        'g_id': u_gid,
         'file_upload': '',
         'dateTime': new Date()
     };
