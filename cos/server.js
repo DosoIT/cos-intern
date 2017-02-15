@@ -75,9 +75,8 @@ io.on('connection', function (socket) {
     socket.on('userID',function(id){
          user_id[socket.id]= id;
     });
-    
     ////privat chat
-        socket.on('subscribe', function(userSent,id) { 
+        socket.on('subscribe', function(userSent,id) {
             console.log('joining room', room);
             user.push({'user':userSent});
             user.push({'user':id});
@@ -125,6 +124,6 @@ io.on('connection', function (socket) {
     // Disconnect
     socket.on('disconnect', function () {
         console.log('user disconnected server : ',{userID:user_id[socket.id], status: "disconnected from server"});
-        var userdie = message.userLogout(user_id[socket.id]);
+        // var userdie = message.userLogout(user_id[socket.id]);
     });
 });

@@ -208,6 +208,15 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
         // res.send(req.files);
         if (filenames == "") {
             res.redirect("/profile");
+            var dataUser = {
+                '_id': req.body._id,
+                'fname': req.body.fname,
+                'lname': req.body.lname,
+                'email': req.body.email,
+                'tel': req.body.tel,
+                'position': req.body.position,
+            }
+            var msg = messages.updateProfile(dataUser);
         } else {
             var dataUser = {
                 '_id': req.body._id,
