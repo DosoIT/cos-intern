@@ -154,16 +154,12 @@ body {
     text-decoration:none;
     }
     #text-profile{
-    	margin-left: 20%;
+    	margin-top: -5%;
+    	margin-left: 13%;
     	width: 100%;
     }
-    #link-profile{
-    	padding: 1px;
-    }
     #text-icons{
-    	width: 40%;
-    }
-    #btnCreate{
-    	white-space: normal;
-    	width: 100px;
+    	text-align: left;
+    	vertical-align: left;
+    	padding: 3px;
     }
