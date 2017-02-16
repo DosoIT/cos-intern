@@ -131,6 +131,23 @@
         margin-right: 1%;
         padding: 1px 20px 2px 9px;
     }
+     #messages-group {
+        height: 250px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow-y: hidden;
+    }
+    #messages-group:hover{
+     overflow-y: overlay;
+    }
+    #messages-group > p:last-child {
+        color: red;
+    }
+    #messages-group p {
+        margin-right: 1%;
+        padding: 1px 20px 2px 9px;
+    }
     .w3-modal-content {
         top: 1%;
     }
@@ -155,6 +172,9 @@
         color:black;
     }
     #frmMsg {
+        border: none;
+    }
+    #frmMsg-group {
         border: none;
     }
 
@@ -409,6 +429,11 @@
         font-size: 16pt;
         color: #979a9e;
     }
+    #hisAll-group{
+        text-align: right;
+        font-size: 16pt;
+        color: #979a9e;
+    }
     .badge{
         background-color: red;
     }
@@ -483,22 +508,22 @@
                     </h2>
                     <table id="tableGroup" class="w3-table table-hover">
                         <% for(g in userGroup){ %>
+                                <%if(userGroup[g].del_st != true){%>
                             <tr>
                                 <td>
-                                    <a href="#" class="w3-left"
-                                       onclick="getModelGroup('<%userGroup[g].g_id%>');">
                                        <% for(item in group){%>
                                         <% if(group[item]._id.toString() == userGroup[g].g_id){%>
+                                        <% if(userGroup[g].user_id.toString() == user._id.toString()){%>
+                                          <a href="#" class="w3-left"
+                                          onclick="getModelGroup('<%=userGroup[g]._id%>','<%=group[item].g_name%>','<%=group[item]._id%>');getMsgGroup('<%=group[item]._id%>','<%=group[item].g_name%>','<%=userGroup[g]._id%>');">
                                           <%=group[item].g_name%>
-                                            <input type="hidden" id="gName" value="<%=group[item].g_name%>">
-                                              <%}else{%>
-
-                                              <%}%>
+                                          </a>
+                                              <%}}%>
                                        <%}%>
-                                    </a>
                                 </td>
+                                <td><a onclick="delGroup('<%=userGroup[g]._id%>');"><font color="#BEBEBE">ออก</font></a></td>
                             </tr>
-                        <% } %>
+                        <% } }%>
                     </table>
                 </div>
                 <!-- End Chat group -->
@@ -598,7 +623,7 @@
                                                 for(i in log){
                                                    if(userAll[item]._id.toString() == log[i].user_sent.toString()){
                                                            count++;
-                                                  }
+                                                }
                                               }%>
                                               <%if(count != 0){%>
                                             <span class="badge" style="display:block;">
@@ -776,14 +801,15 @@
         <div id="model-chat-group" class="w3-modal">
             <div class="w3-modal-content w3-animate-zoom w3-card-8">
                 <header class="w3-container w3-Lightgray">
-                    <span onclick="closeModelChatGroup();" class="w3-closebtn">&times;</span>
-                    <h2 id="model-header">Chat group</h2>
-                    <div></div>
+                    <span onclick="closeModelGroup();" class="w3-closebtn">&times;</span>
+                    <h2 id="model-group-header"></h2>
+                    <div id="hisAll-group">History</div>
+                    <input type="hidden" id="counter-group" style="display: none;" value="10">
                 </header>
                 <div class="w3-container">
-                    <div style="display: block;" id="chat-group" class="model-body">
-                        <form id="frmMsg" method="post"  enctype="multipart/form-data">
-                            <div id="messages"></div>
+                    <div style="display: block;" id="chat-group">
+                        <form id="frmMsg-group" >
+                            <div id="messages-group"></div>
                                 <ul class="menubar-chat">
                                     <li>
                                         <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDropGrorp();"></i>
@@ -795,9 +821,11 @@
                                         <i class="fa fa-user-plus" aria-hidden="true"></i>
                                     </li>
                                 </ul>
-                                <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
-                                   required maxlength="100" class="w3-border" />
-                                <input type="hidden" id="userRe">
+                                <input type="text" id="m-group" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
+                                       required maxlength="100" class="w3-border" />
+                                <input type="hidden" id="u_g_ID">
+                                <input type="hidden" id="gname">
+                                <input type="hidden" id="gid">
                                 <button type="submit">
                                     <img class="logo" src="/public/image/">
                                 </button>
@@ -881,7 +909,7 @@ socket.emit('userReconnect',userSent);
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
             var iduser = document.getElementById('userRe').value = id
-           socket.emit('clearLog',userSent,id)
+           socket.emit('clearLog',userSent,id);
            socket.emit('subscribe',userSent,id);
         }
         function closeModel(){
@@ -890,27 +918,17 @@ socket.emit('userReconnect',userSent);
             document.getElementById('id01').style.display = 'none';
             var userRe = $('#userRe').val();
             socket.emit('unsubscribe',userSent,userRe);
-            document.getElementById('model-chat-group').style.display = 'none';
             location.reload();
        }
        function dragDrop(){
            document.getElementById('drag-drop-zone').style.display = 'block';
            document.getElementById('chat-group').style.display = 'none';
        }
-       function getModelGroup(u_g_id){
-          document.getElementById('model-chat-group').style.display = 'block';
-          var gname = document.getElementById('gName').value;
-          // alert(gname);
-       }
-       function closeModelGroup(){
-        location.reload();
-       }
-       function closeModelChatGroup(){
-        location.reload();
-       }
+
         $("button").click(function () {
             var msg = $("#m").val();
-            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+            // var msg-group = $("#m-group").val();
+            // $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         });
     // script socket.io
                     $('#frmMsg').submit(function () {
@@ -995,7 +1013,6 @@ socket.emit('userReconnect',userSent);
         $("#messages").empty();
 
         socket.on('msg',function(items,userRe){
-            console.log("555"+items.length);
             $("#messages").empty();
              for (var i = items.length - 1; i >= 0; i--) {
                     console.log("get msg = "+items[i].message);
@@ -1026,6 +1043,104 @@ socket.emit('userReconnect',userSent);
             }
         });
      });
+////////////////////////////////////////////////////////////group//////////////////////////////////////////////////////////////////////
+        function getModelGroup(u_g_id,gname,gid){
+          document.getElementById('model-chat-group').style.display = 'block';
+          document.getElementById('model-group-header').innerHTML = gname;
+          var iduser = document.getElementById('u_g_ID').value = u_g_id;
+          var group = document.getElementById('gname').value = gname;
+          var gid = document.getElementById('gid').value = gid;
+          socket.emit('subscribe-group',gname);
+          socket.emit('clearLogGroup',u_g_id);
+       }
+       function closeModelGroup (){
+            $("#output ul").empty();
+            $("#messages-group").empty();
+            document.getElementById('model-chat-group').style.display = 'none';
+            var gname = $('#gname').val();
+            socket.emit('unsubscribe-group',gname);
+            document.getElementById('model-chat-group').style.display = 'none';
+            location.reload();
+       }
+       function delGroup(u_g_id){
+            if (confirm("คุณต้องการออกจากกลุ่มหรือไม่!!") == true) {
+                socket.emit('del group',u_g_id);
+                location.reload();
+            } else {
+            }
+       }
+     // script socket.io Group
+                    $('#frmMsg-group').submit(function () {
+                          var u_g_ID = $('#u_g_ID').val();
+                          var gname = $('#gname').val();
+                          var msg = $('#m-group').val();
+                          console.log("form group"+msg);
+                          var room = gname;
+                          socket.emit('send-group', { room:room, message: msg,userGID:u_g_ID});
+                    //     socket.emit("typing","กำลังพิมพ์......","st1");
+                           $('#m-group').val('');
+                         return false;
+                    });
+                    socket.on('send message group', function (data) {
+                            var u_g_ID = $('#u_g_ID').val();
+                            if(data.userGID == u_g_ID){
+                                $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(data.message))
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }else{
+                                $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }
+                    });
+
+
+                     function getMsgGroup(gid,gname,u_g_ID){
+                         var cnt = 0;
+                        socket.emit('get message group',gid,gname,sortQty);
+                        $("#messages-group").empty();
+                        socket.on('msg group',function(items,userRe){
+                            $("#messages-group").empty();
+                             for (var i = items.length - 1; i >= 0; i--) {
+                                        if(items[i].u_g_id == u_g_ID){
+                                            $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].g_message))
+                                            $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                        }else{
+                                            $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].g_message));
+                                            $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                       }
+                           }
+                        });
+                    }
+
+
+    ////history group
+
+    $(document).ready(function () {
+        var $button = $('#hisAll-group');
+        var $counter = $('#counter-group');
+
+        $('#hisAll-group').click(function(){
+          $counter.val( parseInt($counter.val()) + 10 ); // `parseInt` converts the `value` from a string to a number
+          var qty = $counter.val();
+          var gname = $('#gname').val();
+          var gid = $('#gid').val();
+          socket.emit('get message group',gid,gname,qty);
+          $("#messages-group").empty();
+
+          socket.on('send message group', function (data) {
+                            var u_g_ID = $('#u_g_ID').val();
+                            if(data.userGID == u_g_ID){
+                                $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(data.message))
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }else{
+                                $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }
+         });
+
+        });
+    });
+    // End script socket.io Group
+    ////////////////////////////////////////////////////////////////////////////////////////////
      // drang-drop zone script
     Dropzone.options.uploadWidget = {
       paramName: 'file',
@@ -1057,6 +1172,7 @@ socket.emit('userReconnect',userSent);
         };
       }
     };
+
     $('#model-chat-group').on('hidden.bs.model', function(){
         $('#model-body').find('input').val('');
     });
