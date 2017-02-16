@@ -16,7 +16,8 @@ module.exports = {
     clearLog,
     insertMessageroup,
     clearLogGroup,
-    getMessageByGroup
+    getMessageByGroup,
+    delGroup
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -260,6 +261,15 @@ function clearLogGroup(u_g_id){
                        }
         });
 
+}
+
+function delGroup (u_g_id){
+        var user_group = db.collection('user_group');
+          user_group.update({"_id": new objId(u_g_id)}, {
+                    $set: {
+                        "del_st": true
+                    }
+         });
 }
 
 

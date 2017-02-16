@@ -111,6 +111,10 @@ io.on('connection', function (socket) {
             io.sockets.in(data.room).emit('send message01', data);
             message.messageInsert(data.userSent,data.message,data.userRe);
         });
+         socket.on('del group', function(u_g_id) {
+           console.log('dis Group');
+           message.delGroup(u_g_id);
+         });
 
 
         ///////// send message to group ///////

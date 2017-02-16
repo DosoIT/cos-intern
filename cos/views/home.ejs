@@ -508,6 +508,7 @@
                     </h2>
                     <table id="tableGroup" class="w3-table table-hover">
                         <% for(g in userGroup){ %>
+                                <%if(userGroup[g].del_st != true){%>
                             <tr>
                                 <td>
                                        <% for(item in group){%>
@@ -520,9 +521,9 @@
                                               <%}}%>
                                        <%}%>
                                 </td>
-                                <td><font color="#BEBEBE">del</font></td>
+                                <td><a onclick="delGroup('<%=userGroup[g]._id%>');"><font color="#BEBEBE">ออก</font></a></td>
                             </tr>
-                        <% } %>
+                        <% } }%>
                     </table>
                 </div>
                 <!-- End Chat group -->
@@ -1060,6 +1061,13 @@ socket.emit('userReconnect',userSent);
             socket.emit('unsubscribe-group',gname);
             document.getElementById('model-chat-group').style.display = 'none';
             location.reload();
+       }
+       function delGroup(u_g_id){
+            if (confirm("คุณต้องการออกจากกลุ่มหรือไม่!!") == true) {
+                socket.emit('del group',u_g_id);
+                location.reload();
+            } else {
+            }
        }
      // script socket.io Group
                     $('#frmMsg-group').submit(function () {
