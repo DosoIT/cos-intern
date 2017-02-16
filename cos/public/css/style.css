@@ -154,16 +154,31 @@ body {
     text-decoration:none;
     }
     #text-profile{
-    	margin-left: 20%;
+    	margin-top: -5%;
+    	margin-left: 13%;
     	width: 100%;
     }
-    #link-profile{
-    	padding: 1px;
-    }
     #text-icons{
-    	width: 40%;
+    	text-align: left;
+    	vertical-align: left;
+    	padding: 3px;
     }
-    #btnCreate{
-    	white-space: normal;
-    	width: 100px;
+    #text-createGroup{
+    	width: 100%;
+    }
+    #BtnAddGroup{
+    	width: 15%;
+    	padding: 12px 20px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 14px;
+    }
+    #startGroup{
+    	width: 15%;
+    	padding: 12px 20px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 14px;
     }
