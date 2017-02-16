@@ -514,7 +514,7 @@
                                         <% if(group[item]._id.toString() == userGroup[g].g_id){%>
                                         <% if(userGroup[g].user_id.toString() == user._id.toString()){%>
                                           <a href="#" class="w3-left"
-                                          onclick="getModelGroup('<%=userGroup[g]._id%>','<%=group[item].g_name%>');getMsgGroup('<%=group[item]._id%>','<%=group[item].g_name%>','<%=userGroup[g]._id%>');">
+                                          onclick="getModelGroup('<%=userGroup[g]._id%>','<%=group[item].g_name%>','<%=group[item]._id%>');getMsgGroup('<%=group[item]._id%>','<%=group[item].g_name%>','<%=userGroup[g]._id%>');">
                                           <%=group[item].g_name%>
                                           </a>
                                               <%}}%>
@@ -651,7 +651,7 @@
                 <header class="w3-container w3-Lightgray">
                     <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                         <h2 id="model-header"></h2>
-                        <div id="hisAll-group" >History</div>
+                        <div id="hisAll" >History</div>
                         <input type="text" id="counter" style="display: none;" value="10">
                         <div id="reader"></div>
                 </header>
@@ -802,7 +802,8 @@
                 <header class="w3-container w3-Lightgray">
                     <span onclick="closeModelGroup();" class="w3-closebtn">&times;</span>
                     <h2 id="model-group-header"></h2>
-                    <div>History</div>
+                    <div id="hisAll-group">History</div>
+                    <input type="hidden" id="counter-group" style="display: none;" value="10">
                 </header>
                 <div class="w3-container">
                     <div style="display: block;" id="chat-group">
@@ -823,6 +824,7 @@
                                    required maxlength="100" />
                             <input type="hidden" id="u_g_ID">
                             <input type="hidden" id="gname">
+                            <input type="hidden" id="gid">
                             <button type="submit">
                                 <img class="logo" src="/public/image/">
                             </button>
@@ -921,21 +923,7 @@ socket.emit('userReconnect',userSent);
            document.getElementById('drag-drop-zone').style.display = 'block';
            document.getElementById('chat-group').style.display = 'none';
        }
-<<<<<<< HEAD
 
-=======
-       function getModelGroup(u_g_id){
-          document.getElementById('model-chat-group').style.display = 'block';
-          var gname = document.getElementById('gName').value;
-          // alert(gname);
-       }
-       function closeModelGroup(){
-        location.reload();
-       }
-       function closeModelChatGroup(){
-        location.reload();
-       }
->>>>>>> origin/master
         $("button").click(function () {
             var msg = $("#m").val();
             // var msg-group = $("#m-group").val();
@@ -1024,7 +1012,6 @@ socket.emit('userReconnect',userSent);
         $("#messages").empty();
 
         socket.on('msg',function(items,userRe){
-            console.log("555"+items.length);
             $("#messages").empty();
              for (var i = items.length - 1; i >= 0; i--) {
                     console.log("get msg = "+items[i].message);
@@ -1056,11 +1043,12 @@ socket.emit('userReconnect',userSent);
         });
      });
 ////////////////////////////////////////////////////////////group//////////////////////////////////////////////////////////////////////
-        function getModelGroup(u_g_id,gname){
+        function getModelGroup(u_g_id,gname,gid){
           document.getElementById('model-chat-group').style.display = 'block';
           document.getElementById('model-group-header').innerHTML = gname;
           var iduser = document.getElementById('u_g_ID').value = u_g_id;
           var group = document.getElementById('gname').value = gname;
+          var gid = document.getElementById('gid').value = gid;
           socket.emit('subscribe-group',gname);
           socket.emit('clearLogGroup',u_g_id);
        }
@@ -1114,6 +1102,35 @@ socket.emit('userReconnect',userSent);
                            }
                         });
                     }
+
+
+    ////history group
+
+    $(document).ready(function () {
+        var $button = $('#hisAll-group');
+        var $counter = $('#counter-group');
+
+        $('#hisAll-group').click(function(){
+          $counter.val( parseInt($counter.val()) + 10 ); // `parseInt` converts the `value` from a string to a number
+          var qty = $counter.val();
+          var gname = $('#gname').val();
+          var gid = $('#gid').val();
+          socket.emit('get message group',gid,gname,qty);
+          $("#messages-group").empty();
+
+          socket.on('send message group', function (data) {
+                            var u_g_ID = $('#u_g_ID').val();
+                            if(data.userGID == u_g_ID){
+                                $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(data.message))
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }else{
+                                $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }
+         });
+
+        });
+    });
     // End script socket.io Group
     ////////////////////////////////////////////////////////////////////////////////////////////
      // drang-drop zone script
@@ -1147,9 +1164,7 @@ socket.emit('userReconnect',userSent);
         };
       }
     };
-<<<<<<< HEAD
 
-=======
     $('#model-chat-group').on('hidden.bs.model', function(){
         $('#model-body').find('input').val('');
     });
@@ -1160,5 +1175,4 @@ socket.emit('userReconnect',userSent);
       document.getElementById("img01").src = element.src;
       document.getElementById("modalimage").style.display = "block";
     }
->>>>>>> origin/master
 </script>
