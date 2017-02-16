@@ -163,3 +163,22 @@ body {
     	vertical-align: left;
     	padding: 3px;
     }
+    #text-createGroup{
+    	width: 100%;
+    }
+    #BtnAddGroup{
+    	width: 15%;
+    	padding: 12px 20px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 14px;
+    }
+    #startGroup{
+    	width: 15%;
+    	padding: 12px 20px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 14px;
+    }
