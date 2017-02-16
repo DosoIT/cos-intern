@@ -131,6 +131,23 @@
         margin-right: 1%;
         padding: 1px 20px 2px 9px;
     }
+     #messages-group {
+        height: 250px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow-y: hidden;
+    }
+    #messages-group:hover{
+     overflow-y: overlay;
+    }
+    #messages-group > p:last-child {
+        color: red;
+    }
+    #messages-group p {
+        margin-right: 1%;
+        padding: 1px 20px 2px 9px;
+    }
     .w3-modal-content {
         top: 1%;
     }
@@ -155,6 +172,9 @@
         color:black;
     }
     #frmMsg {
+        border: none;
+    }
+    #frmMsg-group {
         border: none;
     }
 
@@ -385,6 +405,11 @@
         font-size: 16pt;
         color: #979a9e;
     }
+    #hisAll-group{
+        text-align: right;
+        font-size: 16pt;
+        color: #979a9e;
+    }
     .badge{
         background-color: red;
     }
@@ -461,30 +486,21 @@
                             </div>
                         </h2>
                     <table style="text-align: center;" id="tableGroup"  class="table-responsive table-hover" cellpadding="2" cellspacing="2">
-                            <tr>
-                                <td class="text-right">Sort by
-                                    <select onselect="sortgroup()">
-                                        <option value="A-Z">A-Z</option>
-                                        <option value="Z-A">Z-A</option>
-                                    </select>
-                                </td>
-                            </tr>
                         <% for(g in userGroup){%>
                                 <% userGroup.sort(); %>
                             <tr>
                                 <td>
-                                    <a href="#" class="w3-left"
-                                       onclick="getModelGroup('<%userGroup[g].g_id%>');">
                                        <% for(item in group){%>
                                         <% if(group[item]._id.toString() == userGroup[g].g_id){%>
+                                        <% if(userGroup[g].user_id.toString() == user._id.toString()){%>
+                                          <a href="#" class="w3-left"
+                                          onclick="getModelGroup('<%=userGroup[g]._id%>','<%=group[item].g_name%>');getMsgGroup('<%=group[item]._id%>','<%=group[item].g_name%>','<%=userGroup[g]._id%>');">
                                           <%=group[item].g_name%>
-                                            <input type="hidden" id="gName" value="<%=group[item].g_name%>">
-                                              <%}else{%>
-
-                                              <%}%>
+                                          </a>
+                                              <%}}%>
                                        <%}%>
-                                    </a>
                                 </td>
+                                <td><font color="#BEBEBE">del</font></td>
                             </tr>
                         <% } %>
                     </table>
@@ -511,9 +527,6 @@
                         <td>30-02-2017 15:11</td>
                     </tr>
                     </tbody>
-                </table>
-                <table>
-                    tr>
                 </table>
             </div>
                 <!-- detail file upload user -->
@@ -589,7 +602,7 @@
                                                 for(i in log){
                                                    if(userAll[item]._id.toString() == log[i].user_sent.toString()){
                                                            count++;
-                                                  }
+                                                }
                                               }%>
                                               <%if(count != 0){%>
                                             <span class="badge" style="display:block;">
@@ -618,7 +631,7 @@
                 <header class="w3-container w3-Lightgray">
                     <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                         <h2 id="model-header"></h2>
-                        <div id="hisAll" >History</div>
+                        <div id="hisAll-group" >History</div>
                         <input type="text" id="counter" style="display: none;" value="10">
                         <div id="reader"></div>
 
@@ -769,14 +782,14 @@
         <div id="model-chat-group" class="w3-modal">
             <div class="w3-modal-content w3-animate-zoom w3-card-8">
                 <header class="w3-container w3-Lightgray">
-                    <span onclick="closeModel();" class="w3-closebtn">&times;</span>
-                    <h2 id="model-header">Chat group</h2>
-                    <div></div>
+                    <span onclick="closeModelGroup();" class="w3-closebtn">&times;</span>
+                    <h2 id="model-group-header"></h2>
+                    <div>History</div>
                 </header>
                 <div class="w3-container">
                     <div style="display: block;" id="chat-group">
-                        <form id="frmMsg" method="post"  enctype="multipart/form-data">
-                            <div id="messages"></div>
+                        <form id="frmMsg-group" >
+                            <div id="messages-group"></div>
                                 <ul class="menubar-chat">
                                     <li>
                                         <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDrop();"></i>
@@ -788,9 +801,10 @@
                                         <i class="fa fa-user-plus" aria-hidden="true"></i>
                                     </li>
                                 </ul>
-                            <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
+                            <input type="text" id="m-group" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
                                    required maxlength="100" />
-                            <input type="hidden" id="userRe">
+                            <input type="hidden" id="u_g_ID">
+                            <input type="hidden" id="gname">
                             <button type="submit">
                                 <img class="logo" src="/public/image/">
                             </button>
@@ -840,7 +854,7 @@ socket.emit('userReconnect',userSent);
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
             var iduser = document.getElementById('userRe').value = id
-           socket.emit('clearLog',userSent,id)
+           socket.emit('clearLog',userSent,id);
            socket.emit('subscribe',userSent,id);
         }
         function closeModel(){
@@ -849,21 +863,17 @@ socket.emit('userReconnect',userSent);
             document.getElementById('id01').style.display = 'none';
             var userRe = $('#userRe').val();
             socket.emit('unsubscribe',userSent,userRe);
-            document.getElementById('model-chat-group').style.display = 'none';
             location.reload();
        }
        function dragDrop(){
            document.getElementById('drag-drop-zone').style.display = 'block';
            document.getElementById('chat-group').style.display = 'none';
        }
-       function getModelGroup(u_g_id){
-          document.getElementById('model-chat-group').style.display = 'block';
-          var gname = document.getElementById('gName').value;
-          alert(gname);
-       }
+
         $("button").click(function () {
             var msg = $("#m").val();
-            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+            // var msg-group = $("#m-group").val();
+            // $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         });
     // script socket.io
                     $('#frmMsg').submit(function () {
@@ -979,6 +989,67 @@ socket.emit('userReconnect',userSent);
             }
         });
      });
+////////////////////////////////////////////////////////////group//////////////////////////////////////////////////////////////////////
+        function getModelGroup(u_g_id,gname){
+          document.getElementById('model-chat-group').style.display = 'block';
+          document.getElementById('model-group-header').innerHTML = gname;
+          var iduser = document.getElementById('u_g_ID').value = u_g_id;
+          var group = document.getElementById('gname').value = gname;
+          socket.emit('subscribe-group',gname);
+          socket.emit('clearLogGroup',u_g_id);
+       }
+       function closeModelGroup (){
+            $("#output ul").empty();
+            $("#messages-group").empty();
+            document.getElementById('model-chat-group').style.display = 'none';
+            var gname = $('#gname').val();
+            socket.emit('unsubscribe-group',gname);
+            document.getElementById('model-chat-group').style.display = 'none';
+            location.reload();
+       }
+     // script socket.io Group
+                    $('#frmMsg-group').submit(function () {
+                          var u_g_ID = $('#u_g_ID').val();
+                          var gname = $('#gname').val();
+                          var msg = $('#m-group').val();
+                          console.log("form group"+msg);
+                          var room = gname;
+                          socket.emit('send-group', { room:room, message: msg,userGID:u_g_ID});
+                    //     socket.emit("typing","กำลังพิมพ์......","st1");
+                           $('#m-group').val('');
+                         return false;
+                    });
+                    socket.on('send message group', function (data) {
+                            var u_g_ID = $('#u_g_ID').val();
+                            if(data.userGID == u_g_ID){
+                                $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(data.message))
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }else{
+                                $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
+                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                            }
+                    });
+
+
+                     function getMsgGroup(gid,gname,u_g_ID){
+                         var cnt = 0;
+                        socket.emit('get message group',gid,gname,sortQty);
+                        $("#messages-group").empty();
+                        socket.on('msg group',function(items,userRe){
+                            $("#messages-group").empty();
+                             for (var i = items.length - 1; i >= 0; i--) {
+                                        if(items[i].u_g_id == u_g_ID){
+                                            $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].g_message))
+                                            $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                        }else{
+                                            $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].g_message));
+                                            $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                       }
+                           }
+                        });
+                    }
+    // End script socket.io Group
+    ////////////////////////////////////////////////////////////////////////////////////////////
      // drang-drop zone script
     Dropzone.options.uploadWidget = {
       paramName: 'file',
@@ -1010,4 +1081,5 @@ socket.emit('userReconnect',userSent);
         };
       }
     };
+
 </script>

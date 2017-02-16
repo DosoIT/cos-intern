@@ -89,20 +89,37 @@ io.on('connection', function (socket) {
             socket.join(room1);
             socket.join(room2);
         });
-
         socket.on('unsubscribe', function(userSent,userRe) {
             console.log('leaving room', userSent,userRe);
              var room1 = userSent+""+userRe;
              var room2 = userRe+""+userSent;
             socket.leave(room1);
             socket.leave(room2);
-        })
-
+        });
+        /// join group
+         socket.on('subscribe-group', function(ganme) {
+            console.log('joining Group', ganme);
+            socket.join(ganme);
+        });
+         socket.on('unsubscribe-group', function(ganme) {
+            console.log('leaving Group',ganme);
+            socket.leave(ganme);
+        });
+         ///end join
         socket.on('send', function(data) {
             console.log('sending message');
             io.sockets.in(data.room).emit('send message01', data);
             message.messageInsert(data.userSent,data.message,data.userRe);
         });
+
+
+        ///////// send message to group ///////
+        socket.on('send-group', function(data) {
+            console.log('sending message to group');
+            io.sockets.in(data.room).emit('send message group', data);
+            message.insertMessageroup(data.message,data.userGID);
+        });
+        /////end send to grouph////
     ////
     // getMessages to show
         socket.on('get message', function(userSent,userRe,sortQty){
@@ -113,9 +130,21 @@ io.on('connection', function (socket) {
             });
 
         });
+        socket.on('get message group', function(gid,gname,sortQty){
+                var resulte = [];
+            message.getMessageByGroup(gid,sortQty,function(items){
+               io.sockets.in(gname).emit('msg group',items);
+            });
+        });
+        // end get ////////////////////
+        // clear Log ///////////////////////
         socket.on('clearLog',function(userSent,id){
              message.clearLog(userSent,id);
         });
+        socket.on('clearLogGroup',function(u_g_id){
+             message.clearLogGroup(u_g_id);
+        });
+        //////////////////////////////////
     // reconnect
     socket.on('userReconnect',function(user){
         console.log('user Reconnect.....');

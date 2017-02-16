@@ -13,7 +13,10 @@ module.exports = {
     getGroup,
     userReconnect,
     getLog,
-    clearLog
+    clearLog,
+    insertMessageroup,
+    clearLogGroup,
+    getMessageByGroup
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -52,17 +55,7 @@ function messageInsert(sent, msg, receive) {
     };
 }
 
-function getDataMessage(callback) {
-    if (db) {
-        var message = db.collection('message');
-        message.find().toArray(function (err, items) {
-            callback(items);
-        });
 
-    } else {
-        return 0;
-    }
-}
 
 function getUserAll(callback) {
 
@@ -73,18 +66,6 @@ function getUserAll(callback) {
     }
 }
 
-function getUserByID(id, callback) {
-
-    if (db) {
-        var userAll = db.collection('users');
-        userAll.find({'_id': new objId(id)}).toArray(function (err, items) {
-            callback(items);
-        });
-
-    } else {
-        return 0;
-    }
-}
 
 function getMessageByuser(userSent,userRe,sortQty,callback) {
     var message = db.collection('message');
@@ -95,8 +76,21 @@ function getMessageByuser(userSent,userRe,sortQty,callback) {
     ]}).limit(nomber).sort({_id:-1}).toArray(function(err,items){
         callback(items);
     });
-    // message.find({user_sent: userSent},{$and:{user_receive:userRe}}).toArray(function (err, items) {
-    // });
+}
+function getMessageByGroup(gid,sortQty,callback) {
+            var u_group = db.collection('user_group');
+            var msr_group = db.collection('message_group');
+            var nomber = parseInt(sortQty);
+            var result = [];
+             u_group.find({g_id:new objId(gid)}).toArray(function(err,items) {
+                 for(var i in items){
+                    result.push(items[i]._id.toString());
+                     }
+                        var msgData = [];
+                        msr_group.find({ u_g_id:{$in:result} }).limit(nomber).sort({_id:-1}).toArray(function(err,data) {
+                                    callback(data);
+                        });
+                  });
 }
 
 //Group ===========================
@@ -143,11 +137,12 @@ function getGroupByID(id, callback) {
 
     user_group.find({user_id: new objId(id)}).toArray(function (err, item) {
         if (!err) {
-            for (var value in item) {
-                var gid = item[value].g_id;
-                groupID.push({'g_id': gid});
-            }
-           callback(groupID);
+            // for (var value in item) {
+            //     var gid = item[value].g_id;
+            //     var id = item[value]._id;
+            //     groupID.push({'g_id': gid},{'_id':id});
+            // }
+           callback(item);
         } else {
             console.log('Find Group BY ID Noooo.');
         }
@@ -181,15 +176,23 @@ function getUserGroupByuser(user) {
 
 //Message Group ==============================================
 function insertMessageroup(msg, u_gid) {
-    var msg = db.collection('message_group');
+    var message_group = db.collection('message_group');
+    var message_group_log = db.collection('message_group_log');
     var data = {
         'g_message': msg,
-        'g_id': u_gid,
+        'u_g_id': u_gid,
         'file_upload': '',
         'dateTime': new Date()
     };
 
-    msg.insert(data, function (err, item) {
+    message_group.insert(data, function (err, item) {
+        if (!err) {
+            console.log('Insert Msg Group OK...');
+        } else {
+            console.log('Insert Msg Group No...');
+        }
+    });
+    message_group_log.insert(data, function (err, item) {
         if (!err) {
             console.log('Insert Msg Group OK...');
         } else {
@@ -245,6 +248,15 @@ function clearLog(userSent,id){
         log.find({$and:[{user_receive:userSent},{user_sent:id}]}).toArray(function(err,item){
                        for(var i in item){
                         log.remove({_id:{$in:[new objId(item[i]._id)]}});
+                       }
+        });
+
+}
+function clearLogGroup(u_g_id){
+        var log = db.collection('message_group_log');
+        log.find({u_g_id:u_g_id}).toArray(function(err,item){
+                       for(var i in item){
+                             log.remove({_id:new objId(item[i]._id)});
                        }
         });
 
