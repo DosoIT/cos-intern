@@ -70,10 +70,6 @@
         width: 100%;
         height: auto;
     }
-    #tableGroup{
-        width: 100%;
-        height: 5%;
-    }
 
     #userOnlineIMG {
         width: 25px;
@@ -134,7 +130,7 @@
         padding: 1px 20px 2px 9px;
     }
      #messages-group {
-        height: 250px;
+        height: 200px;
         list-style-type: none;
         margin: 0;
         padding: 0;
@@ -523,7 +519,11 @@
                                               <%}}%>
                                        <%}%>
                                 </td>
-                                <td><a onclick="delGroup('<%=userGroup[g]._id%>');"><font color="#BEBEBE">ออก</font></a></td>
+                                <td>
+                                    <a onclick="delGroup('<%=userGroup[g]._id%>');">
+                                            <i class="fa fa-trash-o fa-lg" aria-hidden="true" title="ออกจากกลุ่มนี้" id="delGropup"></i>
+                                    </a>
+                                </td>
                             </tr>
                         <% } }%>
                     </table>
@@ -732,58 +732,52 @@
                             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                 <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
                                         <!-- table online -->
-                                        <table width="100%" class="w3-table table-hover">
-                                            <tr>
-                                                <th>
-                                                 <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">
-                                                    Online
-                                                 </th>
-                                            </tr>
-                                           <tr>
-                                            <td colspan="2" class="page-header"></td>
-                                           </tr>
+                                        <h2 id="font-online">
+                                            <img src="/imageonline" alt="" class="icon-online" width="20" height="auto">Online
+                                        </h2>
+                                        <hr>
+                                        <div id="scrollbar-online">
+                                        <table width="100%" class="w3-table table-hover" id="tableOffline">
                                              <% for (item in userAll) { if(userAll[item].local.st==true){ %>
                                              <%if(userAll[item]._id.toString() != user._id.toString()){%>
                                              <tr>
                                                 <td>
-                                                <div style="margin-top: 5%;">
-                                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%;" value="<%= userAll[item]._id %>">
-                                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
-                                                      <%= userAll[item].local.fname %>
-                                                </div>
+                                                    <div style="margin-top: 5%;">
+                                                        <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%;" value="<%= userAll[item]._id %>">
+                                                         <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
+                                                          <%= userAll[item].local.fname %>
+                                                    </div>
                                                 </td>
                                              </tr>
                                             <%} } }%>
                                         </table> <!-- end table online -->
+                                        </div> <!-- End scrollbar-online -->
                                 </div>  <!-- end div table online -->
                                     <!-- div table offline -->
-                                <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6">
+                                <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6" id="table-offline">
                                         <!-- table offline -->
-                                    <table width="100%" style="margin-bottom: 10%;" class="w3-table table-hover">
-                                        <tr>
-                                            <th>
-                                             <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto">
-                                            Offline
-                                             </th>
-                                        </tr>
-                                       <tr>
-                                        <td colspan="2" class="page-header"></td>
-                                       </tr>
+                                        <h2 id="font-online">
+                                            <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto"> Offline
+                                        </h2>
+                                        <hr>
+                                    <div id="scrollbar-offline">
+                                    <table width="100%" class="w3-table table-hover" id="tableOffline">
                                          <% for (item in userAll) { if(userAll[item].local.st==false){ %>
                                          <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                         <tr>
+                                        <tr>
                                             <td>
-                                            <div style="margin-top: 5%;">
-                                                <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
-                                                 <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
-                                                  <%= userAll[item].local.fname %>
-                                            </div>
+                                                <div style="margin-top: 5%;">
+                                                    <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
+                                                     <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
+                                                      <%= userAll[item].local.fname %>
+                                                </div>
                                             </td>
                                          </tr>
                                         <%} } }%>
                                     </table> <!-- End table offline -->
-                                    <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
+                                        <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
                                 </div> <!-- end div table offline -->
+                                </div> <!-- end scrollbar-offline -->
                                 <footer class="w3-container">
                                     <div class="text-right"
                                          style="margin-top: 2%; margin-bottom: 2%;">
@@ -811,7 +805,10 @@
                 <div class="w3-container">
                     <div style="display: block;" id="chat-group">
                         <form id="frmMsg-group" >
-                            <div id="messages-group"></div>
+                            <div id="messages-group">
+                                <img src="/pic-default" id="output-img" alt="your image" class="img-de img-circle " width="180" height="180" style="margin-left: 2.0cm "/>
+                                    <br><br><br>
+                            </div>
                                 <ul class="menubar-chat">
                                     <li>
                                         <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDropGrorp();"></i>
@@ -820,7 +817,9 @@
                                         <i class="fa fa-picture-o" aria-hidden="true"></i>
                                     </li>
                                     <li>
-                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        <input type="file" name="picture" style="margin-left: 2.0cm"
+                                                accept=".png,.jpg" required="" id="sendImg"
+                                             />
                                     </li>
                                 </ul>
                                 <input type="text" id="m-group" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
@@ -833,13 +832,13 @@
                                 </button>
                         </form>
                     </div> <!-- end chat-group -->
-                   <!--  <div id="drag-drop-zone" style="display: none;">
+                    <div id="drag-drop-zone" style="display: none;">
                         <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
                             <div class="fallback">
                                 <input name="file" type="file"/>
                             </div>
                         </form>
-                    </div> --> <!-- end in drag-drop-zone -->
+                    </div> <!-- end in drag-drop-zone -->
                 </div>
                 <div id="output">
                     <ul></ul>
@@ -896,7 +895,7 @@ socket.emit('userReconnect',userSent);
                 var userRe = $('#userRe').val();
                 socket.emit('unsubscribe',userSent,userRe);
                 document.getElementById('model-chat-group').style.display = 'none';
-                location.reload();
+                // location.reload();
             }
             function dragDropGrorp(){
                 document.getElementById('drag-drop-zone').style.display = 'block';
@@ -919,7 +918,7 @@ socket.emit('userReconnect',userSent);
             document.getElementById('id01').style.display = 'none';
             var userRe = $('#userRe').val();
             socket.emit('unsubscribe',userSent,userRe);
-            location.reload();
+            // location.reload();
        }
        function dragDrop(){
            document.getElementById('drag-drop-zone').style.display = 'block';
@@ -1064,7 +1063,7 @@ socket.emit('userReconnect',userSent);
        function delGroup(u_g_id){
             if (confirm("คุณต้องการออกจากกลุ่มหรือไม่!!") == true) {
                 socket.emit('del group',u_g_id);
-                location.reload();
+                // location.reload();
             } else {
             }
        }
@@ -1073,6 +1072,7 @@ socket.emit('userReconnect',userSent);
                           var u_g_ID = $('#u_g_ID').val();
                           var gname = $('#gname').val();
                           var msg = $('#m-group').val();
+                          var img = $('#sendImg')
                           console.log("form group"+msg);
                           var room = gname;
                           socket.emit('send-group', { room:room, message: msg,userGID:u_g_ID});
@@ -1157,15 +1157,12 @@ socket.emit('userReconnect',userSent);
         });
         this.on("addedfile", function(file) {
             /* Maybe display some more file information on your page */
-            alert("Added file");
         });
         this.on('thumbnail', function(file) {
             if ( file.width < 1024 || file.height < 768 ) {
-                alert("size ok");
                 file.acceptDimensions();
             }
             else {
-                alert("size of large");
                 file.rejectDimensions();
             }
           });
@@ -1187,4 +1184,13 @@ socket.emit('userReconnect',userSent);
       document.getElementById("img01").src = element.src;
       document.getElementById("modalimage").style.display = "block";
     }
+        // select image
+    var loadFile = function(event) {
+    var yourImg = document.getElementById('output-img');
+        if(yourImg && yourImg.style) {
+            yourImg.style.height = '180px';
+            yourImg.style.width = '180px';
+            yourImg.src = URL.createObjectURL(event.target.files[0]);
+        }
+      };
 </script>
