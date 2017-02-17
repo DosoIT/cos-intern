@@ -23,16 +23,15 @@ module.exports = {
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
 });
-
 //User=============================
-function messageInsert(sent, msg, receive) {
+function messageInsert(sent, msg, receive,_file) {
     var msgtb = db.collection('message');
     var log = db.collection('log_chat');
     var data = {
         'user_sent': sent,
         'user_receive': receive,
         'message': msg,
-        'file_upload': '',
+        'file_upload': _file,
         'dateTime': new Date(),
         'del_status': false
     };

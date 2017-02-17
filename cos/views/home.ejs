@@ -721,8 +721,10 @@
                     </div>
                     <div id="drag-drop-user">
                         <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone" enctype="multipart/form-data">
+                                <input type="text" name="user_id" value="<%= user._id %>">
+                                <input type="text" name="userReply" id="userReply">
                             <div class="fallback">
-                                <input name="file" type="file"/>
+                                <input name="file" type="file" multiple />
                             </div>
                         </form>
                     </div>
@@ -885,7 +887,7 @@
                     <div id="drag-drop-zone-group">
                         <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
                             <div class="fallback">
-                                <input name="file" type="file"/>
+                                <input name="file" type="file" multiple />
                             </div>
                         </form>
                     </div> <!-- end in drag-drop-zone -->
@@ -967,6 +969,17 @@ uploader.on('abort', function(fileInfo) {
                 document.getElementById('model-chat-group').style.display = 'none';
                 location.reload();
             }
+            function dragDropGrorp(){
+                document.getElementById('drag-drop-zone').style.display = 'block';
+                document.getElementById('chat-group').style.display = 'none';
+            }
+            function dragModelUser(){
+                var userRe = $('#userRe').val();
+                console.log('ID user Reply : '+userRe);
+                document.getElementById("userReply").value=userRe;
+                document.getElementById('chat-user').style.display = 'none';
+                document.getElementById('drag-drop-user').style.display = 'block';
+            }
             // function dragDropGrorp(){
             //     document.getElementById('drag-drop-zone-group').style.display = 'block';
             //     document.getElementById('chat-group').style.display = 'none';
@@ -978,7 +991,7 @@ uploader.on('abort', function(fileInfo) {
         function getModel(userSH,id){
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
-            var iduser = document.getElementById('userRe').value = id
+            var iduser = document.getElementById('userRe').value = id;
            socket.emit('clearLog',userSent,id);
            socket.emit('subscribe',userSent,id);
         }
@@ -1266,8 +1279,8 @@ uploader.on('abort', function(fileInfo) {
    Dropzone.options.uploadwidget = {
     paramName: 'file',
     maxFilesize: 5, // MB
-    maxFiles: 5,
-    dictDefultMessage:"Noom ",
+    maxFiles: 5, // 1 file, 2 file,3 file...(n file)
+    dictDefaultMessage: "Drang - Drop Here",
     headers: {
         'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
     },
