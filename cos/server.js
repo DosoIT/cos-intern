@@ -12,7 +12,9 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var configDB = require('./config/database.js');
 var message = require('./models/Message.js');
-
+var multer = require('multer');
+var SocketIOFile = require('socket.io-file');
+var path = require('path');
 // uncomment this line
 require('./config/passport')(passport); // pass passport for configuration
 // configuration ===============================================================
@@ -38,6 +40,8 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+
+
 // routes =====================================================================
 require('./routes.js')(app, passport,urlencodedParser,jsonParser,session,express); // load our routes and pass in our app and fully configured passport
 
@@ -62,9 +66,50 @@ io.on('connection', function (socket) {
         console.log('a user connected server : ' ,socket.connected);
         console.log('a user connected server  ID: ' ,socket.id);
         console.log('=====================================================');
-    socket.on('typing',function(msg,st){
-        io.emit("typingShow",msg,user_id[socket.id],st);
-    });
+        var filenames = "";
+ var uploader = new SocketIOFile(socket, {
+            overwrite: false,
+            rename: function(filename) {
+                var file = path.parse(filename);
+                var fname = file.name;
+                var ext = file.ext;
+            return  "msgImg_" + (Math.floor((Math.random() * 1000) + 1))+ext;
+          },
+                uploadDir: 'uploads',
+                accepts: ['image/jpg', 'image/png','image/jpeg'],       // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg' 
+                maxFileSize: 4194304,                       // 4 MB. default is undefined(no limit) 
+                chunkSize: 10240,                           // default is 10240(1KB) 
+                transmissionDelay: 0,                       // delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay) 
+                overwrite: true                             // overwrite file if exists, default is true. 
+            });
+        uploader.on('start', (fileInfo) => {
+        console.log('Start uploading');
+        console.log(fileInfo);
+        });
+        uploader.on('stream', (fileInfo) => {
+            console.log(`${fileInfo.wrote} / ${fileInfo.size} byte(s)`);
+        });
+        uploader.on('complete', (fileInfo) => {
+            console.log('Upload Complete.');
+            console.log(fileInfo);
+            console.log("filename = "+fileInfo.name);
+            filenames = fileInfo.name;
+           
+        });
+        uploader.on('error', (err) => {
+            console.log('Error!', err);
+        });
+        uploader.on('abort', (fileInfo) => {
+            console.log('Aborted: ', fileInfo);
+        });
+         
+            socket.on('send-img', function(data) {
+                     console.log('sending Img'+filenames);
+                     message.messageInsertFile(data.userSent,filenames,data.userRe);
+            });
+         socket.on('typing',function(msg,st){
+             io.emit("typingShow",msg,user_id[socket.id],st);
+         });
     // Message
     // socket.on('chat message', function (userSent,msg, userRecei) {
     //     io.emit('chat message', msg,user_id[socket.id],userRecei);
@@ -111,6 +156,7 @@ io.on('connection', function (socket) {
             io.sockets.in(data.room).emit('send message01', data);
             message.messageInsert(data.userSent,data.message,data.userRe);
         });
+        
          socket.on('del group', function(u_g_id) {
            console.log('dis Group');
            message.delGroup(u_g_id);
@@ -147,6 +193,23 @@ io.on('connection', function (socket) {
         });
         socket.on('clearLogGroup',function(u_g_id){
              message.clearLogGroup(u_g_id);
+        });
+        ///////////////////////////////////
+
+
+        socket.on('base64 file',function (msg) {
+            console.log('received base64 file from' + msg.username);
+            console.log(' base64 file ' + msg.fileName);
+            socket.username = msg.username;
+            // socket.broadcast.emit('base64 image', //exclude sender
+             io.sockets.in(msg.room).emit('base64 file',  //include sender
+                {
+                  username: msg.username,
+                  file: msg.file,
+                  fileName: msg.fileName
+                }
+
+            );
         });
         //////////////////////////////////
     // reconnect
