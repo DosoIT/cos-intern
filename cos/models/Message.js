@@ -17,21 +17,31 @@ module.exports = {
     insertMessageroup,
     clearLogGroup,
     getMessageByGroup,
-    delGroup
+    delGroup,
+    sendFiles
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
 });
-
+function sendFiles(files){
+    var file = db.collection('filesDB');
+    file.insert(files,function(err){
+        if(!err){
+            console.log('Insert files complete.');
+        }else{
+            console.log('Insert files error!.');
+        }
+    });
+}
 //User=============================
-function messageInsert(sent, msg, receive) {
+function messageInsert(sent, msg, receive,_file) {
     var msgtb = db.collection('message');
     var log = db.collection('log_chat');
     var data = {
         'user_sent': sent,
         'user_receive': receive,
         'message': msg,
-        'file_upload': '',
+        'file_upload': _file,
         'dateTime': new Date(),
         'del_status': false
     };

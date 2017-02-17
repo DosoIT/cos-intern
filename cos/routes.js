@@ -237,10 +237,18 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
         }
     });
 
-    app.post( '/drangFiles',der.any(),isLoggedIn,function( req, res){
-
-        console.log("filename = ",filenames);
+    app.post( '/drangFiles',der.any(),isLoggedIn,function( req, res, next){
         // console.log(req.files);
+        // console.log("filename = ",filenames);
+        if(filenames != ""){
+            var getFile=messages.messageInsert(req.body.user_id,'',req.body.userReply,filenames);
+            if(getFile){
+                console.log("upload files complete..");
+            }
+            else{
+                console.log("Files upload Error!!");
+            }
+        }
         return res.status( 200 ).send(req.files);
     });
 

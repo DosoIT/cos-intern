@@ -683,8 +683,10 @@
                     </div>
                     <div id="drag-drop-user" style="display: none;">
                         <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone" enctype="multipart/form-data">
+                                <input type="text" name="user_id" value="<%= user._id %>">
+                                <input type="text" name="userReply" id="userReply">
                             <div class="fallback">
-                            <input name="file" type="file"/>
+                                <input name="file" type="file" multiple />
                             </div>
                         </form>
                     </div>
@@ -833,13 +835,13 @@
                                 </button>
                         </form>
                     </div> <!-- end chat-group -->
-                   <!--  <div id="drag-drop-zone" style="display: none;">
+                    <div id="drag-drop-zone" style="display: none;">
                         <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
                             <div class="fallback">
-                                <input name="file" type="file"/>
+                                <input name="file" type="file" multiple />
                             </div>
                         </form>
-                    </div> --> <!-- end in drag-drop-zone -->
+                    </div> <!-- end in drag-drop-zone -->
                 </div>
                 <div id="output">
                     <ul></ul>
@@ -903,13 +905,16 @@ socket.emit('userReconnect',userSent);
                 document.getElementById('chat-group').style.display = 'none';
             }
             function dragModelUser(){
+                var userRe = $('#userRe').val();
+                console.log('ID user Reply : '+userRe);
+                document.getElementById("userReply").value=userRe;
                 document.getElementById('chat-user').style.display = 'none';
                 document.getElementById('drag-drop-user').style.display = 'block';
             }
         function getModel(userSH,id){
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
-            var iduser = document.getElementById('userRe').value = id
+            var iduser = document.getElementById('userRe').value = id;
            socket.emit('clearLog',userSent,id);
            socket.emit('subscribe',userSent,id);
         }
@@ -1143,40 +1148,20 @@ socket.emit('userReconnect',userSent);
      // drang-drop zone script
    Dropzone.options.uploadwidget = {
     paramName: 'file',
-    maxFilesize: 5, // MB
-    maxFiles: 5,
+    maxFilesize: 1, // MB
+    maxFiles: 5, // 1 file, 2 file,3 file...(n file)
+    dictDefaultMessage: "Drang - Drop Here",
     headers: {
         'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
     },
     acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx',
       init: function() {
-        this.on('complete', function( file, resp ){
-            // this.removeFile(file);
-            // console.log( file );
-            // console.log( resp );
+        this.on('success', function( file, resp ){
+          console.log('This\'s a', file );
         });
-        this.on("addedfile", function(file) {
-            /* Maybe display some more file information on your page */
-            alert("Added file");
-        });
-        this.on('thumbnail', function(file) {
-            if ( file.width < 1024 || file.height < 768 ) {
-                alert("size ok");
-                file.acceptDimensions();
-            }
-            else {
-                alert("size of large");
-                file.rejectDimensions();
-            }
-          });
-        },
-        accept: function(file, done) {
-          file.acceptDimensions = done;
-          file.rejectDimensions = function() {
-            done('The image must be at least 1024 by 768 pixels in size');
-          };
-        },
+      }
     };
+
     $('#model-chat-group').on('hidden.bs.model', function(){
         $('#model-body').find('input').val('');
     });
