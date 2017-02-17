@@ -670,7 +670,7 @@
                                         <i class="fa fa-picture-o" aria-hidden="true"></i>
                                     </li>
                                     <li>
-                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                        <i class="fa fa-user-plus" aria-hidden="true"> <input type="file" name="pic" id="fileInput" accept=".jpg,.png,.jpeg" ></i>
                                     </li>
                                 </ul>
                             <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
@@ -870,12 +870,32 @@
 <script src="/bootstrap-js"></script>
 <script src="/dataTables-js"></script>
 <script src="/socketJs"></script>
+<script src="/socket.io-file-client"></script> 
+<script src="/socket.io"></script> 
 <script type="text/javascript">
 var socket = io();
 var userSent =  $('#user_id').val();
 var sortQty = 10;
 socket.emit('userReconnect',userSent);
-
+var uploader = new SocketIOFileClient(socket);
+uploader.on('start', function(fileInfo) {
+    console.log('Start uploading', fileInfo);
+});
+uploader.on('stream', function(fileInfo) {
+    console.log('Streaming... sent ' + fileInfo.sent + ' bytes.');
+});
+uploader.on('complete', function(fileInfo) {
+    console.log('Upload Complete', fileInfo);
+                var userRe = $('#userRe').val();
+                var room = userSent+""+userRe;
+                socket.emit('send-img', { room:room,userSent,userRe});
+});
+uploader.on('error', function(err) {
+    console.log('Error!', err);
+});
+uploader.on('abort', function(fileInfo) {
+    console.log('Aborted: ', fileInfo);
+});
         function getUser() {
             document.getElementById('groupName').style.display = 'none';
             document.getElementById('list-user').style.display = 'block';
@@ -932,9 +952,47 @@ socket.emit('userReconnect',userSent);
             // $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
         });
     // script socket.io
+    $('#fileInput').change(function(e){
+            var data = e.originalEvent.target.files[0];
+                e.preventDefault();
+                var fileEl= document.getElementById('fileInput');
+                var uploadIds = uploader.upload(fileEl);
+            readThenSendFile(data);
+        });
+
+        function readThenSendFile(data){
+                $('#fileInput').val('');
+                var userRe = $('#userRe').val();
+                var room = userSent+""+userRe;
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                var msg ={};
+                msg.username = userSent;
+                msg.room = room;
+                msg.userRe = userRe;
+                msg.file = evt.target.result;
+                msg.fileName = data.name;
+                socket.emit('base64 file', msg);
+            };
+            reader.readAsDataURL(data);
+
+        }
+
+        socket.on('base64 file',function(dataFile){
+                // console.log(dataFile.file);
+                if(dataFile.username == userSent){
+                     $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/></p><br><br>"));
+                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+
+                }else{
+                     $('#messages').append($("<p align='left' ><img class='img-rounded w3-left-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/></p><br>"));
+                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                }
+             $('#fileInput').val('');
+        });
                     $('#frmMsg').submit(function () {
-                    var userRe = $('#userRe').val();
-                    var msg = $('#m').val();
+                     var userRe = $('#userRe').val();
+                     var msg = $('#m').val();
                         // socket.emit('chat message',userSent,msg,userRe);
                         var room = userSent+""+userRe;
                         socket.emit('send', { room:room, message: msg,userSent,userRe});
@@ -945,11 +1003,11 @@ socket.emit('userReconnect',userSent);
                     socket.on('send message01', function (data) {
                          if (data.userSent == userSent) {
                             // user sent
-                            $('#messages').append($('<p class="w3-right-align"></p>').text(data.message));
+                            $('#messages').append($("<p class='w3-right-align'></p>").text(data.message));
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         } else{
                             // user reply
-                            $('#messages').append($('<div class="dv-msg-reply"><p align="left" cl       p></div><br>').text(data.message));
+                            $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }
                     });
@@ -974,11 +1032,21 @@ socket.emit('userReconnect',userSent);
                   if(items[i].user_sent == userSent || items[i].user_receive == userRe || items[i].user_sent == userRe || items[i].user_receive == userSent ){
 
                     if(items[i].user_sent == userSent){
-                        $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
-                        $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                            if(items[i].message != ""){
+                             $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
+                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                            }else{
+                            $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br><br>"));
+                            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                            }
                     }else{
-                        $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
-                        $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                        if(items[i].message != ""){
+                               $('#messages').append($("<p align='left' class='msg-reply'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>").text(items[i].message));
+                               $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                       }else{
+                            $('#messages').append($("<p align='left' ><img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>"));
+                           $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                      }
                    }
                }
            }
@@ -1021,9 +1089,17 @@ socket.emit('userReconnect',userSent);
                   if(items[i].user_sent == userSent || items[i].user_receive == userRe || items[i].user_sent == userRe || items[i].user_receive == userSent ){
 
                     if(items[i].user_sent == userSent){
-                        $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
+                        if(items[i].message != "" ){
+                            $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
+                        }else{
+                            $('#messages').append($("<p align='right' class='msg-sn'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>"))
+                        }
                     }else{
-                        $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
+                         if(items[i].message != "" ){
+                            $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
+                        }else{
+                            $('#messages').append($("<p align='left' class='msg-reply'><img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>"));
+                        }
                    }
                }
            }

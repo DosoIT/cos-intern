@@ -121,6 +121,13 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     app.get('/w3css', function (req, res) {
         res.sendFile(__dirname + '/public/css/w3.css');
     });
+
+    app.get('/socket.io-file-client', (req, res, next) => {
+         res.sendFile(__dirname + '/node_modules/socket.io-file-client/socket.io-file-client.js');
+    });
+    app.get('/socket.io', (req, res, next) => {
+         res.sendFile(__dirname + '/node_modules/socket.io-client/dist/socket.io.js');
+    });
     // =====================================
     // LOGIN ===============================
     // =====================================
