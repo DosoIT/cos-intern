@@ -73,14 +73,17 @@ io.on('connection', function (socket) {
                 var file = path.parse(filename);
                 var fname = file.name;
                 var ext = file.ext;
-            return  "msgImg_" + (Math.floor((Math.random() * 1000) + 1))+ext;
+            return  (Math.floor((Math.random() * 100000) + 1))+ext;
           },
-                uploadDir: 'uploads',
-                accepts: ['image/jpg', 'image/png','image/jpeg'],       // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg' 
-                maxFileSize: 4194304,                       // 4 MB. default is undefined(no limit) 
+              uploadDir: {
+                    img: 'uploads',
+                    files: 'uploads/files'
+              },
+                      // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg' 
+                maxFileSize: 5194304,                       // 4 MB. default is undefined(no limit) 
                 chunkSize: 10240,                           // default is 10240(1KB) 
                 transmissionDelay: 0,                       // delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay) 
-                overwrite: true                             // overwrite file if exists, default is true. 
+                overwrite: true                             // overwrite file if exists, default is true.
             });
         uploader.on('start', (fileInfo) => {
         console.log('Start uploading');
@@ -94,7 +97,6 @@ io.on('connection', function (socket) {
             console.log(fileInfo);
             console.log("filename = "+fileInfo.name);
             filenames = fileInfo.name;
-           
         });
         uploader.on('error', (err) => {
             console.log('Error!', err);
@@ -102,7 +104,6 @@ io.on('connection', function (socket) {
         uploader.on('abort', (fileInfo) => {
             console.log('Aborted: ', fileInfo);
         });
-         
             socket.on('send-img', function(data) {
                      console.log('sending Img'+filenames);
                      message.messageInsertFile(data.userSent,filenames,data.userRe);
@@ -172,11 +173,12 @@ io.on('connection', function (socket) {
         /////end send to grouph////
     ////
     // getMessages to show
-        socket.on('get message', function(userSent,userRe,sortQty){
+        socket.on('get message', function(userSent,userRe,sortQty,pic,picRe){
 
             message.getMessageByuser(userSent,userRe,sortQty,function(items){
-                var room = userSent+""+userRe;
-                io.sockets.in(room).emit('msg',items,userRe);
+                var room = userRe+""+userSent;
+                // var room = userSent+""+userRe;
+                io.sockets.in(room).emit('msg',items,userRe,pic,picRe);
             });
 
         });
@@ -197,12 +199,27 @@ io.on('connection', function (socket) {
         ///////////////////////////////////
 
 
-        socket.on('base64 file',function (msg) {
+        socket.on('base64 file',function (msg,pic) {
             console.log('received base64 file from' + msg.username);
             console.log(' base64 file ' + msg.fileName);
             socket.username = msg.username;
             // socket.broadcast.emit('base64 image', //exclude sender
              io.sockets.in(msg.room).emit('base64 file',  //include sender
+                {
+                  username: msg.username,
+                  file: msg.file,
+                  fileName: msg.fileName,
+                  picture: pic
+                }
+
+            );
+        });
+        socket.on('base64 FILES_INPUT',function (msg) {
+            console.log('received base64 file from' + msg.username);
+            console.log(' base64 file ' + msg.fileName);
+            socket.username = msg.username;
+            // socket.broadcast.emit('base64 image', //exclude sender
+             io.sockets.in(msg.room).emit('base64 FILES_INPUT',  //include sender
                 {
                   username: msg.username,
                   file: msg.file,

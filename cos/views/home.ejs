@@ -583,7 +583,7 @@
                             <table id="tableOnline" class="w3-table table-hover">
                                 <% for (item in userAll) { if(userAll[item].local.st==true){ %>
                                     <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                    <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg('<%= userAll[item]._id %>')">
+                                    <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>','<%= userAll[item].local.picture %>');getMsg('<%= userAll[item]._id %>','<%= userAll[item].local.picture %>')">
                                         <td class="text-left" style="width: 50%;">
                                             <img src="/imageonline" alt="" class="icon-online" width="20" height="auto"> &nbsp;
                                             <% if(userAll[item].local.picture != null){ %>
@@ -630,7 +630,7 @@
                                 <table id="tableOffline" class="w3-table table-hover">
                                     <% for (item in userAll) { if(userAll[item].local.st==false){%>
                                         <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                        <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>');getMsg('<%= userAll[item]._id %>')" />
+                                        <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>','<%= userAll[item].local.picture %>');getMsg('<%= userAll[item]._id %>','<%= userAll[item].local.picture %>')" />
                                             <td class="text-left" style="width: 50%;">
                                                   <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto"> &nbsp;
                                             <% if(userAll[item].local.picture != null){%>
@@ -698,7 +698,7 @@
                                             <label class="a-Button" for="FILES_INPUT">
                                                <i class="fa fa-file-o" aria-hidden="true"></i>
                                             </label>
-                                            <input type="file" id="FILES_INPUT" accept=".rar,.doc,.pdf,.pptx,.xls,.zip">
+                                            <input type="file" id="FILES_INPUT" accept=".rar,.docx,.pdf,.pptx,.xls,.zip">
                                         </div>
                                     </li>
                                     <li>
@@ -714,6 +714,7 @@
                             <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
                                    required maxlength="100" class="w3-border"s/>
                             <input type="hidden" id="userRe">
+                            <input type="hidden" id="userPic">
                             <button type="submit">
                                 <img class="logo" src="/public/image/">
                             </button>
@@ -854,18 +855,18 @@
                                     </li>
                                     <li>
                                         <div class="custom-input-file" title="Select Files">
-                                            <label class="a-Button" for="FILES_INPUT">
+                                            <label class="a-Button" for="FILES_INPUT_GROUP">
                                                <i class="fa fa-file-o" aria-hidden="true"></i>
                                             </label>
-                                            <input type="file" id="FILES_INPUT" accept=".rar,.doc,.pdf,.pptx,.xls,.zip">
+                                            <input type="file" id="FILES_INPUT_GROUP" accept=".rar,.doc,.pdf,.pptx,.xls,.zip">
                                         </div>
                                     </li>
                                     <li>
                                         <div class="custom-input-file" title="Select Image">
-                                            <label class="a-Button" for="FILE_INPUT">
+                                            <label class="a-Button" for="IMG_INPUT">
                                                <i class="fa fa-picture-o fa-lg"></i>
                                             </label>
-                                            <input type="file" id="FILE_INPUT" accept=".png,.jpg">
+                                            <input type="file" id="IMG_INPUT" accept=".png,.jpg">
                                         </div>
                                     </li>
                                 </ul>
@@ -926,8 +927,8 @@
 <script src="/bootstrap-js"></script>
 <script src="/dataTables-js"></script>
 <script src="/socketJs"></script>
-<script src="/socket.io-file-client"></script> 
-<script src="/socket.io"></script> 
+<script src="/socket.io-file-client"></script>
+<script src="/socket.io"></script>
 <script type="text/javascript">
 var socket = io();
 var userSent =  $('#user_id').val();
@@ -941,13 +942,15 @@ uploader.on('stream', function(fileInfo) {
     console.log('Streaming... sent ' + fileInfo.sent + ' bytes.');
 });
 uploader.on('complete', function(fileInfo) {
-    console.log('Upload Complete', fileInfo);
+    console.log('Upload Complete',fileInfo);
                 var userRe = $('#userRe').val();
                 var room = userSent+""+userRe;
                 socket.emit('send-img', { room:room,userSent,userRe});
 });
 uploader.on('error', function(err) {
     console.log('Error!', err);
+    location.reload();
+    alert('No upload... file size out of limit 5 MB !!!');
 });
 uploader.on('abort', function(fileInfo) {
     console.log('Aborted: ', fileInfo);
@@ -956,10 +959,11 @@ uploader.on('abort', function(fileInfo) {
             document.getElementById('groupName').style.display = 'none';
             document.getElementById('list-user').style.display = 'block';
         }
-            function getModel(userSH,id){
-                document.getElementById('id01').style.display = 'block';
-                document.getElementById('model-header').innerHTML = userSH;
+            function getModel(userSH,id,pic){
+               document.getElementById('id01').style.display = 'block';
+               document.getElementById('model-header').innerHTML = userSH;
                var iduser = document.getElementById('userRe').value = id;
+               document.getElementById('userPic').value = pic;
 
                socket.emit('clearLog',userSent,id);
 
@@ -972,7 +976,10 @@ uploader.on('abort', function(fileInfo) {
                 var userRe = $('#userRe').val();
                 socket.emit('unsubscribe',userSent,userRe);
                 document.getElementById('model-chat-group').style.display = 'none';
-                // location.reload();
+
+                socket.emit('clearLog',userSent,userRe);
+
+                location.reload();
             }
             function dragDropGrorp(){
                 document.getElementById('drag-drop-zone').style.display = 'block';
@@ -982,21 +989,7 @@ uploader.on('abort', function(fileInfo) {
                 document.getElementById('chat-user').style.display = 'none';
                 document.getElementById('drag-drop-user').style.display = 'block';
             }
-        function getModel(userSH,id){
-            document.getElementById('id01').style.display = 'block';
-            document.getElementById('model-header').innerHTML = userSH;
-            var iduser = document.getElementById('userRe').value = id
-           socket.emit('clearLog',userSent,id);
-           socket.emit('subscribe',userSent,id);
-        }
-        function closeModel(){
-            $("#output ul").empty();
-            $("#messages").empty();
-            document.getElementById('id01').style.display = 'none';
-            var userRe = $('#userRe').val();
-            socket.emit('unsubscribe',userSent,userRe);
-            // location.reload();
-       }
+
        function dragDrop(){
            document.getElementById('drag-drop-zone').style.display = 'block';
            document.getElementById('chat-group').style.display = 'none';
@@ -1012,12 +1005,24 @@ uploader.on('abort', function(fileInfo) {
             var data = e.originalEvent.target.files[0];
                 e.preventDefault();
                 var fileEl= document.getElementById('fileInput');
-                var uploadIds = uploader.upload(fileEl);
+                var uploadIds = uploader.upload(fileEl,{
+                    uploadTo:'files'
+                });
             readThenSendFile(data);
-        });
+   });
+    $('#FILES_INPUT').change(function(e){
+            var data = e.originalEvent.target.files[0];
+                e.preventDefault();
+                var fileEl= document.getElementById('FILES_INPUT');
+                var uploadIds = uploader.upload(fileEl,{
+                    uploadTo:'files'
+                });
+            readThenSendFile(data);
+   });
 
         function readThenSendFile(data){
                 $('#fileInput').val('');
+                $('#FILES_INPUT').val('');
                 var userRe = $('#userRe').val();
                 var room = userSent+""+userRe;
             var reader = new FileReader();
@@ -1028,7 +1033,7 @@ uploader.on('abort', function(fileInfo) {
                 msg.userRe = userRe;
                 msg.file = evt.target.result;
                 msg.fileName = data.name;
-                socket.emit('base64 file', msg);
+                socket.emit('base64 file', msg,'<%= user.local.picture %>');
             };
             reader.readAsDataURL(data);
 
@@ -1036,22 +1041,35 @@ uploader.on('abort', function(fileInfo) {
 
         socket.on('base64 file',function(dataFile){
                 // console.log(dataFile.file);
+                var typeFile = dataFile.fileName.split('.').pop();
                 if(dataFile.username == userSent){
-                     $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/></p><br><br>"));
-                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                    if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                         $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/> : <img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /></p><br><br>"));
+                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                    }else{
+                        $('#messages').append($("<p class='w3-right-align'><a>"+dataFile.fileName+"</a> : <img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /></p><br><br>"));
+                        $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                    }
 
                 }else{
-                     $('#messages').append($("<p align='left' ><img class='img-rounded w3-left-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/></p><br>"));
-                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                    if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/></p><br>"));
+                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                    }else{
+                         $('#messages').append($("<p align='left' >: <img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /> : <a>"+dataFile.fileName+"</a></p><br>"));
+                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                    }
                 }
              $('#fileInput').val('');
         });
+
                     $('#frmMsg').submit(function () {
                      var userRe = $('#userRe').val();
+                     var userPic = $('#userPic').val();
                      var msg = $('#m').val();
                         // socket.emit('chat message',userSent,msg,userRe);
                         var room = userSent+""+userRe;
-                        socket.emit('send', { room:room, message: msg,userSent,userRe});
+                        socket.emit('send', { room:room, message: msg,userSent,userRe,userPic});
                         socket.emit("typing","กำลังพิมพ์......","st1");
                         $('#m').val('');
                         return false;
@@ -1059,11 +1077,11 @@ uploader.on('abort', function(fileInfo) {
                     socket.on('send message01', function (data) {
                          if (data.userSent == userSent) {
                             // user sent
-                            $('#messages').append($("<p class='w3-right-align'></p>").text(data.message));
+                            $('#messages').append($("<p class='w3-right-align'>"+data.message+" : <img  class='img-circle' width='45' height='45' src='/uploads/"+data.userPic+"' /></p>"));
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
-                        } else{
+                         } else{
                             // user reply
-                            $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
+                            $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+data.userPic+"' /> : "+data.message+"</p><br>"));
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }
                     });
@@ -1075,12 +1093,12 @@ uploader.on('abort', function(fileInfo) {
         // End dataTable
     socket.emit('userID',$('#user_id').val());
 
-    function getMsg(userRe){
+    function getMsg(userRe,pic){
         var cnt = 0;
-        socket.emit('get message',userSent,userRe,sortQty);
+        socket.emit('get message',userSent,userRe,sortQty,'<%= user.local.picture%>',pic);
         $("#messages").empty();
 
-        socket.on('msg',function(items,userRe){
+        socket.on('msg',function(items,userRe,pic,picRe){
             $("#messages").empty();
              for (var i = items.length - 1; i >= 0; i--) {
                     console.log("get msg = "+items[i].message);
@@ -1089,20 +1107,48 @@ uploader.on('abort', function(fileInfo) {
 
                     if(items[i].user_sent == userSent){
                             if(items[i].message != ""){
-                             $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
+                             $('#messages').append($("<p align='right' class='msg-sn'>"+items[i].message+" : <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /> </p><br>"));
                              $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                             }else{
-                            $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br><br>"));
-                            $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                var typeFile = items[i].file_upload.split('.').pop();
+                                 if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                                    $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/>: <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                 }else{
+                                    $('#messages').append($("<p class='w3-right-align'><a>"+items[i].file_upload+"</a> :  <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                 }
                             }
                     }else{
+                        if('<%= user.local.picture.toString()%>' != picRe){
                         if(items[i].message != ""){
-                               $('#messages').append($("<p align='left' class='msg-reply'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>").text(items[i].message));
+                               $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : "+items[i].message+"</p><br>"));
                                $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                        }else{
-                            $('#messages').append($("<p align='left' ><img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>"));
-                           $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                             var typeFile = items[i].file_upload.split('.').pop();
+                                 if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                                    $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }else{
+                                     $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }
                       }
+                  }else{
+                        if(items[i].message != ""){
+                               $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : "+items[i].message+"</p><br>"));
+                               $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                       }else{
+                             var typeFile = items[i].file_upload.split('.').pop();
+                                 if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                                    $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }else{
+                                     $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }
+                      }
+                  }
                    }
                }
            }
@@ -1134,10 +1180,11 @@ uploader.on('abort', function(fileInfo) {
           $counter.val( parseInt($counter.val()) + 10 ); // `parseInt` converts the `value` from a string to a number
           var qty = $counter.val();
           var userRe = $('#userRe').val();
-          socket.emit('get message',userSent,userRe,qty);
+          var userPic = $('#userPic').val();
+          socket.emit('get message',userSent,userRe,qty,'<%= user.local.picture%>',userPic);
         $("#messages").empty();
 
-        socket.on('msg',function(items,userRe){
+        socket.on('msg',function(items,userRe,pic,picRe){
             $("#messages").empty();
              for (var i = items.length - 1; i >= 0; i--) {
                     console.log("get msg = "+items[i].message);
@@ -1145,17 +1192,49 @@ uploader.on('abort', function(fileInfo) {
                   if(items[i].user_sent == userSent || items[i].user_receive == userRe || items[i].user_sent == userRe || items[i].user_receive == userSent ){
 
                     if(items[i].user_sent == userSent){
-                        if(items[i].message != "" ){
-                            $('#messages').append($('<p align="right" class="msg-sn"></p><br>').text(items[i].message))
-                        }else{
-                            $('#messages').append($("<p align='right' class='msg-sn'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>"))
-                        }
+                            if(items[i].message != ""){
+                             $('#messages').append($("<p align='right' class='msg-sn'>"+items[i].message+" : <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /> </p><br>"));
+                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                            }else{
+                                var typeFile = items[i].file_upload.split('.').pop();
+                                 if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                                    $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/>: <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                 }else{
+                                    $('#messages').append($("<p class='w3-right-align'><a>"+items[i].file_upload+"</a> :  <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                 }
+                            }
                     }else{
-                         if(items[i].message != "" ){
-                            $('#messages').append($('<p align="left" class="msg-reply"></p><br>').text(items[i].message));
-                        }else{
-                            $('#messages').append($("<p align='left' class='msg-reply'><img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/"+items[i].file_upload+"'/></p><br>"));
-                        }
+                        if('<%= user.local.picture.toString()%>' != picRe){
+                        if(items[i].message != ""){
+                               $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : "+items[i].message+"</p><br>"));
+                               $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                       }else{
+                             var typeFile = items[i].file_upload.split('.').pop();
+                                 if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                                    $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }else{
+                                     $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }
+                      }
+                  }else{
+                        if(items[i].message != ""){
+                               $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : "+items[i].message+"</p><br>"));
+                               $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                       }else{
+                             var typeFile = items[i].file_upload.split('.').pop();
+                                 if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
+                                    $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }else{
+                                     $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                     $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
+                                }
+                      }
+                  }
                    }
                }
            }
@@ -1196,7 +1275,7 @@ uploader.on('abort', function(fileInfo) {
        function delGroup(u_g_id){
             if (confirm("คุณต้องการออกจากกลุ่มหรือไม่!!") == true) {
                 socket.emit('del group',u_g_id);
-                // location.reload();
+                location.reload();
             } else {
             }
        }
