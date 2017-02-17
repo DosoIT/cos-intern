@@ -210,3 +210,23 @@ body {
     	height: 250px;
     	overflow-y: overlay;
     }
+    #scollbartableGroup:hover{
+    	height: 400px;
+    	overflow-y: overlay;
+    }
+    #scollbartableOnline:hover{
+    	overflow-y: overlay;
+    }
+    #scollbartableOffline:hover{
+    	overflow-y: overlay;
+    }
+    .custom-input-file input[type="file"]{
+	    border: 0;
+	    clip: rect(0 0 0 0);
+	    height: 1px;
+	    margin: -1px;
+	    overflow: hidden;
+	    padding: 0;
+	    position: absolute;
+	    width: 1px;
+	}

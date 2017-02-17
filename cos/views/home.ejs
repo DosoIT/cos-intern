@@ -504,6 +504,7 @@
                                 </a>
                             </div>
                     </h2>
+                    <div id="scollbartableGroup">
                     <table id="tableGroup" class="w3-table table-hover">
                         <% for(g in userGroup){ %>
                                 <%if(userGroup[g].del_st != true){%>
@@ -527,6 +528,7 @@
                             </tr>
                         <% } }%>
                     </table>
+                    </div> <!-- end scollbartableGroup -->
                 </div>
                 <!-- End Chat group -->
                 <!-- detail file upload user -->
@@ -547,6 +549,26 @@
                     <tr>
                         <td><a>noom</a></td>
                         <td>noom</td>
+                        <td>30-02-2017 10:11</td>
+                    </tr>
+                    <tr>
+                        <td><a>Siriwut</a></td>
+                        <td>kk</td>
+                        <td>30-02-2017 15:11</td>
+                    </tr>
+                    <tr>
+                        <td><a>Jeremy</a></td>
+                        <td>kk</td>
+                        <td>30-02-2017 14:11</td>
+                    </tr>
+                    <tr>
+                        <td><a>1Jeremy</a></td>
+                        <td>kk</td>
+                        <td>30-02-2017 13:11</td>
+                    </tr>
+                    <tr>
+                        <td><a>2Jeremy</a></td>
+                        <td>kk</td>
                         <td>30-02-2017 15:11</td>
                     </tr>
                     </tbody>
@@ -557,6 +579,7 @@
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel" >
                     <div class="row">
                         <h2 class="page-header" id="text-online">Online</h2>
+                            <div id="scollbartableOnline">
                             <table id="tableOnline" class="w3-table table-hover">
                                 <% for (item in userAll) { if(userAll[item].local.st==true){ %>
                                     <%if(userAll[item]._id.toString() != user._id.toString()){%>
@@ -598,10 +621,12 @@
                                     </tr>
                                 <% } } } %>
                             </table>
+                            </div> <!-- end scollbartableOnline -->
                                 <!-- end status online -->
                             <!-- status offline -->
                         <div id="rightPanel">
                             <h2 class="page-header" id="text-offline">Offline</h2>
+                                <div id="scollbartableOffline">
                                 <table id="tableOffline" class="w3-table table-hover">
                                     <% for (item in userAll) { if(userAll[item].local.st==false){%>
                                         <%if(userAll[item]._id.toString() != user._id.toString()){%>
@@ -642,6 +667,7 @@
                                         </tr>
                                     <% } } }%>
                                 </table>
+                                </div> <!-- end scollbartableOffline -->
                         </div> <!-- end status offline rightPanel -->
                     </div> <!-- col status row -->
                 </div> <!-- end col rightPanel -->
@@ -809,27 +835,38 @@
                                 <img src="/pic-default" id="output-img" alt="your image" class="img-de img-circle " width="180" height="180" style="margin-left: 2.0cm "/>
                                     <br><br><br>
                             </div>
+                            <div>
                                 <ul class="menubar-chat">
                                     <li>
-                                        <i class="fa fa-paperclip" aria-hidden="true" onclick="dragDropGrorp();"></i>
+                                        <i class="fa fa-paperclip fa-lg" aria-hidden="true" onclick="dragDropGrorp();"></i>
                                     </li>
                                     <li>
-                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                    </li>
-                                    <li>
-                                        <input type="file" name="picture" style="margin-left: 2.0cm"
-                                                accept=".png,.jpg" required="" id="sendImg"
-                                             />
+                                        <div class="custom-input-file" title="Select Image">
+                                            <label class="a-Button" for="FILE_INPUT">
+                                               <i class="fa fa-picture-o fa-lg"></i>
+                                            </label>
+                                            <input type="file" id="FILE_INPUT">
+                                        </div>
                                     </li>
                                 </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                 <input type="text" id="m-group" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
-                                       required maxlength="100" class="w3-border" />
+                                           required maxlength="100" class="w3-border" />
                                 <input type="hidden" id="u_g_ID">
                                 <input type="hidden" id="gname">
                                 <input type="hidden" id="gid">
                                 <button type="submit">
-                                    <img class="logo" src="/public/image/">
+                                        <img class="logo" src="/public/image/">
                                 </button>
+                            </div>
+                            <div id="drag-drop-zone">
+                                <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
+                                    <div class="fallback">
+                                        <input name="file" type="file"/>
+                                    </div>
+                                </form>
+                            </div> <!-- end in drag-drop-zone -->
                         </form>
                     </div> <!-- end chat-group -->
                     <div id="drag-drop-zone" style="display: none;">
