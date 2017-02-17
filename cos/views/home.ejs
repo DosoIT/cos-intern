@@ -685,7 +685,7 @@
                         <div id="reader"></div>
                 </header>
                 <div class="w3-container">
-                    <div id="chat-user" style="display: block;">
+                    <div id="chat-user">
                         <form id="frmMsg" >
                             <div id="messages"></div>
                                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -702,7 +702,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                     <div class="custom-input-file" title="Select Image">
+                                        <div class="custom-input-file" title="Select Image">
                                             <label class="a-Button" for="fileInput">
                                                <i class="fa fa-picture-o fa-lg"></i>
                                             </label>
@@ -719,10 +719,10 @@
                             </button>
                         </form>
                     </div>
-                    <div id="drag-drop-user" style="display: none;">
+                    <div id="drag-drop-user">
                         <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone" enctype="multipart/form-data">
                             <div class="fallback">
-                            <input name="file" type="file"/>
+                                <input name="file" type="file"/>
                             </div>
                         </form>
                     </div>
@@ -842,10 +842,10 @@
                 </header>
                 <div class="w3-container">
                     <div style="display: block;" id="chat-group">
-                        <form id="frmMsg-group" >
+                        <form id="frmMsg-group"  >
+                        <!-- <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
+                        <input name="file" type="file"/> -->
                             <div id="messages-group">
-                                <img src="/pic-default" id="output-img" alt="your image" class="img-de img-circle " width="180" height="180" style="margin-left: 2.0cm "/>
-                                    <br><br><br>
                             </div>
                             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                 <ul class="menubar-chat">
@@ -880,16 +880,9 @@
                                         <img class="logo" src="/public/image/">
                                 </button>
                             </div>
-                            <div id="drag-drop-zone">
-                                <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
-                                    <div class="fallback">
-                                        <input name="file" type="file"/>
-                                    </div>
-                                </form>
-                            </div> <!-- end in drag-drop-zone -->
                         </form>
                     </div> <!-- end chat-group -->
-                    <div id="drag-drop-zone" style="display: none;">
+                    <div id="drag-drop-zone-group">
                         <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
                             <div class="fallback">
                                 <input name="file" type="file"/>
@@ -972,16 +965,16 @@ uploader.on('abort', function(fileInfo) {
                 var userRe = $('#userRe').val();
                 socket.emit('unsubscribe',userSent,userRe);
                 document.getElementById('model-chat-group').style.display = 'none';
-                // location.reload();
+                location.reload();
             }
-            function dragDropGrorp(){
-                document.getElementById('drag-drop-zone').style.display = 'block';
-                document.getElementById('chat-group').style.display = 'none';
-            }
-            function dragModelUser(){
-                document.getElementById('chat-user').style.display = 'none';
-                document.getElementById('drag-drop-user').style.display = 'block';
-            }
+            // function dragDropGrorp(){
+            //     document.getElementById('drag-drop-zone-group').style.display = 'block';
+            //     document.getElementById('chat-group').style.display = 'none';
+            // }
+            // function dragModelUser(){
+            //     document.getElementById('chat-user').style.display = 'none';
+            //     document.getElementById('drag-drop-user').style.display = 'block';
+            // }
         function getModel(userSH,id){
             document.getElementById('id01').style.display = 'block';
             document.getElementById('model-header').innerHTML = userSH;
@@ -995,13 +988,8 @@ uploader.on('abort', function(fileInfo) {
             document.getElementById('id01').style.display = 'none';
             var userRe = $('#userRe').val();
             socket.emit('unsubscribe',userSent,userRe);
-            // location.reload();
+            location.reload();
        }
-       function dragDrop(){
-           document.getElementById('drag-drop-zone').style.display = 'block';
-           document.getElementById('chat-group').style.display = 'none';
-       }
-
         $("button").click(function () {
             var msg = $("#m").val();
             // var msg-group = $("#m-group").val();
@@ -1196,7 +1184,7 @@ uploader.on('abort', function(fileInfo) {
        function delGroup(u_g_id){
             if (confirm("คุณต้องการออกจากกลุ่มหรือไม่!!") == true) {
                 socket.emit('del group',u_g_id);
-                // location.reload();
+                location.reload();
             } else {
             }
        }
@@ -1260,13 +1248,16 @@ uploader.on('abort', function(fileInfo) {
                             var u_g_ID = $('#u_g_ID').val();
                             if(data.userGID == u_g_ID){
                                 $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(data.message))
+                                // $('#messages-group').append($("<img class='img-rounded w3-right-align'  width='150px' height='150px' src='"+file+"'/>br><br>"));
+
                                 $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                             }else{
                                 $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
+                                // $('#messages-group').append($("<img class='img-rounded w3-right-align'  width='150px' height='150px' src='"+file+"'/>br><br>"));
+
                                 $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                             }
          });
-
         });
     });
     // End script socket.io Group
@@ -1276,35 +1267,37 @@ uploader.on('abort', function(fileInfo) {
     paramName: 'file',
     maxFilesize: 5, // MB
     maxFiles: 5,
+    dictDefultMessage:"Noom ",
     headers: {
         'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
     },
     acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx',
       init: function() {
         this.on('complete', function( file, resp ){
+                readerfile(file);
             // this.removeFile(file);
-            // console.log( file );
+            // console.log(file.name);
             // console.log( resp );
+            this.removeFile(file);
         });
-        this.on("addedfile", function(file) {
-            /* Maybe display some more file information on your page */
-        });
-        this.on('thumbnail', function(file) {
-            if ( file.width < 1024 || file.height < 768 ) {
-                file.acceptDimensions();
-            }
-            else {
-                file.rejectDimensions();
-            }
-          });
-        },
-        accept: function(file, done) {
-          file.acceptDimensions = done;
-          file.rejectDimensions = function() {
-            done('The image must be at least 1024 by 768 pixels in size');
-          };
-        },
+}
     };
+
+    function readerfile(data){
+        var userRe = $('#userRe').val();
+                var room = userSent+""+userRe;
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                var msg ={};
+                msg.username = userSent;
+                msg.room = room;
+                msg.userRe = userRe;
+                msg.file = evt.target.result;
+                msg.fileName = data.name;
+                socket.emit('base64 file', msg);
+            };
+            reader.readAsDataURL(data);
+    }
     $('#model-chat-group').on('hidden.bs.model', function(){
         $('#model-body').find('input').val('');
     });
@@ -1325,4 +1318,29 @@ uploader.on('abort', function(fileInfo) {
             yourImg.src = URL.createObjectURL(event.target.files[0]);
         }
       };
+      //  drag hover
+    var drag_timer;
+        $(document).on('dragover', function (e) {
+            var dt = e.originalEvent.dataTransfer;
+            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+                if (e.originalEvent.pageX <= 200 && e.originalEvent.pageY <= 200) {
+                    $('.dropzone').removeClass('highlight');
+                    $('.dropzone:eq(0)').addClass('highlight');
+                } else if (e.originalEvent.pageX <= 400 && e.originalEvent.pageY <= 400) {
+                    $('.dropzone').removeClass('highlight');
+                    $('.dropzone:eq(1)').addClass('highlight');
+                } else {
+                    $('.dropzone').removeClass('highlight');
+
+                }
+
+                $('.dropzone').show();
+                window.clearTimeout(drag_timer);
+            }
+        })
+        .on('dragleave', function (e) {
+            drag_timer = window.setTimeout(function () {
+                        $('.dropzone').hide();
+                }, 2000);
+        });
 </script>
