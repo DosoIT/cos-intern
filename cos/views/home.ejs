@@ -688,17 +688,29 @@
                     <div id="chat-user" style="display: block;">
                         <form id="frmMsg" >
                             <div id="messages"></div>
+                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                 <ul class="menubar-chat">
                                     <li>
                                         <i class="fa fa-paperclip" aria-hidden="true" onclick="dragModelUser();"></i>
                                     </li>
                                     <li>
-                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                        <div class="custom-input-file" title="Select Files">
+                                            <label class="a-Button" for="FILES_INPUT">
+                                               <i class="fa fa-file-o" aria-hidden="true"></i>
+                                            </label>
+                                            <input type="file" id="FILES_INPUT" accept=".rar,.doc,.pdf,.pptx,.xls,.zip">
+                                        </div>
                                     </li>
                                     <li>
-                                        <i class="fa fa-user-plus" aria-hidden="true"> <input type="file" name="pic" id="fileInput" accept=".jpg,.png,.jpeg" ></i>
+                                     <div class="custom-input-file" title="Select Image">
+                                            <label class="a-Button" for="fileInput">
+                                               <i class="fa fa-picture-o fa-lg"></i>
+                                            </label>
+                                            <input type="file" name="pic" id="fileInput" accept=".jpg,.png,.jpeg" >
+                                        </div>
                                     </li>
                                 </ul>
+                                </div>
                             <input type="text" id="m" autocomplete="off" placeholder="กรุณาเขียนข้อความ.."
                                    required maxlength="100" class="w3-border"s/>
                             <input type="hidden" id="userRe">
@@ -835,17 +847,25 @@
                                 <img src="/pic-default" id="output-img" alt="your image" class="img-de img-circle " width="180" height="180" style="margin-left: 2.0cm "/>
                                     <br><br><br>
                             </div>
-                            <div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                 <ul class="menubar-chat">
                                     <li>
                                         <i class="fa fa-paperclip fa-lg" aria-hidden="true" onclick="dragDropGrorp();"></i>
+                                    </li>
+                                    <li>
+                                        <div class="custom-input-file" title="Select Files">
+                                            <label class="a-Button" for="FILES_INPUT">
+                                               <i class="fa fa-file-o" aria-hidden="true"></i>
+                                            </label>
+                                            <input type="file" id="FILES_INPUT" accept=".rar,.doc,.pdf,.pptx,.xls,.zip">
+                                        </div>
                                     </li>
                                     <li>
                                         <div class="custom-input-file" title="Select Image">
                                             <label class="a-Button" for="FILE_INPUT">
                                                <i class="fa fa-picture-o fa-lg"></i>
                                             </label>
-                                            <input type="file" id="FILE_INPUT">
+                                            <input type="file" id="FILE_INPUT" accept=".png,.jpg">
                                         </div>
                                     </li>
                                 </ul>
@@ -1222,8 +1242,6 @@ uploader.on('abort', function(fileInfo) {
                            }
                         });
                     }
-
-
     ////history group
 
     $(document).ready(function () {
@@ -1293,6 +1311,7 @@ uploader.on('abort', function(fileInfo) {
     $('#groupName').on('hidden.bs.model', function(){
         $('#create-group').find('input').val('');
     });
+        // show profile image
     function onClick(element) {
       document.getElementById("img01").src = element.src;
       document.getElementById("modalimage").style.display = "block";
