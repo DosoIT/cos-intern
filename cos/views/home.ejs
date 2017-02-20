@@ -401,6 +401,7 @@
         font-family: 'Nunito', sans-serif;
         font-size: 20pt;
         margin-top: 1%;
+        text-shadow: 4px 4px 6px #aaa;
     }
 
     .ft-cos-white {
@@ -469,13 +470,13 @@
                                 <tr>
                                     <td class="text-right" id="text-icons">
                                         <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
-                                        <a href="/profileUpdate" class="text"><%= user.local.fname %></a>
+                                        <a href="/profileUpdate" class="text" id="txtlink"><%= user.local.fname %></a>
                                     </td>
                                 </tr>
                                 <tr class="link-logout">
                                     <td class="text-left" id="text-icons">
                                         <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
-                                        <a href="/logout" class="text">Log-out</a>
+                                        <a href="/logout" class="text" id="txtlink">Log-out</a>
                                     </td>
                                 </tr>
                             </table>
