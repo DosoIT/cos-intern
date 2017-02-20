@@ -143,7 +143,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
             messages.getGroup(function (err, groupDe) {
                 messages.getLog(req.user._id,function(log){
                     messages.getUserAll(function (err1, item) {
-                        res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback,log:log});
+                        messages.getFiles(req.user._id,function (dbase) {
+                            res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback,log:log,dbase:dbase});
+                        });
                     });
                 });
             });

@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var db;
 var objId = require('mongodb').ObjectID;
+var mongojs = require('mongojs');
 module.exports = {
     messageInsert,
     updateProfile,
@@ -18,7 +19,8 @@ module.exports = {
     clearLogGroup,
     getMessageByGroup,
     delGroup,
-    messageInsertFile
+    messageInsertFile,
+    getFiles
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -276,7 +278,6 @@ function getLog(id,callback){
 }
 function clearLog(userSent,id){
         var log = db.collection('log_chat');
-
         log.find({$and:[{user_receive:userSent},{user_sent:id}]}).toArray(function(err,item){
                        for(var i in item){
                         log.remove({_id:{$in:[new objId(item[i]._id)]}});
@@ -303,4 +304,11 @@ function delGroup (u_g_id){
          });
 }
 
+//Function get Files to table
+function getFiles (id,callback) {
+    var dbase = mongojs('cos', ['message']);
+    dbase.message.find({$or:[{user_sent:id.toString()},{user_receive:id.toString()}]}).toArray(function (err,dbase) {
+        callback(dbase);
+    })
+}
 

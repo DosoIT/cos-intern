@@ -548,36 +548,36 @@
                     <th style="text-align: center;" class="txt">Date Time</th>
                     </thead>
                     <tbody>
+                    <%for(i in dbase){%>
+                        <%if(dbase[i].message== ""){%>
+                            <%if(dbase[i].file_upload.split('.').pop()!="png" && dbase[i].file_upload.split('.').pop()!="jpg"){%>
+
                     <tr>
-                        <td><a>core5</a></td>
-                        <td>noom</td>
-                        <td>30-02-2017 15:11</td>
+                        <td><a><%= dbase[i].file_upload %></a></td>
+
+                        <td><%if(dbase[i].user_sent==user._id.toString()){%>
+                         <span style="color:Green;">To : </span>
+                         <%
+                            for(j in userAll){
+                                if(dbase[i].user_receive==userAll[j]._id.toString()){%>
+                                   <%= userAll[j].local.fname %>
+                                <%}
+                            }
+                          %>
+                         <%}else{ %>
+                         <span style="color:#e52325;">Receive : </span>
+                          <%
+                            for(j in userAll){
+                                if(dbase[i].user_sent==userAll[j]._id.toString()){%>
+                                   <%= userAll[j].local.fname %>
+                                <%}
+                            }
+                          %>
+                         <% } %>
+                         </td>
+                        <td><%= dbase[i].dateTime.toDateString()%></td>
                     </tr>
-                    <tr>
-                        <td><a>noom</a></td>
-                        <td>noom</td>
-                        <td>30-02-2017 10:11</td>
-                    </tr>
-                    <tr>
-                        <td><a>Siriwut</a></td>
-                        <td>kk</td>
-                        <td>30-02-2017 15:11</td>
-                    </tr>
-                    <tr>
-                        <td><a>Jeremy</a></td>
-                        <td>kk</td>
-                        <td>30-02-2017 14:11</td>
-                    </tr>
-                    <tr>
-                        <td><a>1Jeremy</a></td>
-                        <td>kk</td>
-                        <td>30-02-2017 13:11</td>
-                    </tr>
-                    <tr>
-                        <td><a>2Jeremy</a></td>
-                        <td>kk</td>
-                        <td>30-02-2017 15:11</td>
-                    </tr>
+                    <%}}}%>
                     </tbody>
                 </table>
             </div>
@@ -930,7 +930,6 @@
 <% } %>
 </body>
 </html>
-
 <script src="/js"></script>
 <script src="/bootstrap-js"></script>
 <script src="/dataTables-js"></script>
@@ -985,7 +984,6 @@ uploader.on('abort', function(fileInfo) {
                 var userRe = $('#userRe').val();
                 socket.emit('unsubscribe',userSent,userRe);
                 document.getElementById('model-chat-group').style.display = 'none';
-                
                 socket.emit('clearLog',userSent,userRe);
 
                 location.reload();

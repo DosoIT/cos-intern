@@ -157,7 +157,6 @@ io.on('connection', function (socket) {
             io.sockets.in(data.room).emit('send message01', data);
             message.messageInsert(data.userSent,data.message,data.userRe);
         });
-        
          socket.on('del group', function(u_g_id) {
            console.log('dis Group');
            message.delGroup(u_g_id);
@@ -197,8 +196,6 @@ io.on('connection', function (socket) {
              message.clearLogGroup(u_g_id);
         });
         ///////////////////////////////////
-
-
         socket.on('base64 file',function (msg,pic) {
             console.log('received base64 file from' + msg.username);
             console.log(' base64 file ' + msg.fileName);
