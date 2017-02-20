@@ -4,6 +4,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     var messages = require('./models/Message.js');
     var multer = require('multer');
     var path = require('path');
+    var filenameArray=[];
     var filenames = "";
     var name ="";
 
@@ -20,6 +21,7 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
         destination: './uploads/files/',
             filename: function (req, file, cb) {
             filenames = "file_" + (Math.floor((Math.random() * 1000) + 1)) + path.extname(file.originalname);
+            filenameArray.push(filenames);
             cb(null, filenames)
             }
         }
@@ -248,16 +250,17 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
 
     app.post( '/drangFiles',der.any(),isLoggedIn,function( req, res, next){
         // console.log(req.files);
-        // console.log("filename = ",filenames);
-        if(filenames != ""){
-            var getFile=messages.messageInsert(req.body.user_id,'',req.body.userReply,filenames);
-            if(getFile){
-                console.log("upload files complete..");
-            }
-            else{
-                console.log("Files upload Error!!");
-            }
-        }
+        console.log(filenames);
+        // filenameArray=[];
+        // if(filenames != ""){
+        //     var getFile=messages.messageInsert(req.body.user_id,'',req.body.userReply,filenames);
+        //     if(getFile){
+        //         console.log("upload files complete..");
+        //     }
+        //     else{
+        //         console.log("Files upload Error!!");
+        //     }
+        // }
         return res.status( 200 ).send(req.files);
     });
 

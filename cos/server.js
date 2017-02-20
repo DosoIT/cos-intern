@@ -167,7 +167,11 @@ io.on('connection', function (socket) {
         socket.on('send-group', function(data) {
             console.log('sending message to group');
             io.sockets.in(data.room).emit('send message group', data);
-            message.insertMessageroup(data.message,data.userGID);
+            message.insertMessageroup(data.message,data.userGID,data.pic);
+        });
+        socket.on('send-img-group', function(data) {
+            console.log('sending message to group'+filenames);
+            message.insertFilegroup(filenames,data.userGID,data.pic);
         });
         /////end send to grouph////
     ////
@@ -186,6 +190,14 @@ io.on('connection', function (socket) {
             message.getMessageByGroup(gid,sortQty,function(items){
                io.sockets.in(gname).emit('msg group',items);
             });
+        });
+
+         socket.on('send-group base64',function (msg) {
+            console.log('received base64 file from' + msg.u_g_ID);
+            console.log(' base64 file ' + msg.fileName);
+            socket.u_g_ID = msg.u_g_ID;
+            // socket.broadcast.emit('base64 image', //exclude sender
+             io.sockets.in(msg.room).emit('send-group base64',msg);
         });
         // end get ////////////////////
         // clear Log ///////////////////////

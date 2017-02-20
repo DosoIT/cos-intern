@@ -77,19 +77,6 @@
             width: 100%;
         }
     }
-
-    @media only screen and (max-width: 768px) and (max-height: 1024) {
-        /* For IPad */
-        .container {
-            width: auto;
-            padding: 0;
-        }
-
-        [class*="col-"] {
-            width: auto;
-        }
-    }
-
     @media only screen and (max-width: 800px) {
         /* For mobile phones: */
         .container {
@@ -120,13 +107,12 @@
         /* For IPad Pro */
         .container {
             width: auto;
-            margin-top: 0%;
         }
         [class*="col-"] {
             width: auto;
         }
     }
-    @media only screen and (max-width: 1920px) and(max-height: 1080){
+    @media only screen and (max-width: 1920px) and(max-height:1080){
         /* For IPad Pro */
         .container {
             width: auto;
@@ -143,7 +129,7 @@
             .headersys{
                 margin-top: 10%;
                 text-align: center;
-                border-bottom: 1px solid #ccc;
+                /*border-bottom: 1px solid #ccc;*/
             }
             .pp {
                 text-indent: 50px;
@@ -180,6 +166,7 @@
             </h1>
             <p class="pp">ระบบสื่อสารภายในองค์กร</p>
         </div>
+        <hr>
         <div class="row">
               <form class="form-horizontal" role="form" action="/editProfile" method="post" runat="server" enctype="multipart/form-data">
                 <div class="well-sm">

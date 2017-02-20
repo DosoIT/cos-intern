@@ -97,61 +97,27 @@ body {
 	background-color: #1CA347;
 	border-color: #1CA347;
 }
-#rowBG {
-        height: auto;
-    }
-
-    #leftPanel {
-        height: auto;
-    }
-
-    #rightPanel {
-        height: auto;
-    }
-
-    #middlePanel {
-        height: auto;
-    }
-
-    #picProfile {
-        width: 140px;
-        height: 140px;
-    }
-
-    #rowHeadder {
-        margin-top: 3%;
-        margin-bottom: 3%;
-    }
-
-    #tableFile {
-        color: lightsteelblue;
-        margin-top: 200px;
-    }
-    #tableOnline {
-        color: lightsteelblue;
-        height: 70px;
-    }
-
-    #userOnlineIMG {
-        width: 25px;
-        height: 25px;
-    }
-
-    .icon-online {
-        position: relative;
-        margin-top: -2%;
-        margin-left: 10%;
-    }
     	/*text menu*/
     #text-file, #text-group, #text-online, #text-offline, #text-header{
-    	color: white;
-    	text-shadow: 1px 1px 1px black, 0 0 5px blue, 0 0 1px darkblue;
+    	/*color: black;*/
+    	/*text-shadow: 1px 1px 1px black, 0 0 5px blue, 0 0 1px darkblue;*/
     }
     a:link{
-    text-decoration:none;
+        text-decoration:none;
     }
     a:visited{
-    text-decoration:none;
+        text-decoration:none;
+    }
+    #txtlink{
+        color: inherit;
+    }
+    .txtTH{
+        font-family: 'Nunito',sans-serif;
+        font-size: 16pt;
+        text-shadow: 4px 4px 6px #aaa;
+    }
+    #txtlink{
+    color: inherit;
     }
     #tableGroup{
         width: 100%;
@@ -230,3 +196,8 @@ body {
 	    position: absolute;
 	    width: 1px;
 	}
+    .text{
+         font-family: 'Nunito',sans-serif;
+         font-size: 16pt;
+         text-shadow: 4px 4px 6px #aaa;
+    }
