@@ -1376,7 +1376,6 @@
                                $('#m-group').val('');
                              return false;
                         });
-                        
 
                         socket.on('send message group', function (data) {
                                 var u_g_ID = $('#u_g_ID').val();
@@ -1429,29 +1428,54 @@
                                }
                             });
                         }
+        ////history group
 
         $(document).ready(function () {
             var $button = $('#hisAll-group');
             var $counter = $('#counter-group');
-
             $('#hisAll-group').click(function(){
               $counter.val( parseInt($counter.val()) + 10 ); // `parseInt` converts the `value` from a string to a number
               var qty = $counter.val();
               var gname = $('#gname').val();
               var gid = $('#gid').val();
-              socket.emit('get message group',gid,gname,qty);
-              $("#messages-group").empty();
-
-              socket.on('send message group', function (data) {
-                                var u_g_ID = $('#u_g_ID').val();
-                                if(data.userGID == u_g_ID){
-                                    $('#messages-group').append($('<p align="right" class="msg-sn"></p><br>').text(data.message))
-                                    $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
-                                }else{
-                                    $('#messages-group').append($('<p align="left" class="msg-reply"></p><br>').text(data.message));
-                                    $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
-                                }
-             });
+              var userGID = $('#u_g_ID').val();
+               var cnt = 0;
+                            socket.emit('get message group',gid,gname,qty);
+                            $("#messages-group").empty();
+                            socket.on('msg group',function(items,userRe){
+                                $("#messages-group").empty();
+                                 for (var i = items.length - 1; i >= 0; i--) {
+                                            if(items[i].u_g_id == userGID){
+                                                    if(items[i].g_message != ""){
+                                                        $('#messages-group').append($("<p align='right'>"+items[i].g_message+" : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                        $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                                     }else{
+                                                        var type = items[i].file_upload.split('.').pop();
+                                                         if(type == 'png' || type== 'jpg' || type == 'jpeg'){
+                                                                $('#messages-group').append($("<p align='right'><img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                                         }else{
+                                                                $('#messages-group').append($("<p align='right'><a>"+items[i].file_upload+"</a> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                                $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                                         }
+                                                     }
+                                            }else{
+                                                 if(items[i].g_message !=""){
+                                                    $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : "+items[i].g_message+"</p><br>"));
+                                                    $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                                 }else{
+                                                    var type = items[i].file_upload.split('.').pop();
+                                                     if(type == 'png' || type== 'jpg' || type == 'jpeg'){
+                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : <img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/></p><br>"));
+                                                        $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                                    }else{
+                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                                        $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
+                                                     }
+                                                 }
+                                           }
+                               }
+                            });
 
             });
         });
