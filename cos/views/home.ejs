@@ -539,6 +539,7 @@
                     <th style="text-align: center;" class="txt">File Name</th>
                     <th style="text-align: center;" class="txt">From</th>
                     <th style="text-align: center;" class="txt">Date Time</th>
+                    <th style="text-align: center;" class="txt">Download</th>
                     </thead>
                     <tbody>
                     <%for(i in dbase){%>
@@ -569,6 +570,7 @@
                          <% } %>
                          </td>
                         <td><%= dbase[i].dateTime.toDateString()%></td>
+                        <td><a href="uploads/files/<%= dbase[i].file_upload %>" download><i class="fa fa-download" aria-hidden="true"></i></a></td>
                     </tr>
                     <%}}}%>
                     </tbody>
@@ -624,53 +626,6 @@
                             </div> <!-- end scollbartableOnline -->
                                 <!-- end status online -->
                             <!-- status offline -->
-                        <div id="rightPanel">
-                            <h2 class="page-header" id="text-offline">Offline</h2>
-                                <div id="scollbartableOffline">
-                                <table id="tableOffline" class="w3-table table-hover">
-                                    <% for (item in userAll) { if(userAll[item].local.st==false){%>
-                                        <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                        <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>','<%= userAll[item].local.picture %>');getMsg('<%= userAll[item]._id %>','<%= userAll[item].local.picture %>')">
-                                            <td class="text-left" style="width: 50%;">
-                                                <img src="/imageonline" alt="" class="icon-online" width="20" height="auto"> &nbsp;
-                                                <% if(userAll[item].local.picture != null){ %>
-                                                <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle'
-                                                     id="userOnlineIMG"/>
-                                                <% }else{ %>
-                                                <img src="/pic-default" id="userOnlineIMG"/>
-                                                <% } %>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="w3-left"">
-                                                    <%= userAll[item].local.fname %>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <%
-                                                    count=0;
-                                                    for(i in log){
-                                                       if(userAll[item]._id.toString() == log[i].user_sent.toString()){
-                                                               count++;
-                                                      }
-                                                  }%>
-                                                  <%if(count != 0){%>
-                                                <span class="badge" style="display:block;">
-                                                        <%=count; %>
-                                                </span>
-                                                 <%}else{%>
-                                                    <style type="text/css">
-                                                        .badge{
-                                                            display:none;
-                                                        }
-                                                    </style>
-                                                 <%}%>
-                                            </td>
-                                        </tr>
-                                    <% } } } %>
-                                </table>
-                                </div> <!-- end scollbartableOnline -->
-                                    <!-- end status online -->
-                                <!-- status offline -->
                             <div id="rightPanel">
                                 <h2 class="page-header" id="text-offline">Offline</h2>
                                     <div id="scollbartableOffline">
