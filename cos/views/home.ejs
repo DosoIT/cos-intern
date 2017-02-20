@@ -495,14 +495,14 @@
                 <!-- Chat Group -->
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel" >
                     <h2 class="page-header" id="text-group">
-                            <div class="w3-dropdown-hover">
-                                <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">
-                                    <font color="white">Add Group</font>
+                        <div class="w3-dropdown-hover">
+                                <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content">
+                                    Add Group
                                 </a>
                                 <a href="#">
-                                    <font color="white">Group +</font>
+                                    Group +
                                 </a>
-                            </div>
+                        </div>
                     </h2>
                     <div id="scollbartableGroup">
                     <table id="tableGroup" class="w3-table table-hover">
@@ -1284,14 +1284,19 @@ uploader.on('abort', function(fileInfo) {
     headers: {
         'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
     },
-    acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx',
+    acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx',
       init: function() {
+        this.on('success',function(file,resp){
+            alert("Success....");
+            readerfile(file);
+        });
         this.on('complete', function( file, resp ){
-                readerfile(file);
-            // this.removeFile(file);
+            alert("Complate....");
+            this.removeFile(file);  
+
+
             // console.log(file.name);
             // console.log( resp );
-            this.removeFile(file);
         });
 }
     };
