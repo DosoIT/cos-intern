@@ -1051,7 +1051,6 @@
             }
 
             socket.on('base64 file',function(dataFile){
-                    // console.log(dataFile.file);
                     var typeFile = dataFile.fileName.split('.').pop();
                     if(dataFile.username == userSent){
                         if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
@@ -1293,7 +1292,7 @@
                     var uploadIds = uploaderGroup.upload(fileEl,{
                         uploadTo:'files'
                     });
-                readThenSendFile(data);
+                readThenSendFileGroup(data);
        });
      $('#IMG_INPUT').change(function(e){
                 var data = e.originalEvent.target.files[0];
@@ -1302,10 +1301,10 @@
                     var uploadIds = uploaderGroup.upload(fileEl,{
                         uploadTo:'files'
                     });
-                readThenSendFile(data);
+                readThenSendFileGroup(data);
        });
 
-            function readThenSendFile(data){
+            function readThenSendFileGroup(data){
                     $('#IMG_INPUT').val('');
                     var u_g_ID = $('#u_g_ID').val();
                     var gname = $('#gname').val();
