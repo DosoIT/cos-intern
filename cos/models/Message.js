@@ -18,7 +18,8 @@ module.exports = {
     clearLogGroup,
     getMessageByGroup,
     delGroup,
-    messageInsertFile
+    messageInsertFile,
+    insertFilegroup
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -207,13 +208,14 @@ function getUserGroupByuser(user) {
 }
 
 //Message Group ==============================================
-function insertMessageroup(msg, u_gid) {
+function insertMessageroup(msg, u_gid,pic) {
     var message_group = db.collection('message_group');
     var message_group_log = db.collection('message_group_log');
     var data = {
         'g_message': msg,
         'u_g_id': u_gid,
         'file_upload': '',
+        'picture':pic,
         'dateTime': new Date()
     };
 
@@ -232,6 +234,34 @@ function insertMessageroup(msg, u_gid) {
         }
     });
 }
+
+function insertFilegroup(file, u_gid,pic) {
+    var message_group = db.collection('message_group');
+    var message_group_log = db.collection('message_group_log');
+    var data = {
+        'g_message':"" ,
+        'u_g_id': u_gid,
+        'file_upload': file,
+        'picture': pic,
+        'dateTime': new Date()
+    };
+
+    message_group.insert(data, function (err, item) {
+        if (!err) {
+            console.log('Insert Msg Group OK...');
+        } else {
+            console.log('Insert Msg Group No...');
+        }
+    });
+    message_group_log.insert(data, function (err, item) {
+        if (!err) {
+            console.log('Insert Msg Group OK...');
+        } else {
+            console.log('Insert Msg Group No...');
+        }
+    });
+}
+
 function updateProfile(data) {
     var users = db.collection('users');
     users.update({"_id": new objId(data._id)}, {$set: {
