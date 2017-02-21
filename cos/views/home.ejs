@@ -976,6 +976,7 @@
                    var iduser = document.getElementById('userRe').value = id;
                    document.getElementById('userPic').value = '<%= user.local.picture%>';
                    document.getElementById('userRePic').value = pic;
+                   document.getElementById('userReply').value = id;
 
                    socket.emit('clearLog',userSent,id);
 
