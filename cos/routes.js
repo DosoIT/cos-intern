@@ -146,7 +146,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
                 messages.getLog(req.user._id,function(log){
                     messages.getUserAll(function (err1, item) {
                         messages.getFiles(req.user._id,function (dbase) {
-                            res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback,log:log,dbase:dbase});
+                            messages.getFileGroup(req.user._id,function(dbase_g){
+                                res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback,log:log,dbase:dbase,dbase_g:dbase_g});
+                            });
                         });
                     });
                 });

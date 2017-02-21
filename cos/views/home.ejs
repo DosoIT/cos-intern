@@ -55,11 +55,18 @@
             margin-top: 3%;
             margin-bottom: 3%;
         }
-
+            
+        /*font in table*/
         #tableFile {
-            color: lightsteelblue;
-            padding: 0;
+            cursor: default;
+            color: #1a1a1a;
             width: 100%
+        }
+        #tableFile td:hover{
+            color: #F88017;
+        }
+        .dw:hover{
+            color: #FF0000;
         }
         #tableOnline {
             color: lightsteelblue;
@@ -441,6 +448,27 @@
             position: absolute;
             margin-left: 30%;
         }
+        .fileGroup{
+            display: none;
+        }
+        .ar-r{
+            position: relative;
+            top: 50%;
+            color: #52D017;
+        }
+        .ar-l{
+            color: red;
+        }
+        .ckp{
+            position: absolute;
+            margin-top: -25px;
+            left:70px;
+        }
+        .ckg{
+            position: absolute;
+            margin-top: -25px;
+            left:110px;
+        }
     </style>
     <body>
     <% if(user.local.st != false){%>
@@ -533,13 +561,29 @@
                 <!-- End Chat group -->
                 <!-- detail file upload user -->
             <div class="col-xs-8 col-md-8 col-sm-8 col-lg-8" id="middlePanel">
-                <h1 class="page-header" id="text-file" class="txt">Files Upload</h1>
-                <table style="text-align: center;" id="tableFile" class="table table-striped table-hover">
+                <h1 class="page-header txt" id="text-file" >Files Upload</h1>
+                    <div class="ck2show">
+                        <div class="row">
+                            <div><p>choose: </p></div>
+                            <div class="ckp">
+                                <i class="fa fa-user"></i>
+                                <input type="radio" name="ck" value="p" id="ckp" checked>
+                            </div>
+                            <div class="ckg">
+                                <i class="fa fa-users"></i>
+                                <input type="radio" name="ck" value="g" id="ckg" >
+                            </div>
+                        </div>
+                    </div>
+                <table style="text-align: center;" id="tableFile" class="single table">
                     <thead>
-                    <th style="text-align: center;" class="txt">File Name</th>
-                    <th style="text-align: center;" class="txt">From</th>
-                    <th style="text-align: center;" class="txt">Date Time</th>
-                    <th style="text-align: center;" class="txt">Download</th>
+                        <th style="text-align: center;" class="txt">File Name</th>
+                        <th style="text-align: center;" class="txt">
+                            <i class="fa fa-long-arrow-right ar-r"></i>
+                            <i class="fa fa-long-arrow-left ar-l"></i>
+                        </th>
+                        <th style="text-align: center;" class="txt">Date Time</th>
+                        <th style="text-align: center;" class="txt">Download</th>
                     </thead>
                     <tbody>
                     <%for(i in dbase){%>
@@ -570,13 +614,37 @@
                          <% } %>
                          </td>
                         <td><%= dbase[i].dateTime.toDateString()%></td>
-                        <td><a href="uploads/files/<%= dbase[i].file_upload %>" download><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                        <td><a href="uploads/files/<%= dbase[i].file_upload %>" download><i class="fa fa-download dw" aria-hidden="true"></i></a></td>
                     </tr>
                     <%}}}%>
                     </tbody>
                 </table>
-            </div>
                 <!-- detail file upload user -->
+
+                <!-- detail file upload user Group -->
+                <table style="text-align: center;" id="tableFile" class=" fileGroup table">
+                    <thead>
+                        <th style="text-align: center;" class="txt">File Name</th>
+                        <th style="text-align: center;" class="txt">
+                            <i class="fa fa-long-arrow-right ar-r"></i>
+                            <i class="fa fa-long-arrow-left ar-l"></i>
+                        </th>
+                        <th style="text-align: center;" class="txt">Date Time</th>
+                        <th style="text-align: center;" class="txt">Download</th>
+                    </thead>
+                    <tbody>
+                        <%for(i in dbase_g){%>
+                    <tr>
+                    <td><%= dbase_g[i].file %></td>
+                    <td>BBBB</td>
+                        <td><%= dbase_g[i].date%></td>
+                        <td><a href="uploads/files/<%= dbase_g[i].file_upload %>" download><i class="fa fa-download dw" aria-hidden="true"></i></a></td>
+                    </tr>
+                    <%}%>
+                    </tbody>
+                </table>
+            </div>
+                <!-- detail file upload user gropu -->
                      <!-- status online -->
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel" >
                     <div class="row">
@@ -682,7 +750,7 @@
                     <header class="w3-container w3-Lightgray">
                         <span onclick="closeModel();" class="w3-closebtn">&times;</span>
                             <h2 id="model-header"></h2>
-                            <div id="hisAll" >History</div>
+                            <div id="hisAll">more.</div>
                             <input type="text" id="counter" style="display: none;" value="10">
                             <div id="reader"></div>
                     </header>
@@ -1536,4 +1604,19 @@
                 yourImg.src = URL.createObjectURL(event.target.files[0]);
             }
           };
+
+
+          // Radio check to show datable
+          $("#ckp").click(function(event) {
+              $(".fileGroup").css("display","none");
+              $(".single").css("display","block");
+              $("#tableFile_paginate").css("display","block");
+              $("#tableFile_info").css("display","block");
+          });
+          $("#ckg").click(function(event) {
+              $(".single").css("display","none");
+              $("#tableFile_paginate").css("display","none");
+              $("#tableFile_info").css("display","none");
+              $(".fileGroup").css("display","block");
+          });
     </script>
