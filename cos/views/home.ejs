@@ -29,35 +29,6 @@
         .container {
             width: 100%;
         }
-
-        #rowBG {
-            height: auto;
-        }
-
-        #leftPanel {
-            margin-top: -3%;
-            height: auto;
-        }
-
-        #rightPanel {
-            margin-top: -2.2%;
-            height: auto;
-        }
-
-        #middlePanel {
-            margin-top: -3.4%;
-            height: auto;
-        }
-
-        #picProfile {
-            width: 140px;
-            height: 140px;
-        }
-
-        #rowHeadder {
-            margin-top: 3%;
-            margin-bottom: 3%;
-        }
         /*font in table*/
         #tableFile {
             cursor: default;
@@ -74,7 +45,6 @@
             color: #FF0000;
         }
         #tableOnline {
-            color: lightsteelblue;
             width: 100%;
             height: auto;
         }
@@ -512,7 +482,7 @@
                 <!-- End Chat group -->
                 <!-- detail file upload user -->
             <div class="col-xs-8 col-md-8 col-sm-8 col-lg-8" id="middlePanel">
-                <h1 class="page-header txt" id="text-file" >Files Upload</h1>
+                <h1 class="page-header txt" id="text-file" ><i style="font-size:24px" class="fa">&#xf07c;</i> Files Upload</h1>
                     <div class="ck2show">
                         <div class="row">
                             <div><p>choose: </p></div>
@@ -929,9 +899,11 @@
                 </div>
         </div><!-- End Model Image Profile -->
         <br><br>
+            <!-- BacktopTop -->
+            <a href="javascript:void(0);" id="scroll" title="Back to Top" style="display: none;">Top<span></span></a>
     <div id="footer">
         <div class="container">
-            <p class="text-center credit">Copyright © PDB Intern 2017</p>
+            <p class="text-center credit">Copyright © Portable Digital Box Co.,LTD Intern 2017</p>
         </div>
     </div>
 </div> <!-- End Container Main -->
@@ -1629,5 +1601,18 @@
                         $('.dropzone').hide();
                 }, 2000);
         });
-
+        // Back to top
+    $(document).ready(function(){
+        $(window).scroll(function(){
+            if ($(this).scrollTop() > 100) {
+                $('#scroll').fadeIn();
+            } else {
+                $('#scroll').fadeOut();
+            }
+        });
+            $('#scroll').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 600);
+            return false;
+            });
+    });
     </script>
