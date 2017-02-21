@@ -857,11 +857,11 @@
                         <div style="display: block;" id="chat-group">
                             <div class="row">
                                 <div id="drag-drop-zone-group" class="col-lg-12 col-md-12 col-xs-12 col-sm-12 row">
-                                    <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone" enctype="multipart/form-data">
-                                        <input type="hidden" name="user_id" value="<%= user._id %>">
-                                        <input type="hidden" name="" id="">
+                                    <form id="uploadwidgetGroup" method="post" action="/drangFilesGroup" class="dropzone" enctype="multipart/form-data">
+                                        <input type="hidden" name="pic" value="<%= user.local.picture %>">
+                                        <input type="hidden" id="u_g_ID" name="u_g_ID">
                                         <div class="fallback">
-                                            <input name="file" type="file" multiple />
+                                            <input name="fileGroup" type="file" multiple />
                                         </div>
                                     </form>
                                 </div>
@@ -1496,25 +1496,17 @@
             paramName: 'file',
             maxFilesize: 5, // MB
             maxFiles: 5, // 1 file, 2 file,3 file...(n file)
-            dictDefaultMessage: "Drag - Drop Here",
             headers: {
                 'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
             },
-            acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx',
+            acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx,.pdf',
               init: function() {
-                this.on('success',function(file,resp){
-                    // alert("Success....");
+              this.on('complete', function( file, resp ){
+                    alert("Complate....");
                     readerfile(file);
+                    this.removeFile(file);
                 });
-                this.on('complete', function( file, resp ){
-                    // alert("Complate....");
-                    this.removeFile(file);  
-
-
-                    // console.log(file.name);
-                    // console.log( resp );
-                });
-        }
+            },
     };
      function readerfile(data){
          $('#fileInput').val('');
@@ -1530,6 +1522,40 @@
                     msg.file = evt.target.result;
                     msg.fileName = data.name;
                     socket.emit('base64 file', msg,'<%= user.local.picture %>');
+                };
+                reader.readAsDataURL(data);
+
+    }
+    Dropzone.options.uploadwidgetGroup = { // drang-drop zone script
+            paramName: 'fileGroup',
+            maxFilesize: 5, // MB
+            maxFiles: 5, // 1 file, 2 file,3 file...(n file)
+            headers: {
+                'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
+            },
+            acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx,.pdf',
+              init: function() {
+              this.on('complete', function( file, resp ){
+                    alert("Complate....");
+                    readerfileGroup(file);
+                    this.removeFile(file);
+                });
+            },
+    };
+     function readerfileGroup(data){
+        var u_g_ID = $('#u_g_ID').val();
+                    var gname = $('#gname').val();
+                    var msg = $('#m-group').val();
+                    var pic = '<%= user.local.picture%>';
+                var reader = new FileReader();
+                reader.onload = function(evt){
+                    var msg ={};
+                    msg.u_g_ID = u_g_ID;
+                    msg.room = gname;
+                    msg.file = evt.target.result;
+                    msg.fileName = data.name;
+                    msg.pic =pic;
+                    socket.emit('send-group base64',msg);
                 };
                 reader.readAsDataURL(data);
 

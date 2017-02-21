@@ -250,12 +250,20 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     });
 
     app.post( '/drangFiles',der.any(),isLoggedIn,function( req, res, next){
-        // console.log(req.files);
-        console.log(filenames);
-         var der = multer({storage: dd});
-         console.log(der);
-        if(filenames != ""){
-            var getFile=messages.messageInsert(req.body.user_id,'',req.body.userReply,filenames);
+        if(req.files.filename != ""){
+            var getFile=messages.messageInsert(req.body.user_id,'',req.body.userReply,req.files[0].filename);
+            if(getFile){
+                console.log("upload files complete..");
+            }
+            else{
+                console.log("Files upload Error!!");
+            }
+        }
+        return res.status( 200 ).send(req.files);
+    });
+    app.post( '/drangFilesGroup',der.any(),isLoggedIn,function( req, res, next){
+        if(req.files.filename != ""){
+            var getFile=messages.insertFilegroup(req.files[0].filename,req.body.u_g_ID,req.body.pic);
             if(getFile){
                 console.log("upload files complete..");
             }
