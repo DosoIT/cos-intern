@@ -21,7 +21,8 @@ module.exports = {
     delGroup,
     messageInsertFile,
     getFiles,
-    insertFilegroup
+    insertFilegroup,
+    getFileGroup
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -324,7 +325,6 @@ function clearLogGroup(u_g_id){
         });
 
 }
-
 function delGroup (u_g_id){
         var user_group = db.collection('user_group');
           user_group.update({"_id": new objId(u_g_id)}, {
@@ -333,12 +333,44 @@ function delGroup (u_g_id){
                     }
          });
 }
-
 //Function get Files to table
 function getFiles (id,callback) {
     var dbase = mongojs('cos', ['message']);
     dbase.message.find({$or:[{user_sent:id.toString()},{user_receive:id.toString()}]}).toArray(function (err,dbase) {
         callback(dbase);
-    })
+    });
 }
 
+function getFileGroup (id,callback) {
+    var dbase_g = mongojs('cos',['message_group']);
+    var dbase_ug = db.collection("user_group");
+    var getGroup = mongojs('cos',['group']);
+    var groupId=[],userGroupId = [],dataItem = [];
+    dbase_ug.find({user_id:id}).toArray(function (err,dbase_ug) {
+        for(var i in dbase_ug){
+            // console.log("Befor Delete : "+dbase_ug[i].g_id);
+            if(dbase_ug[i].del_st == false){
+                // console.log("After Delete : "+ dbase_ug[i].g_id);
+                groupId.push(dbase_ug[i].g_id);
+            }
+        }
+        var dbase_ug2 = db.collection("user_group");
+        dbase_ug2.find({g_id:{$in:groupId}}).toArray(function(err,item){
+                // console.log(item);
+                for(var j in item){
+                    userGroupId.push(item[j]._id.toString());
+                }
+                dbase_g.message_group.find({u_g_id:{$in:userGroupId}}).toArray(function(err,item2){
+                    for(var k in item2){
+                        if(item2[k].g_message == ""){
+                            if(item2[k].file_upload.split(".").pop()!="png" && item2[k].file_upload.split(".").pop()!="jpg")
+                            // console.log(item2[k].file_upload);
+                            dataItem.push({"file":item2[k].file_upload,"date":item2[k].dateTime.toDateString()});
+                        }
+                    }
+                    console.log(dataItem);
+                    callback(dataItem);
+                });
+            });
+    });
+}
