@@ -22,7 +22,8 @@ module.exports = {
     messageInsertFile,
     getFiles,
     insertFilegroup,
-    getFileGroup
+    getFileGroup,
+    getGroupAll
 };
 MongoClient.connect('mongodb://localhost:27017/cos', function (err, database) {
     db = database;
@@ -172,6 +173,24 @@ function getGroupByID(id, callback) {
     var groupID = [];
 
     user_group.find({user_id: new objId(id)}).toArray(function (err, item) {
+        if (!err) {
+            // for (var value in item) {
+            //     var gid = item[value].g_id;
+            //     var id = item[value]._id;
+            //     groupID.push({'g_id': gid},{'_id':id});
+            // }
+           callback(item);
+        } else {
+            console.log('Find Group BY ID Noooo.');
+        }
+    });
+}
+function getGroupAll(callback) {
+    var user_group = db.collection('user_group');
+    var groupObj = {};
+    var groupID = [];
+
+    user_group.find({}).toArray(function (err, item) {
         if (!err) {
             // for (var value in item) {
             //     var gid = item[value].g_id;
@@ -345,7 +364,7 @@ function getFileGroup (id,callback) {
     var dbase_g = mongojs('cos',['message_group']);
     var dbase_ug = db.collection("user_group");
     var getGroup = mongojs('cos',['group']);
-    var groupId=[],userGroupId = [],dataItem = [];
+    var groupId=[],userGroupId = [],dataItem = [],gGroupName=[];
     dbase_ug.find({user_id:id}).toArray(function (err,dbase_ug) {
         for(var i in dbase_ug){
             // console.log("Befor Delete : "+dbase_ug[i].g_id);
@@ -359,13 +378,13 @@ function getFileGroup (id,callback) {
                 // console.log(item);
                 for(var j in item){
                     userGroupId.push(item[j]._id.toString());
-                }
+               }
                 dbase_g.message_group.find({u_g_id:{$in:userGroupId}}).toArray(function(err,item2){
                     for(var k in item2){
                         if(item2[k].g_message == ""){
                             if(item2[k].file_upload.split(".").pop()!="png" && item2[k].file_upload.split(".").pop()!="jpg")
                             // console.log(item2[k].file_upload);
-                            dataItem.push({"file":item2[k].file_upload,"date":item2[k].dateTime.toDateString()});
+                            dataItem.push({"file":item2[k].file_upload,"date":item2[k].dateTime.toDateString(),"u_g_id":item2[k].u_g_id});
                         }
                     }
                     console.log(dataItem);

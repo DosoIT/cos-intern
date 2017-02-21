@@ -67,6 +67,9 @@
         #tableFile td:hover{
             color: #F88017;
         }
+        #tableFileGroup td:hover{
+            color: #F88017;
+        }
         .dw:hover{
             color: #FF0000;
         }
@@ -539,7 +542,7 @@
                             <%if(dbase[i].file_upload.split('.').pop()!="png" && dbase[i].file_upload.split('.').pop()!="jpg"){%>
 
                     <tr>
-                        <td><a><%= dbase[i].file_upload %></a></td>
+                        <td><%= dbase[i].file_upload %></td>
 
                         <td><%if(dbase[i].user_sent==user._id.toString()){%>
                          <span style="color:Green;">To : </span>
@@ -565,32 +568,29 @@
                         <td><a href="uploads/files/<%= dbase[i].file_upload %>" download><i class="fa fa-download dw" aria-hidden="true"></i></a></td>
                     </tr>
                     <%}}}%>
-                    </tbody>
-                </table>
-                <!-- detail file upload user -->
 
-                <!-- detail file upload user Group -->
-                <table style="text-align: center;" id="tableFile" class=" fileGroup table">
-                    <thead>
-                        <th style="text-align: center;" class="txt">File Name</th>
-                        <th style="text-align: center;" class="txt">
-                            <i class="fa fa-long-arrow-right ar-r"></i>
-                            <i class="fa fa-long-arrow-left ar-l"></i>
-                        </th>
-                        <th style="text-align: center;" class="txt">Date Time</th>
-                        <th style="text-align: center;" class="txt">Download</th>
-                    </thead>
-                    <tbody>
-                        <%for(i in dbase_g){%>
+                      <%for(i in dbase_g){%>
                     <tr>
                     <td><%= dbase_g[i].file %></td>
-                    <td>BBBB</td>
+                    <td>
+                        <%for(g in gAll){%>
+                            <%if(dbase_g[i].u_g_id == gAll[g]._id.toString()){%>
+                                <% for(item in group){%>
+                                        <%if(gAll[g].g_id == group[item]._id.toString()){%>
+                                            <%=  group[item].g_name%>
+                                        <%}%>
+                                <%}%>
+                        <%}}%>
+                    </td>
                         <td><%= dbase_g[i].date%></td>
                         <td><a href="uploads/files/<%= dbase_g[i].file_upload %>" download><i class="fa fa-download dw" aria-hidden="true"></i></a></td>
                     </tr>
                     <%}%>
                     </tbody>
                 </table>
+                <!-- detail file upload user -->
+
+                <!-- detail file upload user Group -->
             </div>
                 <!-- detail file upload user gropu -->
                      <!-- status online -->
@@ -1108,7 +1108,9 @@
         // End script socket.io
             // dataTable
         $(document).ready(function () {
+
             $('#tableFile').dataTable();
+            // $('#tableFileGroup').data1;
         });
             // End dataTable
         socket.emit('userID',$('#user_id').val());
@@ -1590,20 +1592,16 @@
             }
           };
 
-
-
           // Radio check to show datable
           $("#ckp").click(function(event) {
-              $(".fileGroup").css("display","none");
-              $(".single").css("display","block");
-              $("#tableFile_paginate").css("display","block");
-              $("#tableFile_info").css("display","block");
+              $(".fileGroup").fadeOut();
+              $(".single").fadeIn();
+              $("#tableFileGroup").css('display','none');
           });
           $("#ckg").click(function(event) {
-              $(".single").css("display","none");
-              $("#tableFile_paginate").css("display","none");
-              $("#tableFile_info").css("display","none");
-              $(".fileGroup").css("display","block");
+              $(".single").fadeOut();
+              $(".fileGroup").fadeIn();
+              $("#tableFile").css('display','none');
           });
 
           //  drag drop hover

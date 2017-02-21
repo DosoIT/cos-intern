@@ -148,7 +148,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
                     messages.getUserAll(function (err1, item) {
                         messages.getFiles(req.user._id,function (dbase) {
                             messages.getFileGroup(req.user._id,function(dbase_g){
-                                res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback,log:log,dbase:dbase,dbase_g:dbase_g});
+                                messages.getGroupAll(function(gAll){
+                                     res.render('./home.ejs', {userAll: item, user: req.user, group: groupDe,userGroup:callback,log:log,dbase:dbase,dbase_g:dbase_g,gAll:gAll});
+                                 });
                             });
                         });
                     });
