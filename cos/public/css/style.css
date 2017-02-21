@@ -124,6 +124,9 @@ body {
         height: 5%;
         font-size: 17px;
     }
+    /*#tableGroup:hover{
+        overflow-y:overlay;
+    }*/
     #text-profile{
     	margin-top: -5%;
     	margin-left: 13%;
@@ -177,14 +180,28 @@ body {
     	overflow-y: overlay;
     }
     #scollbartableGroup:hover{
-    	height: 400px;
-    	overflow-y: overlay;
+        overflow-y: overlay;
+    }
+    #scollbartableGroup{
+        height: 480px;
+        list-style-type: none;
+    	overflow-y: hidden;
     }
     #scollbartableOnline:hover{
-    	overflow-y: overlay;
+        overflow-y: overlay;
+    }
+    #scollbartableOnline{
+        height: 200px;
+        list-style-type: none;
+        overflow-y: hidden;
     }
     #scollbartableOffline:hover{
-    	overflow-y: overlay;
+        overflow-y: overlay;
+    }
+    #scollbartableOffline{
+    	height: 200px;
+        list-style-type: none;
+        overflow-y: hidden;
     }
     .custom-input-file input[type="file"]{
 	    border: 0;
@@ -200,4 +217,28 @@ body {
          font-family: 'Nunito',sans-serif;
          font-size: 16pt;
          text-shadow: 4px 4px 6px #aaa;
+    }
+    .footer {
+        background: #EDEFF1;
+        height: auto;
+        padding-bottom: 30px;
+        position: relative;
+        width: 100%;
+        border-bottom: 1px solid #CCCCCC;
+        border-top: 1px solid #DDDDDD;
+    }
+    #footer{
+        height: 60px;
+        background-color: #f5f5f5;
+    }
+    .container .credit {
+        margin: 20px 0;
+    }
+    #footer > .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    #imgChat{
+        width: 45px;
+        height: 45px;
     }

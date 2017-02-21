@@ -11,8 +11,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     var storage = new multer.diskStorage({
         destination: './uploads/',
             filename: function (req, file, cb) {
+            filenames = "";
             filenames = "Avatar" + (Math.floor((Math.random() * 1000) + 1)) + path.extname(file.originalname);
-            cb(null, filenames)
+            cb(null, filenames);
             }
         }
     );
@@ -20,9 +21,9 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     var dd = new multer.diskStorage({
         destination: './uploads/files/',
             filename: function (req, file, cb) {
+            filenames = "";
             filenames = "file_" + (Math.floor((Math.random() * 1000) + 1)) + path.extname(file.originalname);
-            filenameArray.push(filenames);
-            cb(null, filenames)
+            cb(null, filenames);
             }
         }
     );
@@ -251,18 +252,27 @@ module.exports = function (app, passport, urlencodedParser, jsonParser, session,
     });
 
     app.post( '/drangFiles',der.any(),isLoggedIn,function( req, res, next){
-        // console.log(req.files);
-        console.log(filenames);
-        // filenameArray=[];
-        // if(filenames != ""){
-        //     var getFile=messages.messageInsert(req.body.user_id,'',req.body.userReply,filenames);
-        //     if(getFile){
-        //         console.log("upload files complete..");
-        //     }
-        //     else{
-        //         console.log("Files upload Error!!");
-        //     }
-        // }
+        if(req.files.filename != ""){
+            var getFile=messages.messageInsert(req.body.user_id,'',req.body.userReply,req.files[0].filename);
+            if(getFile){
+                console.log("upload files complete..");
+            }
+            else{
+                console.log("Files upload Error!!");
+            }
+        }
+        return res.status( 200 ).send(req.files);
+    });
+    app.post( '/drangFilesGroup',der.any(),isLoggedIn,function( req, res, next){
+        if(req.files.filename != ""){
+            var getFile=messages.insertFilegroup(req.files[0].filename,req.body.u_g_ID,req.body.pic);
+            if(getFile){
+                console.log("upload files complete..");
+            }
+            else{
+                console.log("Files upload Error!!");
+            }
+        }
         return res.status( 200 ).send(req.files);
     });
 

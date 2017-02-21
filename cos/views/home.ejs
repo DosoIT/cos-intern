@@ -17,9 +17,12 @@
         <script src="drop-js"></script>
         <script scripts="metroJs"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     </head>
     <style>
         body{
+            position: relative;
+            font-family: 'Nunito', sans-serif;
             height: auto;
             font: 13px Helvetica, Arial;
         }
@@ -37,7 +40,7 @@
         }
 
         #rightPanel {
-            margin-top: -3%;
+            margin-top: -2.2%;
             height: auto;
         }
 
@@ -137,7 +140,7 @@
             padding: 1px 20px 2px 9px;
         }
          #messages-group {
-            height: 200px;
+            height: 250px;
             list-style-type: none;
             margin: 0;
             padding: 0;
@@ -469,6 +472,11 @@
             margin-top: -25px;
             left:110px;
         }
+        .txt{
+             font-family: 'Nunito',sans-serif;
+             font-size: 16pt;
+             text-shadow: 4px 4px 6px #aaa;
+         }
     </style>
     <body>
     <% if(user.local.st != false){%>
@@ -489,13 +497,13 @@
                                     <tr>
                                         <td class="text-right" id="text-icons">
                                             <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
-                                            <a href="/profileUpdate"><%= user.local.fname %></a>
+                                            <a href="/profileUpdate" class="txt"><%= user.local.fname %></a>
                                         </td>
                                     </tr>
                                     <tr class="link-logout">
                                         <td class="text-left" id="text-icons">
                                             <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
-                                            <a href="/logout">Log-out</a>
+                                            <a href="/logout" class="txt">Log-out</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -523,12 +531,12 @@
                     <!-- Chat Group -->
                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel" >
                         <h2 class="page-header" id="text-group">
-                                <div class="w3-dropdown-hover">
-                                    <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content w3-border">
-                                        <font color="white">Add Group</font>
+                                <div class="w3-dropdown-hover" style="background-color: white;">
+                                    <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content">
+                                        Add Group
                                     </a>
                                     <a href="#">
-                                        <font color="white">Group +</font>
+                                        Group +
                                     </a>
                                 </div>
                         </h2>
@@ -648,7 +656,7 @@
                      <!-- status online -->
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel" >
                     <div class="row">
-                        <h2 class="page-header" id="text-online">Online</h2>
+                        <h2 class="page-header txt" id="text-online">Online</h2>
                             <div id="scollbartableOnline">
                             <table id="tableOnline" class="w3-table table-hover">
                                 <% for (item in userAll) { if(userAll[item].local.st==true){ %>
@@ -695,7 +703,7 @@
                                 <!-- end status online -->
                             <!-- status offline -->
                             <div id="rightPanel">
-                                <h2 class="page-header" id="text-offline">Offline</h2>
+                                <h2 class="page-header txt" id="text-offline">Offline</h2>
                                     <div id="scollbartableOffline">
                                     <table id="tableOffline" class="w3-table table-hover">
                                         <% for (item in userAll) { if(userAll[item].local.st==false){%>
@@ -755,7 +763,16 @@
                             <div id="reader"></div>
                     </header>
                     <div class="w3-container">
-                        <div id="chat-user" style="display: block;">
+                        <div id="drag-drop-user" class="col-lg-12 col-md-12 col-xs-12 col-sm-12 row">
+                            <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone" enctype="multipart/form-data">
+                                        <input type="hidden" name="user_id" value="<%= user._id %>">
+                                        <input type="hidden" name="userReply" id="userReply">
+                                    <div class="fallback">
+                                        <input name="file" type="file" id="filedrag" multiple />
+                                    </div>
+                            </form>
+                        </div> <!-- end drag user -->
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" class="row">
                             <form id="frmMsg" >
                                 <div id="messages"></div>
                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -789,13 +806,6 @@
                                 <button type="submit">
                                     <img class="logo" src="/public/image/">
                                 </button>
-                            </form>
-                        </div>
-                        <div id="drag-drop-user" style="display: none;">
-                            <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone" enctype="multipart/form-data">
-                                <div class="fallback">
-                                <input name="file" type="file"/>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -914,6 +924,18 @@
                     </header>
                     <div class="w3-container">
                         <div style="display: block;" id="chat-group">
+                            <div class="row">
+                                <div id="drag-drop-zone-group" class="col-lg-12 col-md-12 col-xs-12 col-sm-12 row">
+                                    <form id="uploadwidgetGroup" method="post" action="/drangFilesGroup" class="dropzone" enctype="multipart/form-data">
+                                        <input type="hidden" name="pic" value="<%= user.local.picture %>">
+                                        <input type="hidden" id="u_g_ID" name="u_g_ID">
+                                        <div class="fallback">
+                                            <input name="fileGroup" type="file" multiple />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- end in drag-drop-zone -->
+                            <div class="row">
                             <form id="frmMsg-group" >
                                 <div id="messages-group">
                                     <img src="/pic-default" id="output-img" alt="your image" class="img-de img-circle " width="180" height="180" style="margin-left: 2.0cm "/>
@@ -952,22 +974,9 @@
                                             <img class="logo" src="/public/image/">
                                     </button>
                                 </div>
-                                <div id="drag-drop-zone">
-                                    <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
-                                        <div class="fallback">
-                                            <input name="file" type="file"/>
-                                        </div>
-                                    </form>
-                                </div> <!-- end in drag-drop-zone -->
                             </form>
+                            </div> <!-- end row chat -->
                         </div> <!-- end chat-group -->
-                        <div id="drag-drop-zone" style="display: none;">
-                            <form id="uploadwidget" method="post" action="/drangFiles" class="dropzone">
-                                <div class="fallback">
-                                    <input name="file" type="file"/>
-                                </div>
-                            </form>
-                        </div> <!-- end in drag-drop-zone -->
                     </div>
                     <div id="output">
                         <ul></ul>
@@ -985,7 +994,13 @@
                     <img id="img01">
                 </div>
         </div><!-- End Model Image Profile -->
-    </div> <!-- End Container Main -->
+        <br><br>
+    <div id="footer">
+        <div class="container">
+            <p class="text-center credit">Copyright © PDB Intern 2017</p>
+        </div>
+    </div>
+</div> <!-- End Container Main -->
     <% }else{%>
         <script type="text/javascript">
             window.location.href="/";
@@ -1036,6 +1051,7 @@
                    var iduser = document.getElementById('userRe').value = id;
                    document.getElementById('userPic').value = '<%= user.local.picture%>';
                    document.getElementById('userRePic').value = pic;
+                   document.getElementById('userReply').value = id;
 
                    socket.emit('clearLog',userSent,id);
 
@@ -1111,23 +1127,22 @@
             }
 
             socket.on('base64 file',function(dataFile){
-                    // console.log(dataFile.file);
                     var typeFile = dataFile.fileName.split('.').pop();
                     if(dataFile.username == userSent){
                         if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                             $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/> : <img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /></p><br><br>"));
+                             $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/> : <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+dataFile.picture+"' /></p><br><br>"));
                              $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }else{
-                            $('#messages').append($("<p class='w3-right-align'><a>"+dataFile.fileName+"</a> : <img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /></p><br><br>"));
+                            $('#messages').append($("<p class='w3-right-align'><a>"+dataFile.fileName+"</a> : <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+dataFile.picture+"' /></p><br><br>"));
                             $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }
 
                     }else{
                         if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                             $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/></p><br>"));
+                             $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+dataFile.picture+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='"+dataFile.file.toString()+"'/></p><br>"));
                              $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }else{
-                             $('#messages').append($("<p align='left' >: <img  class='img-circle' width='45' height='45' src='/uploads/"+dataFile.picture+"' /> : <a>"+dataFile.fileName+"</a></p><br>"));
+                             $('#messages').append($("<p align='left' >: <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+dataFile.picture+"' /> : <a>"+dataFile.fileName+"</a></p><br>"));
                              $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                         }
                     }
@@ -1148,11 +1163,11 @@
                         socket.on('send message01', function (data) {
                              if (data.userSent == userSent) {
                                 // user sent
-                                $('#messages').append($("<p class='w3-right-align'>"+data.message+" : <img  class='img-circle' width='45' height='45' src='/uploads/"+data.userPic+"' /></p>"));
+                                $('#messages').append($("<p class='w3-right-align'>"+data.message+" : <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+data.userPic+"' /></p>"));
                                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                              } else{
                                 // user reply
-                                $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+data.userPic+"' /> : "+data.message+"</p><br>"));
+                                $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+data.userPic+"' /> : "+data.message+"</p><br>"));
                                 $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                             }
                         });
@@ -1177,44 +1192,44 @@
                       if(items[i].user_sent == userSent || items[i].user_receive == userRe || items[i].user_sent == userRe || items[i].user_receive == userSent ){
                         if(items[i].user_sent == userSent){
                                 if(items[i].message != ""){
-                                 $('#messages').append($("<p align='right' class='msg-sn'>"+items[i].message+" : <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /> </p><br>"));
+                                 $('#messages').append($("<p align='right' class='msg-sn'>"+items[i].message+" : <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+'<%= user.local.picture%>'+"' /> </p><br>"));
                                  $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                 }else{
                                     var typeFile = items[i].file_upload.split('.').pop();
                                      if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                                        $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/>: <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                        $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/>: <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                      }else{
-                                        $('#messages').append($("<p class='w3-right-align'><a>"+items[i].file_upload+"</a> :  <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                        $('#messages').append($("<p class='w3-right-align'><a>"+items[i].file_upload+"</a> :  <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                      }
                                 }
                         }else{
                             if('<%= user.local.picture.toString()%>' != picRe){
                             if(items[i].message != ""){
-                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : "+items[i].message+"</p><br>"));
+                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+picRe+"' /> : "+items[i].message+"</p><br>"));
                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                            }else{
                                  var typeFile = items[i].file_upload.split('.').pop();
                                      if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+picRe+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }else{
-                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+picRe+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
                                          $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }
                           }
                       }else{
                             if(items[i].message != ""){
-                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : "+items[i].message+"</p><br>"));
+                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+pic+"' /> : "+items[i].message+"</p><br>"));
                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                            }else{
                                  var typeFile = items[i].file_upload.split('.').pop();
                                      if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+pic+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }else{
-                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+pic+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
                                          $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }
                           }
@@ -1267,39 +1282,39 @@
                             }else{
                                     var typeFile = items[i].file_upload.split('.').pop();
                                      if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                                        $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/>: <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                        $('#messages').append($("<p class='w3-right-align'><img class='img-rounded w3-right-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/>: <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                      }else{
-                                        $('#messages').append($("<p class='w3-right-align'><a>"+items[i].file_upload+"</a> :  <img  class='img-circle' width='45' height='45' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
+                                        $('#messages').append($("<p class='w3-right-align'><a>"+items[i].file_upload+"</a> :  <img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+'<%= user.local.picture%>'+"' /></p><br><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                      }
                                 }
                         }else{
                             if('<%= user.local.picture.toString()%>' != picRe){
                             if(items[i].message != ""){
-                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : "+items[i].message+"</p><br>"));
+                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+picRe+"' /> : "+items[i].message+"</p><br>"));
                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                            }else{
                                  var typeFile = items[i].file_upload.split('.').pop();
                                      if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+picRe+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }else{
-                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+picRe+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+picRe+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
                                          $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }
                           }
                       }else{
                             if(items[i].message != ""){
-                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : "+items[i].message+"</p><br>"));
+                                   $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+pic+"' /> : "+items[i].message+"</p><br>"));
                                    $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                            }else{
                                  var typeFile = items[i].file_upload.split('.').pop();
                                      if(typeFile == 'jpg' ||  typeFile == 'png' || typeFile == 'jpeg'){
-                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
+                                        $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+pic+"' /> : <img class='img-rounded w3-left-align'  width='150px' height='150px' src='/uploads/files/"+items[i].file_upload+"'/></p><br>"));
                                         $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }else{
-                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' src='/uploads/"+pic+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                         $('#messages').append($("<p align='left' ><img  class='img-circle' width='45' height='45' id='imgChat' src='/uploads/"+pic+"' /> : <a>"+items[i].file_upload+"</a></p><br>"));
                                          $("#messages").animate({scrollTop: $("#messages")[0].scrollHeight}, 100);
                                     }
                           }
@@ -1353,7 +1368,7 @@
                     var uploadIds = uploaderGroup.upload(fileEl,{
                         uploadTo:'files'
                     });
-                readThenSendFile(data);
+                readThenSendFileGroup(data);
        });
      $('#IMG_INPUT').change(function(e){
                 var data = e.originalEvent.target.files[0];
@@ -1362,10 +1377,10 @@
                     var uploadIds = uploaderGroup.upload(fileEl,{
                         uploadTo:'files'
                     });
-                readThenSendFile(data);
+                readThenSendFileGroup(data);
        });
 
-            function readThenSendFile(data){
+            function readThenSendFileGroup(data){
                     $('#IMG_INPUT').val('');
                     var u_g_ID = $('#u_g_ID').val();
                     var gname = $('#gname').val();
@@ -1389,18 +1404,18 @@
                                 var type = data.fileName.split('.').pop();
                                 if(data.u_g_ID == u_g_ID){
                                     if(type == 'png' || type== 'jpg' || type == 'jpeg'){
-                                        $('#messages-group').append($("<p align='right'><img src='"+data.file.toString()+"' width='150' height='150' class='img-rounded'/> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                        $('#messages-group').append($("<p align='right'><img src='"+data.file.toString()+"' width='150' height='150' class='img-rounded'/> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                     }else{
-                                        $('#messages-group').append($("<p align='right'><a>"+data.fileName+"</a> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                        $('#messages-group').append($("<p align='right'><a>"+data.fileName+"</a> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                     }
                                 }else{
                                     if(type == 'png' || type== 'jpg' || type == 'jpeg'){
-                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+data.pic+"'  width='45' height='45' class='img-circle'/> : <img src='"+data.file.toString()+"' width='150' height='150' class='img-rounded'/></p><br>"));
+                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+data.pic+"'  width='45' height='45' id='imgChat' class='img-circle'/> : <img src='"+data.file.toString()+"' width='150' height='150' class='img-rounded'/></p><br>"));
                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                     }else{
-                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+data.pic+"'  width='45' height='45' class='img-circle'/> : <a>"+data.fileName+"</a></p><br>"));
+                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+data.pic+"'  width='45' height='45' id='imgChat' class='img-circle'/> : <a>"+data.fileName+"</a></p><br>"));
                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                      }
                                 }
@@ -1449,10 +1464,10 @@
                         socket.on('send message group', function (data) {
                                 var u_g_ID = $('#u_g_ID').val();
                                 if(data.userGID == u_g_ID){
-                                    $('#messages-group').append($("<p align='right'>"+data.message+" : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                    $('#messages-group').append($("<p align='right'>"+data.message+" : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                     $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                 }else{
-                                    $('#messages-group').append($("<p align='left' ><img src='uploads/"+data.pic+"'  width='45' height='45' class='img-circle'/> : "+data.message+"</p><br>"));
+                                    $('#messages-group').append($("<p align='left' ><img src='uploads/"+data.pic+"'  width='45' height='45' id='imgChat' class='img-circle'/> : "+data.message+"</p><br>"));
                                     $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                 }
                         });
@@ -1467,29 +1482,29 @@
                                  for (var i = items.length - 1; i >= 0; i--) {
                                             if(items[i].u_g_id == u_g_ID){
                                                     if(items[i].g_message != ""){
-                                                        $('#messages-group').append($("<p align='right'>"+items[i].g_message+" : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                        $('#messages-group').append($("<p align='right'>"+items[i].g_message+" : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                      }else{
                                                         var type = items[i].file_upload.split('.').pop();
                                                          if(type == 'png' || type== 'jpg' || type == 'jpeg'){
-                                                                $('#messages-group').append($("<p align='right'><img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                                $('#messages-group').append($("<p align='right'><img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                                                 $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                          }else{
-                                                                $('#messages-group').append($("<p align='right'><a>"+items[i].file_upload+"</a> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                                $('#messages-group').append($("<p align='right'><a>"+items[i].file_upload+"</a> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                                                 $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                          }
                                                      }
                                             }else{
                                                  if(items[i].g_message !=""){
-                                                    $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : "+items[i].g_message+"</p><br>"));
+                                                    $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' id='imgChat' class='img-circle'/> : "+items[i].g_message+"</p><br>"));
                                                     $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                  }else{
                                                     var type = items[i].file_upload.split('.').pop();
                                                      if(type == 'png' || type== 'jpg' || type == 'jpeg'){
-                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : <img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/></p><br>"));
+                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' id='imgChat' class='img-circle'/> : <img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/></p><br>"));
                                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                     }else{
-                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' id='imgChat' class='img-circle'/> : <a>"+items[i].file_upload+"</a></p><br>"));
                                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                      }
                                                  }
@@ -1516,29 +1531,29 @@
                                  for (var i = items.length - 1; i >= 0; i--) {
                                             if(items[i].u_g_id == userGID){
                                                     if(items[i].g_message != ""){
-                                                        $('#messages-group').append($("<p align='right'>"+items[i].g_message+" : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                        $('#messages-group').append($("<p align='right'>"+items[i].g_message+" : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                      }else{
                                                         var type = items[i].file_upload.split('.').pop();
                                                          if(type == 'png' || type== 'jpg' || type == 'jpeg'){
-                                                                $('#messages-group').append($("<p align='right'><img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                                $('#messages-group').append($("<p align='right'><img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                                                 $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                          }else{
-                                                                $('#messages-group').append($("<p align='right'><a>"+items[i].file_upload+"</a> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' class='img-circle'/></p><br>"))
+                                                                $('#messages-group').append($("<p align='right'><a>"+items[i].file_upload+"</a> : <img src='uploads/<%= user.local.picture%>' width='45' height='45' id='imgChat' class='img-circle'/></p><br>"))
                                                                 $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                          }
                                                      }
                                             }else{
                                                  if(items[i].g_message !=""){
-                                                    $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : "+items[i].g_message+"</p><br>"));
+                                                    $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' id='imgChat' class='img-circle'/> : "+items[i].g_message+"</p><br>"));
                                                     $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                  }else{
                                                     var type = items[i].file_upload.split('.').pop();
                                                      if(type == 'png' || type== 'jpg' || type == 'jpeg'){
-                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : <img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/></p><br>"));
+                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' id='imgChat' class='img-circle'/> : <img src='uploads/files/"+items[i].file_upload+"' width='150' height='150' class='img-rounded'/></p><br>"));
                                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                     }else{
-                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' class='img-circle'/> : <a>"+items[i].file_upload+"</a></p><br>"));
+                                                        $('#messages-group').append($("<p align='left' ><img src='uploads/"+items[i].picture+"'  width='45' height='45' id='imgChat' class='img-circle'/> : <a>"+items[i].file_upload+"</a></p><br>"));
                                                         $("#messages-group").animate({scrollTop: $("#messages-group")[0].scrollHeight}, 100);
                                                      }
                                                  }
@@ -1549,41 +1564,77 @@
             });
         });
         // End script socket.io Group
-        ////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
          // drang-drop zone script
-       Dropzone.options.uploadwidget = {
-        paramName: 'file',
-        maxFilesize: 5, // MB
-        maxFiles: 5,
-        headers: {
-            'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
-        },
-        acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx',
-          init: function() {
-            this.on('complete', function( file, resp ){
-                // this.removeFile(file);
-                // console.log( file );
-                // console.log( resp );
-            });
-            this.on("addedfile", function(file) {
-                /* Maybe display some more file information on your page */
-            });
-            this.on('thumbnail', function(file) {
-                if ( file.width < 1024 || file.height < 768 ) {
-                    file.acceptDimensions();
-                }
-                else {
-                    file.rejectDimensions();
-                }
-              });
+       Dropzone.options.uploadwidget = { // drang-drop zone script
+            paramName: 'file',
+            maxFilesize: 5, // MB
+            maxFiles: 5, // 1 file, 2 file,3 file...(n file)
+            headers: {
+                'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
             },
-            accept: function(file, done) {
-              file.acceptDimensions = done;
-              file.rejectDimensions = function() {
-                done('The image must be at least 1024 by 768 pixels in size');
-              };
+            acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx,.pdf',
+              init: function() {
+              this.on('complete', function( file, resp ){
+                    alert("Complate....");
+                    readerfile(file);
+                    this.removeFile(file);
+                });
             },
-        };
+    };
+     function readerfile(data){
+         $('#fileInput').val('');
+                    $('#FILES_INPUT').val('');
+                    var userRe = $('#userRe').val();
+                    var room = userSent+""+userRe;
+                var reader = new FileReader();
+                reader.onload = function(evt){
+                    var msg ={};
+                    msg.username = userSent;
+                    msg.room = room;
+                    msg.userRe = userRe;
+                    msg.file = evt.target.result;
+                    msg.fileName = data.name;
+                    socket.emit('base64 file', msg,'<%= user.local.picture %>');
+                };
+                reader.readAsDataURL(data);
+
+    }
+    Dropzone.options.uploadwidgetGroup = { // drang-drop zone script
+            paramName: 'fileGroup',
+            maxFilesize: 5, // MB
+            maxFiles: 5, // 1 file, 2 file,3 file...(n file)
+            headers: {
+                'x-csrf-token': $('meta[name="csrf-token"]').attr('content')
+            },
+            acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx,.pdf',
+              init: function() {
+              this.on('complete', function( file, resp ){
+                    alert("Complate....");
+                    readerfileGroup(file);
+                    this.removeFile(file);
+                });
+            },
+    };
+     function readerfileGroup(data){
+        var u_g_ID = $('#u_g_ID').val();
+                    var gname = $('#gname').val();
+                    var msg = $('#m-group').val();
+                    var pic = '<%= user.local.picture%>';
+                var reader = new FileReader();
+                reader.onload = function(evt){
+                    var msg ={};
+                    msg.u_g_ID = u_g_ID;
+                    msg.room = gname;
+                    msg.file = evt.target.result;
+                    msg.fileName = data.name;
+                    msg.pic =pic;
+                    socket.emit('send-group base64',msg);
+                };
+                reader.readAsDataURL(data);
+
+    }
         $('#model-chat-group').on('hidden.bs.model', function(){
             $('#model-body').find('input').val('');
         });
@@ -1606,6 +1657,7 @@
           };
 
 
+
           // Radio check to show datable
           $("#ckp").click(function(event) {
               $(".fileGroup").css("display","none");
@@ -1619,4 +1671,31 @@
               $("#tableFile_info").css("display","none");
               $(".fileGroup").css("display","block");
           });
+
+          //  drag drop hover
+    var drag_timer;
+        $(document).on('dragover', function (e) {
+            var dt = e.originalEvent.dataTransfer;
+            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+                if (e.originalEvent.pageX <= 200 && e.originalEvent.pageY <= 200) {
+                    $('.dropzone').removeClass('highlight');
+                    $('.dropzone:eq(0)').addClass('highlight');
+                } else if (e.originalEvent.pageX <= 400 && e.originalEvent.pageY <= 400) {
+                    $('.dropzone').removeClass('highlight');
+                    $('.dropzone:eq(1)').addClass('highlight');
+                } else {
+                    $('.dropzone').removeClass('highlight');
+
+                }
+
+                $('.dropzone').show();
+                window.clearTimeout(drag_timer);
+            }
+        })
+        .on('dragleave', function (e) {
+            drag_timer = window.setTimeout(function () {
+                        $('.dropzone').hide();
+                }, 2000);
+        });
+
     </script>

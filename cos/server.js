@@ -165,12 +165,10 @@ io.on('connection', function (socket) {
 
         ///////// send message to group ///////
         socket.on('send-group', function(data) {
-            console.log('sending message to group');
             io.sockets.in(data.room).emit('send message group', data);
             message.insertMessageroup(data.message,data.userGID,data.pic);
         });
         socket.on('send-img-group', function(data) {
-            console.log('sending message to group'+filenames);
             message.insertFilegroup(filenames,data.userGID,data.pic);
         });
         /////end send to grouph////
@@ -193,8 +191,6 @@ io.on('connection', function (socket) {
         });
 
          socket.on('send-group base64',function (msg) {
-            console.log('received base64 file from' + msg.u_g_ID);
-            console.log(' base64 file ' + msg.fileName);
             socket.u_g_ID = msg.u_g_ID;
             // socket.broadcast.emit('base64 image', //exclude sender
              io.sockets.in(msg.room).emit('send-group base64',msg);
@@ -209,9 +205,8 @@ io.on('connection', function (socket) {
         });
         ///////////////////////////////////
         socket.on('base64 file',function (msg,pic) {
-            console.log('received base64 file from' + msg.username);
-            console.log(' base64 file ' + msg.fileName);
             socket.username = msg.username;
+                  var room = msg.username+""+msg.userRe;
             // socket.broadcast.emit('base64 image', //exclude sender
              io.sockets.in(msg.room).emit('base64 file',  //include sender
                 {
@@ -224,8 +219,6 @@ io.on('connection', function (socket) {
             );
         });
         socket.on('base64 FILES_INPUT',function (msg) {
-            console.log('received base64 file from' + msg.username);
-            console.log(' base64 file ' + msg.fileName);
             socket.username = msg.username;
             // socket.broadcast.emit('base64 image', //exclude sender
              io.sockets.in(msg.room).emit('base64 FILES_INPUT',  //include sender
