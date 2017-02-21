@@ -174,12 +174,12 @@
                         <div class="col-sm-3 col-xs-3 col-md-3 col-lg-3" id="img-up">
                              <br>
                              <% if(user.local.picture != null){ %>
-                                    <img src="/userpic" id="output" alt="your image" class="img-de img-circle " width="180" height="180" style="     margin-left: 2.0cm "/>
+                                    <img src="/userpic" id="outputImg" alt="your image" class="img-de img-circle " width="180" height="180" style="margin-left: 2.0cm "/>
                                     <br><br><br>
                                      <input type="file" name="picture" style="margin-left: 2.0cm"
                              onchange="loadFile(event)" accept=".png,.jpg" />
                                 <% }else{ %>
-                                    <img src="/pic-default" id="output" alt="your image" class="img-de img-circle " width="180" height="180" style="margin-left: 2.0cm "/>
+                                    <img src="/pic-default" id="outputImg" alt="your image" class="img-de img-circle" width="180" height="180" style="margin-left: 2.0cm "/>
                                     <br><br><br>
                                      <input type="file" name="picture" style="margin-left: 2.0cm"
                              onchange="loadFile(event)" accept=".png,.jpg" required="" />
@@ -236,7 +236,7 @@
                 }, 1500);
         });
         var loadFile = function(event) {
-        var yourImg = document.getElementById('output');
+        var yourImg = document.getElementById('outputImg');
         if(yourImg && yourImg.style) {
             yourImg.style.height = '180px';
             yourImg.style.width = '180px';

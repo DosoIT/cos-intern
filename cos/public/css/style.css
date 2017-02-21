@@ -117,7 +117,7 @@ body {
         text-shadow: 4px 4px 6px #aaa;
     }
     #txtlink{
-    color: inherit;
+        color: inherit;
     }
     #tableGroup{
         width: 100%;
@@ -238,7 +238,218 @@ body {
         padding-left: 15px;
         padding-right: 15px;
     }
+        /*imagechat User*/
     #imgChat{
         width: 45px;
         height: 45px;
     }
+    #outputImg{
+        height: 180px;
+        width: 180px;
+    }
+            /*body Model chat*/
+    #messages {
+        height: 250px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow-y: hidden;
+        }
+    #messages:hover{
+         overflow-y: overlay;
+    }
+        #messages > p:last-child {
+            color: red;
+        }
+        #messages p {
+            margin-right: 1%;
+            padding: 1px 20px 2px 9px;
+        }
+         #messages-group {
+            height: 250px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow-y: hidden;
+        }
+        #messages-group:hover{
+            overflow-y: overlay;
+        }
+        #messages-group > p:last-child {
+            color: red;
+        }
+        #messages-group p {
+            margin-right: 1%;
+            padding: 1px 20px 2px 9px;
+        }
+        .w3-modal-content {
+            top: 1%;
+        }
+        .menubar-chat > ul{
+            border: 1px solid #ccc;
+        }
+        .menubar-chat > li {
+            list-style: none;
+            float: left;
+            padding: 7px 10px 20px 10px;
+            overflow: none;
+        }
+        /*div col-3 col-6 col-3 table panel*/
+        #rowBG {
+            height: auto;
+        }
+
+        #leftPanel {
+            margin-top: -2.2%;
+            height: auto;
+        }
+
+        #rightPanel {
+            margin-top: -2.2%;
+            height: auto;
+        }
+
+        #middlePanel {
+            margin-top: -3.4%;
+            height: auto;
+        }
+
+        #picProfile {
+            width: 140px;
+            height: 140px;
+        }
+
+        #rowHeadder {
+            margin-top: 3%;
+            margin-bottom: 3%;
+        }
+
+        #tableFile {
+            color: lightsteelblue;
+            padding: 0;
+            width: 100%
+        }
+        #tableOnline {
+            /*color: lightsteelblue;*/
+            width: 100%;
+            height: auto;
+        }
+        #tableOffline-Chat{
+            width: 100%;
+            height: auto;
+        }
+
+        #userOnlineIMG {
+            width: 25px;
+            height: 25px;
+        }
+
+        .icon-online {
+            position: relative;
+            margin-top: -2%;
+            margin-left: 10%;
+        }
+        /*form message*/
+        #testDemoP{
+            color:black;
+        }
+        #frmMsg {
+            border: none;
+        }
+        #frmMsg-group {
+            border: none;
+        }
+            /*select image profile*/
+        #img01{
+            width: 550px;
+            height: 450px;
+            position: absolute;
+            margin-left: 30%;
+        }
+            /*font class txt*/
+        .txt{
+             font-family: 'Nunito',sans-serif;
+             font-size: 16pt;
+             text-shadow: 4px 4px 6px #aaa;
+         }
+        #txtColorGroup{
+            color: inherit;
+         }
+          /* text System COS*/
+        .txtSystem{
+            font-size: 20pt;
+            margin-top: 1%;
+            text-shadow: 4px 4px 6px #aaa;
+        }
+
+        .ft-coc{
+            width: 50%;
+            margin-top: -3%;
+        }
+
+        .bullhorn {
+            position: absolute;
+            margin-top: -2%;
+        }
+
+        .ft-cos-white {
+            margin-left: 0%;
+            width: 20%;
+        }
+
+        .msg-sn {
+            text-align: right;
+            padding: 1px;
+        }
+        .msg-reply{
+            display: inline-block;
+            border: 2px solid #a1a1a1;
+            padding: 10px 40px;
+            background: #dddddd;
+            border-radius: 25px;
+        }
+            /*status reader*/
+        #reader{
+            display: none;
+            margin-top: -10px;
+            color: #a1a1a1;
+        }
+            /*History User and Group*/
+        #hisAll{
+            text-align: right;
+            font-size: 16pt;
+            color: #979a9e;
+        }
+        #hisAll-group{
+            text-align: right;
+            font-size: 16pt;
+            color: #979a9e;
+        }
+            /*messages alert*/
+        .badge{
+            background-color: red;
+        }
+        .headerSysCOS {
+            margin-top: -5%;
+            text-align: center;
+            /*border-bottom: 1px solid #ccc;*/
+        }
+            /*txt Font color hover*/
+        #colorfontChat{
+            color: inherit;
+        }
+        #colorfontChat:hover{
+            color: #3333FF;
+        }
+        #colorfontChatUser{
+            color: inherit;
+        }
+        #colorfontChatUser:hover{
+             color: #3333FF;
+        }
+        #colorfontChatUser-offline{
+            color: #BEBEBE;
+        }
+        #colorfontChatUser-offline:hover{
+             color: #3333FF;
+        }

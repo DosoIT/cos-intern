@@ -29,62 +29,6 @@
         .container {
             width: 100%;
         }
-
-        #rowBG {
-            height: auto;
-        }
-
-        #leftPanel {
-            margin-top: -3%;
-            height: auto;
-        }
-
-        #rightPanel {
-            margin-top: -2.2%;
-            height: auto;
-        }
-
-        #middlePanel {
-            margin-top: -3.4%;
-            height: auto;
-        }
-
-        #picProfile {
-            width: 140px;
-            height: 140px;
-        }
-
-        #rowHeadder {
-            margin-top: 3%;
-            margin-bottom: 3%;
-        }
-
-        #tableFile {
-            color: lightsteelblue;
-            padding: 0;
-            width: 100%
-        }
-        #tableOnline {
-            color: lightsteelblue;
-            width: 100%;
-            height: auto;
-        }
-        #tableOffline{
-            width: 100%;
-            height: auto;
-        }
-
-        #userOnlineIMG {
-            width: 25px;
-            height: 25px;
-        }
-
-        .icon-online {
-            position: relative;
-            margin-top: -2%;
-            margin-left: 10%;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -114,69 +58,12 @@
         a:hover {
             color: #3333FF;
         }
-
-        #messages {
-            height: 250px;
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow-y: hidden;
-        }
-        #messages:hover{
-         overflow-y: overlay;
-        }
-        #messages > p:last-child {
-            color: red;
-        }
-        #messages p {
-            margin-right: 1%;
-            padding: 1px 20px 2px 9px;
-        }
-         #messages-group {
-            height: 250px;
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow-y: hidden;
-        }
-        #messages-group:hover{
-         overflow-y: overlay;
-        }
-        #messages-group > p:last-child {
-            color: red;
-        }
-        #messages-group p {
-            margin-right: 1%;
-            padding: 1px 20px 2px 9px;
-        }
-        .w3-modal-content {
-            top: 1%;
-        }
-        .menubar-chat > ul{
-            border: 1px solid #ccc;
-        }
-        .menubar-chat > li {
-            list-style: none;
-            float: left;
-            padding: 7px 10px 20px 10px;
-            overflow: none;
-        }
-
         li:hover {
             cursor: pointer;
         }
 
         input[type=text]:focus {
             border: 1 pz solid #1a1a1a;
-        }
-        #testDemoP{
-            color:black;
-        }
-        #frmMsg {
-            border: none;
-        }
-        #frmMsg-group {
-            border: none;
         }
 
         /* For desktop: */
@@ -380,75 +267,7 @@
                 width: auto;
             }
         }
-
         /* end Device Phone And Desktop*/
-        .headersys {
-            margin-top: -5%;
-            text-align: center;
-            /*border-bottom: 1px solid #ccc;*/
-        }
-
-        .ft-coc {
-            width: 50%;
-            margin-top: -3%;
-        }
-
-        .bullhorn {
-            position: absolute;
-            margin-top: -2%;
-        }
-
-        .pp {
-            font-size: 20pt;
-            margin-top: 1%;
-        }
-
-        .ft-cos-white {
-            margin-left: 0%;
-            width: 20%;
-        }
-
-        .msg-sn {
-            text-align: right;
-            padding: 1px;
-        }
-        .msg-reply{
-            display: inline-block;
-            border: 2px solid #a1a1a1;
-            padding: 10px 40px;
-            background: #dddddd;
-            border-radius: 25px;
-        }
-        #reader{
-            display: none;
-            margin-top: -10px;
-            color: #a1a1a1;
-        }
-
-        #hisAll{
-            text-align: right;
-            font-size: 16pt;
-            color: #979a9e;
-        }
-        #hisAll-group{
-            text-align: right;
-            font-size: 16pt;
-            color: #979a9e;
-        }
-        .badge{
-            background-color: red;
-        }
-        #img01{
-            width: 550px;
-            height: 450px;
-            position: absolute;
-            margin-left: 30%;
-        }
-        .txt{
-             font-family: 'Nunito',sans-serif;
-             font-size: 16pt;
-             text-shadow: 4px 4px 6px #aaa;
-         }
     </style>
     <body>
     <% if(user.local.st != false){%>
@@ -469,13 +288,13 @@
                                     <tr>
                                         <td class="text-right" id="text-icons">
                                             <i class="fa fa-user w3-xlarge" aria-hidden="true"> : </i>
-                                            <a href="/profileUpdate" class="txt"><%= user.local.fname %></a>
+                                            <a href="/profileUpdate" class="txt" id="txtColorGroup"><%= user.local.fname %></a>
                                         </td>
                                     </tr>
                                     <tr class="link-logout">
                                         <td class="text-left" id="text-icons">
                                             <i class="fa fa-sign-out w3-xlarge" aria-hidden="true">: </i>
-                                            <a href="/logout" class="txt">Log-out</a>
+                                            <a href="/logout" class="txt" id="txtColorGroup">Log-out</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -483,7 +302,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row headersys">
+                <div class="row headerSysCOS">
                     <h1>
                         <div>
                             <img src="/image/cos-bg.png" alt="font-cos-white" class="ft-cos-white">
@@ -493,7 +312,7 @@
                             <i class="fa fa-bullhorn bullhorn" aria-hidden="true"></i>
                         </div>
                     </h1>
-                    <p class="pp" id="text-header">ระบบสื่อสารภายในองค์กร</p>
+                    <p class="txtSystem" id="text-header">ระบบสื่อสารภายในองค์กร PDB.</p>
                 </div>
             </div>
         </div>
@@ -504,11 +323,11 @@
                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="leftPanel" >
                         <h2 class="page-header" id="text-group">
                                 <div class="w3-dropdown-hover" style="background-color: white;">
-                                    <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content">
+                                    <a href="#" onclick="document.getElementById('model-group').style.display='block'" title="Add Group" alt="Add Group" class="w3-dropdown-content txt" id="txtColorGroup">
                                         Add Group
                                     </a>
-                                    <a href="#">
-                                        Group +
+                                    <a href="#" class="txt" id="txtColorGroup">
+                                        <i style="font-size:24px" class="fa">&#xf0c2;</i> Group +
                                     </a>
                                 </div>
                         </h2>
@@ -522,7 +341,7 @@
                                             <% if(group[item]._id.toString() == userGroup[g].g_id){%>
                                             <% if(userGroup[g].user_id.toString() == user._id.toString()){%>
                                               <a href="#" class="w3-left"
-                                              onclick="getModelGroup('<%=userGroup[g]._id%>','<%=group[item].g_name%>','<%=group[item]._id%>');getMsgGroup('<%=group[item]._id%>','<%=group[item].g_name%>','<%=userGroup[g]._id%>');">
+                                              onclick="getModelGroup('<%=userGroup[g]._id%>','<%=group[item].g_name%>','<%=group[item]._id%>');getMsgGroup('<%=group[item]._id%>','<%=group[item].g_name%>','<%=userGroup[g]._id%>');"  id="colorfontChat">
                                               <%=group[item].g_name%>
                                               </a>
                                                   <%}}%>
@@ -588,79 +407,33 @@
                      <!-- status online -->
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="rightPanel" >
                     <div class="row">
-                        <h2 class="page-header txt" id="text-online">Online</h2>
+                        <h2 class="page-header txt" id="text-online"><i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Online</h2>
                             <div id="scollbartableOnline">
-                            <table id="tableOnline" class="w3-table table-hover">
-                                <% for (item in userAll) { if(userAll[item].local.st==true){ %>
-                                    <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                    <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>','<%= userAll[item].local.picture %>');getMsg('<%= userAll[item]._id %>','<%= userAll[item].local.picture %>')">
-                                        <td class="text-left" style="width: 50%;">
-                                            <img src="/imageonline" alt="" class="icon-online" width="20" height="auto"> &nbsp;
-                                            <% if(userAll[item].local.picture != null){ %>
-                                            <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle'
-                                                 id="userOnlineIMG"/>
-                                            <% }else{ %>
-                                            <img src="/pic-default" id="userOnlineIMG"/>
-                                            <% } %>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="w3-left"">
-                                                <%= userAll[item].local.fname %>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <%
-                                                count=0;
-                                                for(i in log){
-                                                   if(userAll[item]._id.toString() == log[i].user_sent.toString()){
-                                                           count++;
-                                                  }
-                                              }%>
-                                              <%if(count != 0){%>
-                                            <span class="badge" style="display:block;">
-                                                    <%=count; %>
-                                            </span>
-                                             <%}else{%>
-                                                <style type="text/css">
-                                                    .badge{
-                                                        display:none;
-                                                    }
-                                                </style>
-                                             <%}%>
-                                        </td>
-                                    </tr>
-                                <% } } } %>
-                            </table>
-                            </div> <!-- end scollbartableOnline -->
-                                <!-- end status online -->
-                            <!-- status offline -->
-                            <div id="rightPanel">
-                                <h2 class="page-header txt" id="text-offline">Offline</h2>
-                                    <div id="scollbartableOffline">
-                                    <table id="tableOffline" class="w3-table table-hover">
-                                        <% for (item in userAll) { if(userAll[item].local.st==false){%>
-                                            <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                            <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>','<%= userAll[item].local.picture %>');getMsg('<%= userAll[item]._id %>','<%= userAll[item].local.picture %>')" />
-                                                <td class="text-left" style="width: 50%;">
-                                                      <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto"> &nbsp;
-                                                <% if(userAll[item].local.picture != null){%>
-                                                      <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
-                                                <%}else{%>
-                                                      <img src="/pic-default" id="userOnlineIMG"/>
-                                                <%}%>
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="w3-left">
-                                                        <font color="#BEBEBE"><%= userAll[item].local.fname %></font>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                     <%
+                                <table id="tableOnline" class="w3-table table-hover">
+                                    <% for (item in userAll) { if(userAll[item].local.st==true){ %>
+                                        <%if(userAll[item]._id.toString() != user._id.toString()){%>
+                                        <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>','<%= userAll[item].local.picture %>');getMsg('<%= userAll[item]._id %>','<%= userAll[item].local.picture %>')">
+                                            <td class="text-left" style="width: 50%;">
+                                                <img src="/imageonline" alt="" class="icon-online" width="20" height="auto"> &nbsp;
+                                                <% if(userAll[item].local.picture != null){ %>
+                                                <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle'
+                                                     id="userOnlineIMG"/>
+                                                <% }else{ %>
+                                                <img src="/pic-default" id="userOnlineIMG"/>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="w3-left" id="colorfontChatUser">
+                                                    <%= userAll[item].local.fname %>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <%
                                                     count=0;
                                                     for(i in log){
                                                        if(userAll[item]._id.toString() == log[i].user_sent.toString()){
                                                                count++;
-                                                    }
+                                                      }
                                                   }%>
                                                   <%if(count != 0){%>
                                                 <span class="badge" style="display:block;">
@@ -673,10 +446,56 @@
                                                         }
                                                     </style>
                                                  <%}%>
-                                                </td>
-                                            </tr>
-                                        <% } } }%>
-                                    </table>
+                                            </td>
+                                        </tr>
+                                    <% } } } %>
+                                </table>
+                            </div> <!-- end scollbartableOnline -->
+                                <!-- end status online -->
+                            <!-- status offline -->
+                            <div id="rightPanel">
+                                <h2 class="page-header txt" id="text-offline"><i style="font-size:24px" class="fa">&#xf1ce;</i> Offline</h2>
+                                    <div id="scollbartableOffline">
+                                        <table id="tableOffline-Chat" class="w3-table table-hover">
+                                            <% for (item in userAll) { if(userAll[item].local.st==false){%>
+                                                <%if(userAll[item]._id.toString() != user._id.toString()){%>
+                                                <tr onclick="getModel('<%= userAll[item].local.fname %>','<%= userAll[item]._id %>','<%= userAll[item].local.picture %>');getMsg('<%= userAll[item]._id %>','<%= userAll[item].local.picture %>')" />
+                                                    <td class="text-left" style="width: 50%;">
+                                                          <img src="/imageoffline" alt="" class="icon-online" width="20" height="auto"> &nbsp;
+                                                    <% if(userAll[item].local.picture != null){%>
+                                                          <img src="/uploads/<%= userAll[item].local.picture %>" class='img-circle' id="userOnlineIMG"/>
+                                                    <%}else{%>
+                                                          <img src="/pic-default" id="userOnlineIMG"/>
+                                                    <%}%>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="w3-left" id="colorfontChatUser-offline">
+                                                            <%= userAll[item].local.fname %>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                         <%
+                                                        count=0;
+                                                        for(i in log){
+                                                           if(userAll[item]._id.toString() == log[i].user_sent.toString()){
+                                                                   count++;
+                                                        }
+                                                      }%>
+                                                      <%if(count != 0){%>
+                                                    <span class="badge" style="display:block;">
+                                                            <%=count; %>
+                                                    </span>
+                                                     <%}else{%>
+                                                        <style type="text/css">
+                                                            .badge{
+                                                                display:none;
+                                                            }
+                                                        </style>
+                                                     <%}%>
+                                                    </td>
+                                                </tr>
+                                            <% } } }%>
+                                        </table>
                                     </div> <!-- end scollbartableOffline -->
                             </div> <!-- end status offline rightPanel -->
                         </div> <!-- col status row -->
@@ -710,12 +529,9 @@
                                     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                     <ul class="menubar-chat">
                                         <li>
-                                            <i class="fa fa-paperclip" aria-hidden="true" onclick="dragModelUser();"></i>
-                                        </li>
-                                        <li>
                                             <div class="custom-input-file" title="Select Files">
                                                 <label class="a-Button" for="FILES_INPUT">
-                                                   <i class="fa fa-file-o" aria-hidden="true"></i>
+                                                   <i class="fa fa-paperclip fa-lg" aria-hidden="true"></i>
                                                 </label>
                                                 <input type="file" id="FILES_INPUT" accept=".rar,.docx,.pdf,.pptx,.xls,.zip">
                                             </div>
@@ -813,22 +629,22 @@
                                             </h2>
                                             <hr>
                                         <div id="scrollbar-offline">
-                                        <table width="100%" class="w3-table table-hover" id="tableOffline">
-                                             <% for (item in userAll) { if(userAll[item].local.st==false){ %>
-                                             <%if(userAll[item]._id.toString() != user._id.toString()){%>
-                                            <tr>
-                                                <td>
-                                                    <div style="margin-top: 5%;">
-                                                        <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
-                                                         <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
-                                                          <%= userAll[item].local.fname %>
-                                                    </div>
-                                                </td>
-                                             </tr>
-                                            <%} } }%>
-                                        </table> <!-- End table offline -->
-                                            <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
-                                    </div> <!-- end div table offline -->
+                                            <table width="100%" class="w3-table table-hover" id="tableOffline">
+                                                 <% for (item in userAll) { if(userAll[item].local.st==false){ %>
+                                                 <%if(userAll[item]._id.toString() != user._id.toString()){%>
+                                                <tr>
+                                                    <td>
+                                                        <div style="margin-top: 5%;">
+                                                            <input type="checkbox" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= userAll[item]._id %>">
+                                                             <img src="/uploads/<%= userAll[item].local.picture %>" width="25px" height="25px" class="img-circle" id="userOnlineIMG">
+                                                              <%= userAll[item].local.fname %>
+                                                        </div>
+                                                    </td>
+                                                 </tr>
+                                                <%} } }%>
+                                            </table> <!-- End table offline -->
+                                                <input type="hidden" name="user_id[]" style="margin-left: -35%;margin-right:-40%; " value="<%= user._id %>">
+                                        </div> <!-- end div table offline -->
                                     </div> <!-- end scrollbar-offline -->
                                     <footer class="w3-container">
                                         <div class="text-right"
@@ -876,12 +692,9 @@
                                 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                     <ul class="menubar-chat">
                                         <li>
-                                            <i class="fa fa-paperclip fa-lg" aria-hidden="true" onclick="dragDropGrorp();"></i>
-                                        </li>
-                                        <li>
                                             <div class="custom-input-file" title="Select Files">
                                                 <label class="a-Button" for="FILES_INPUT_GROUP">
-                                                   <i class="fa fa-file-o" aria-hidden="true"></i>
+                                                   <i class="fa fa-paperclip fa-lg" aria-hidden="true"></i>
                                                 </label>
                                                 <input type="file" id="FILES_INPUT_GROUP" accept=".rar,.docx,.pdf,.pptx,.xls,.zip">
                                             </div>
@@ -1509,7 +1322,7 @@
             acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx,.pdf',
               init: function() {
               this.on('complete', function( file, resp ){
-                    alert("Complate....");
+                    // alert("Complate....");
                     readerfile(file);
                     this.removeFile(file);
                 });
@@ -1543,7 +1356,7 @@
             acceptedFiles: '.jpg,.png,.docx,.zip,.xlsx,.pptx,.pdf',
               init: function() {
               this.on('complete', function( file, resp ){
-                    alert("Complate....");
+                    // alert("Complate....");
                     readerfileGroup(file);
                     this.removeFile(file);
                 });
