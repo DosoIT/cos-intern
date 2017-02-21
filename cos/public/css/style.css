@@ -401,13 +401,6 @@ body {
             text-align: right;
             padding: 1px;
         }
-        .msg-reply{
-            display: inline-block;
-            border: 2px solid #a1a1a1;
-            padding: 10px 40px;
-            background: #dddddd;
-            border-radius: 25px;
-        }
             /*status reader*/
         #reader{
             display: none;
@@ -419,11 +412,13 @@ body {
             text-align: right;
             font-size: 16pt;
             color: #979a9e;
+            cursor: pointer;
         }
         #hisAll-group{
             text-align: right;
             font-size: 16pt;
             color: #979a9e;
+            cursor: pointer;
         }
             /*messages alert*/
         .badge{
@@ -484,3 +479,39 @@ body {
             opacity:1;filter:"alpha(opacity=100)";
             -ms-filter:"alpha(opacity=100)";
         }
+            /*color model background*/
+        #headerModel{
+            background-color: #F8F8FF;
+        }
+            /*textHistory font*/
+        #txtHistory{
+            font-family: 'Nunito',sans-serif;
+            font-size: 16pt;
+            /*text-shadow: 4px 4px 6px #aaa;*/
+        }
+        .ar-r{
+            position: relative;
+            top: 50%;
+            color: #52D017;
+        }
+        .ar-l{
+            color: red;
+        }
+        .ckp{
+            position: absolute;
+            margin-top: -25px;
+            left:70px;
+        }
+        .ckg{
+            position: absolute;
+            margin-top: -25px;
+            left:110px;
+        }
+        .txt{
+             font-family: 'Nunito',sans-serif;
+             font-size: 12pt;
+             text-shadow: 4px 4px 6px #aaa;
+         }
+         .txt-icon{
+            font-size: 16pt;
+         }
